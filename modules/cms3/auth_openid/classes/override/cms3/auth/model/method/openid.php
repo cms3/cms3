@@ -16,7 +16,7 @@ class Model_Method_OpenID extends Model {
 				'id'		=> new Engine\Field_Primary,
 				'user'		=> new Engine\Field_BelongsTo,
 				'openid'	=> new Engine\Field_String(array(
-					'unique'	=> TRUE,
+					//'unique'	=> TRUE,
 					'rules'		=> array(
 						'max_length' => array(255),
 						'min_length' => array(3) // TODO: в настройки

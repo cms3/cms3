@@ -200,7 +200,7 @@ abstract class Acl_Core {
 			'resource'  => $resource,
 			'privilege' => $privilege
 		);
-
+		
 		// normalize role
 		$roles = $role !== NULL 
 			? ($role instanceof Acl_Role_Interface ? $role->get_role_id() 
@@ -222,6 +222,7 @@ abstract class Acl_Core {
 		{
 			return FALSE;
 		}
+		//print_r(array($resource,$roles,$privilege)); exit;
 
 		// loop for matching rule
 		do
@@ -231,6 +232,7 @@ abstract class Acl_Core {
 				return $rule['allow'];
 			}
 		}
+		
 		// go level up in resources tree (child resources inherit rules from parent)
 		while ( $resource !== NULL AND ($resource = $this->_resources[$resource]['parent']));
 

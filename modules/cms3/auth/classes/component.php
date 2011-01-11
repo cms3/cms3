@@ -2,6 +2,8 @@
 
 namespace CMS3\Auth;
 
+use CMS3\Engine\Exception;
+
 use CMS3\Engine;
 use CMS3\Engine\Model;
 use CMS3\Engine\ORM;
@@ -20,7 +22,7 @@ class Component extends Engine\Component {
 		
 		if ($user_id)
 		{
-			$user = Engine\ORM::select('cms3\auth\user')->load($user_id);
+			$user = ORM::select('cms3\auth\user')->load($user_id);
 
 			if ($user->loaded())
 			{
@@ -37,6 +39,12 @@ class Component extends Engine\Component {
 	
 	public function do_login($user, $remember = FALSE)
 	{
+		if (! $user->enabled)
+		{
+			throw new Exception('User is disabled');
+			return FALSE;
+		}
+		
 		//\Session::instance()->regenerate();
 		\Session::instance()->set('current_user', $user->id);
 		
@@ -78,7 +86,7 @@ class Component extends Engine\Component {
 		{
 			$token = ORM::select('cms3\auth\token')->where('token', '=', $token)->limit(1)->execute();
 			
-			if ($token->loaded() && $token->user->loaded())
+			if ($token->loaded() && $token->user->loaded() && $token->user->enabled)
 			{
 				//$token->update();
 				//Cookie::set('auth_user_token', $token->token, $token->expires - time());

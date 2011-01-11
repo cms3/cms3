@@ -3,6 +3,7 @@
 namespace CMS3\Auth;
 
 use CMS3\Engine\ORM;
+use CMS3\Engine\App;
 
 class Method_Basic extends Auth_Method {
 

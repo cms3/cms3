@@ -44,7 +44,9 @@ class App {
 		Core::$base_url = $this->get_cfg('base_url');
 		Core::$index_file = $this->get_cfg('index_file');
 		
-		$this->modules = $this->get_module_list();
+		$this->modules = ORM::select('cms3\engine\module')
+			->where('enabled', '=', 1)
+			->execute();
 						
 		$connect_modules = array();
 		foreach ($this->modules as $module)
@@ -73,7 +75,14 @@ class App {
 		{
 			\Security::token(TRUE);
 		}
-
+		
+		/*
+		$user = ORM::select('cms3\auth\user')->load(1);
+		echo $user->check_privilege('test_res', 'test_priv');
+		//\CMS3\Acl\Component::instance()->x();
+		exit;
+*/	
+		
 		if (isset($benchmark))
 		{
 			\Profiler::stop($benchmark);
@@ -306,15 +315,6 @@ class App {
 			$params = Component::instance($component)->$function($params);
 		}
 		return $params;
-	}
-
-	protected function get_module_list()
-	{
-		$modules = ORM::select('cms3\engine\module')
-			->where('enabled', '=', 1)
-			->execute();
-		
-		return $modules;
 	}
 
 	public function get_cfg($param)

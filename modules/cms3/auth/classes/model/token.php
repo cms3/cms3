@@ -45,7 +45,7 @@ class Model_Token extends Model {
 	public function create($user_id, $expires = 54000)
 	{		
 		$this->token = $this->generate_token();
-		$this->user = ORM::select('user', $user_id); // TODO
+		$this->user = ORM::select('cms3\auth\user', $user_id); // TODO
 		// TODO: set expires
 		
 		return parent::save();

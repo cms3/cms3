@@ -56,7 +56,7 @@ class Method_OpenID_Core extends Method {
 				if (isset($user_data['fullname'])) // TODO
 				{
 					$user = Engine\Model::factory('user');
-					$user->tmp = 0; // TODO
+					$user->enabled = 1;
 					$user->save();
 					
 					$method_data = Engine\Model::factory('cms3\auth\method_openid');

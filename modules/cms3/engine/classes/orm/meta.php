@@ -64,7 +64,7 @@ class ORM_Meta extends \Jelly_Meta_Core {
 
 				// Aliases shouldn't pollute fields
 				unset($this->fields[$column]);
-
+			
 				continue;
 			}
 
