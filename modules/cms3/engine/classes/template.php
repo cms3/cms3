@@ -185,9 +185,11 @@ abstract class Template {
 		foreach ($theme_paths as $theme_path)
 		{
 			$tpl_path = $theme_path  . "templates";
+			
+			if (! is_dir($tpl_path)) continue;
 
 			$list = scandir($tpl_path);
-			
+						
 			foreach ($list as $dir)
 			{
 				if ($dir != '.' && $dir != '..')

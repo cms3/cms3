@@ -226,7 +226,7 @@ class App {
 		$this->document = Document::factory($format);
 		$this->document->language = $this->language;
 		$this->document->charset = Core::$charset;
-		$this->document->current_theme = $this->get_cfg('default_theme');
+		$this->document->current_theme = $this->detect_theme();
 		
 		$this->document->render();
 		
@@ -239,6 +239,21 @@ class App {
 		{
 			echo new \View('profiler/stats');
 		}
+	}
+	
+	protected function detect_theme()
+	{
+		$themes = ORM::select('cms3\engine\theme')->execute();
+		
+		foreach ($themes as $theme)
+		{
+			if (App::check_page_condition($theme->condition->condition))
+			{
+				return $theme->name;
+			}
+		}
+
+		return $this->get_cfg('default_theme');
 	}
 	
 	public function fetch_query_params()

@@ -11,13 +11,13 @@ class Model_Block extends Model {
 		$meta
 			->sorting(array('ordering' => 'ASC'))
 			->fields(array(
-				'id' 					=> new Field_Primary,
+				'id' 			=> new Field_Primary,
 				'position'		=> new Field_String,
 				'component' 	=> new Field_String,
-				'action' 			=> new Field_String,
+				'action' 		=> new Field_String,
 				'condition'		=> new Field_BelongsTo,
 				'ordering'		=> new Field_Integer,
-				'params'			=> new Field_HasMany(array('foreign' => 'cms3\engine\block_param.block_id')),
+				'params'		=> new Field_HasMany(array('foreign' => 'cms3\engine\block_param.block_id')),
 			));
    }
    
