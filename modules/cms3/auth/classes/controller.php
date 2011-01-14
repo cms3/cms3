@@ -42,15 +42,15 @@ class Controller extends Controller_Component {
 		{
 			$user_data = $user->as_array();
 			$user_data['params'] = $user->get_params_array();
-			
-			echo $this->component->get_view("user_small_info", array(
+
+			echo $this->component->get_view("form/logout", array(
 				'user'		=> $user_data,
 				'return'	=> $return,
 			));
 		}
 		else
 		{
-			echo $this->component->get_view("form", array(
+			echo $this->component->get_view("form/login", array(
 				'return'	=> $return,
 			));
 		}
