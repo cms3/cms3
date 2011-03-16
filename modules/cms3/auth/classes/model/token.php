@@ -35,6 +35,7 @@ class Model_Token extends Model {
 			));
 			
 			/*
+			TODO: некрасиво
 			if (mt_rand(1, 100) === 1)
 			{
 				ORM::delete('auth_token')->where('expires', '<', time())->execute();

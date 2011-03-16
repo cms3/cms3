@@ -22,8 +22,3 @@ class Model_User_Param_Value extends Model {
 			));
    }
 }
-
-
-
-
-
