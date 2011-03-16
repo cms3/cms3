@@ -19,7 +19,7 @@ class Model_Block extends Model {
 				'ordering'		=> new Field_Integer,
 				'params'		=> new Field_HasMany(array('foreign' => 'cms3\engine\block_param.block_id')),
 			));
-   }
+	}
    
 	public function get_params_hash()
 	{

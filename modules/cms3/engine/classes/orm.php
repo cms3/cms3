@@ -34,6 +34,7 @@ class ORM extends \Jelly_Core {
 			$model = NS::extract_class_name($model);
 		}
 
+
 		$prefix_length = strlen(ORM::model_prefix());
 
 		// Compare the first parts of the names and chomp if they're the same

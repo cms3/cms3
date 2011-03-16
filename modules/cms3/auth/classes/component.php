@@ -29,6 +29,7 @@ class Component extends Engine\Component {
 				return $user;
 			}
 		}
+		
 		return NULL;
 	}
 	

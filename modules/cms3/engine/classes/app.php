@@ -76,13 +76,6 @@ class App {
 			\Security::token(TRUE);
 		}
 		
-		/*
-		$user = ORM::select('cms3\auth\user')->load(1);
-		echo $user->check_privilege('test_res', 'test_priv');
-		//\CMS3\Acl\Component::instance()->x();
-		exit;
-*/	
-		
 		if (isset($benchmark))
 		{
 			\Profiler::stop($benchmark);
