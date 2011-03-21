@@ -35,6 +35,8 @@ class App {
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
 		
+		\Cookie::$salt = 'CMS3 secret string 00001000'; // TODO
+		
 		Core::$config->attach(new Config_File);
   
 		$this->_config = Core::config('cms3\core');
@@ -129,9 +131,17 @@ class App {
 			}
 		}
 		
-		//TODO: 404 if not exists		
-		$controller = new $controller(Request::instance());
-		$controller->action($action, $params);
+		if (class_exists($controller))
+		{
+			$controller = new $controller(Request::current(), Request::current()->response());
+			$controller->action($action, $params);
+		}
+		else
+		{
+			throw new \HTTP_Exception_404('Controller :controller not found.', array(
+				':uri' => $uri,
+			)); 
+		}
 	}
 	
 	private function _replace_inline_route($uri)
@@ -167,7 +177,7 @@ class App {
 		{
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
-		//$get_params = Request::instance()->param('params');
+		//$get_params = Request::current()->param('params');
 				
 		$get_params = $this->fetch_query_params();
 		
@@ -182,7 +192,7 @@ class App {
 			$this->set_language($this->get_cfg('default_language'));
 		}
 		
-		Request::instance()->set_params(array());	
+		Request::current()->set_params(array());	
 		$route_list = ORM::select('cms3\engine\route')->execute();
 		foreach ($route_list as $route)
 		{
@@ -203,7 +213,7 @@ class App {
 				unset($params['action']);
 				$params = $this->explode_request_params($params);
 				
-				Request::instance()->set_params($params + $get_params);
+				Request::current()->set_params($params + $get_params);
 				
 				$found = TRUE;
 				break;
@@ -212,8 +222,7 @@ class App {
 		
 		if (! $found && $path != '')
 		{
-			Request::instance()->status = 404;
-			return;
+			throw new HTTP_Exception_404();
 		}
 		
 		$this->document = Document::factory($format);
@@ -228,7 +237,7 @@ class App {
 			\Profiler::stop($benchmark);
 		}
 		
-		if (Request::instance()->param('profile')) // TODO
+		if (Request::current()->param('profile')) // TODO
 		{
 			echo new \View('profiler/stats');
 		}
@@ -284,7 +293,7 @@ class App {
 			return TRUE;
 		}
 		
-		$params = Request::instance()->param();
+		$params = Request::current()->param();
 		$expression = new Expression();
 		
 		return $expression->evaluate($condition, $params) != '';
@@ -380,6 +389,6 @@ class App {
 		{
 			$url .= '?message=' . urlencode(__($message));
 		}
-		Request::instance()->redirect($url);
+		Request::current()->redirect($url);
 	}
 }

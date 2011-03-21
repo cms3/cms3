@@ -2,7 +2,7 @@
 
 namespace CMS3\Engine;
 
-class Config_File extends \Kohana_Config_Reader {
+class Config_File extends \Config_Reader {
 
 	// Configuration group name
 	protected $_configuration_group;

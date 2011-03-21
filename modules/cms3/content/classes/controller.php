@@ -24,8 +24,7 @@ class Controller extends Controller_Component {
 		$item = ORM::select('cms3\content\item')->load($params['item_id']);
 		if (! $item->loaded())
 		{
-			Request::$instance()->status = 404;
-			return;
+			throw new \HTTP_Exception_404();
 		}
 		
 		echo $this->component->get_view('article', array('title' => $item->title, 'text' => $item->text));

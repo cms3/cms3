@@ -87,9 +87,6 @@ if (file_exists('install'.EXT))
 	return include 'install'.EXT;
 }
 
-// Load the base, low-level functions
-require SYSPATH.'base'.EXT;
-
 // Load the core Kohana class
 require SYSPATH.'classes/kohana/core'.EXT;
 
@@ -115,5 +112,31 @@ else
 	require MODPATH.'cms3/engine/classes/global/cms3'.EXT;
 }
 
+/**
+ * Define the start time of the application, used for profiling.
+ */
+if ( ! defined('KOHANA_START_TIME'))
+{
+	define('KOHANA_START_TIME', microtime(TRUE));
+}
+
+/**
+ * Define the memory usage at the start of the application, used for profiling.
+ */
+if ( ! defined('KOHANA_START_MEMORY'))
+{
+	define('KOHANA_START_MEMORY', memory_get_usage());
+}
+
 // Bootstrap the application
 require DOCROOT.'cms3.init'.EXT;
+
+/**
+ * Execute the main request. A source of the URI can be passed, eg: $_SERVER['PATH_INFO'].
+ * If no source is specified, the URI will be automatically detected.
+ */
+
+echo \CMS3\Engine\Request::factory()
+	->execute()
+	->send_headers()
+	->body();

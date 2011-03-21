@@ -2,7 +2,7 @@
 
 namespace CMS3\Engine;
 
-class Controller_Component extends \Kohana_Controller {
+class Controller_Component extends \Controller {
 	
 	public $component = NULL;
 	
@@ -27,7 +27,7 @@ class Controller_Component extends \Kohana_Controller {
 	
 	public function display($function = NULL, array $params = array())
 	{
-		$param_string = serialize(Request::instance()->param() + $params);
+		$param_string = serialize(Request::current()->param() + $params);
 		$cache_id = sha1("component_output_" . $function . "_" . $param_string);
 		if (TRUE || ! $data = \Cache::instance()->get($cache_id))
 		{

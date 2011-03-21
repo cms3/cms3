@@ -22,6 +22,8 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
 
 //-- Configuration and initialization -----------------------------------------
 
+I18n::lang('en-us');
+
 /**
  * Set Kohana::$environment if $_ENV['KOHANA_ENV'] has been supplied.
  * 
@@ -68,16 +70,3 @@ Kohana::modules(array(
 	));
 	
 \CMS3\Engine\App::instance()->initialize();
-	
-/**
- * Execute the main request. A source of the URI can be passed, eg: $_SERVER['PATH_INFO'].
- * If no source is specified, the URI will be automatically detected.
- */
- 
-if ( ! defined('SUPPRESS_REQUEST'))
-{
-	echo \CMS3\Engine\Request::instance()
-		->execute()
-		->send_headers()
-		->response;
-}

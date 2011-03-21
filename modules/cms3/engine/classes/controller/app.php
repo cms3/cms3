@@ -2,14 +2,14 @@
 
 namespace CMS3\Engine;
  
-class Controller_App extends \Kohana_Controller {
+class Controller_App extends \Controller {
 	
 	public function action_display($language, $path, $format)
 	{
 		/*
-		$format = Request::instance()->param('format');
-		$path = Request::instance()->param('path');
-		$language = Request::instance()->param('language');
+		$format = Request::current()->param('format');
+		$path = Request::current()->param('path');
+		$language = Request::current()->param('language');
 		*/
 				
 		App::instance()->dispatch($path, $language, $format);

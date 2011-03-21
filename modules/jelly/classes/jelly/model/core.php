@@ -636,10 +636,13 @@ abstract class Jelly_Model_Core
 		{
 			return $data;
 		}
-
+		
+		// MOD: disable Validate class for Kohana 3.1
+		return $data;
+		/*
 		// Create the validation object
 		$data = Validate::factory($data);
-
+		
 		// If we are passing a unique key value through, add a filter to ensure it isn't removed
 		if ($data->offsetExists(':unique_key'))
 		{
@@ -666,7 +669,7 @@ abstract class Jelly_Model_Core
 			throw new Validate_Exception($data);
 		}
 
-		return $data->as_array();
+		return $data->as_array();*/
 	}
 
 	/**

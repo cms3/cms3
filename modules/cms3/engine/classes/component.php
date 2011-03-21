@@ -15,7 +15,7 @@ abstract class Component {
 		$this->name = NS::extract_namespace($this);
 		
 		$controller = NS::add_namespace('Controller', $this->name);
-		$this->controller = new $controller(Request::instance());
+		$this->controller = new $controller(Request::current(), Request::current()->response());
 		$this->controller->component = $this;
 		
 		$this->_load_config();
@@ -68,7 +68,7 @@ abstract class Component {
 		// TODO: возможны пересечения
 		$param = NS::extract_module_name($param);
 		
-		return Request::instance()->param($param);
+		return Request::$initial->param($param);
 	}
 	
 	public function get_view($file = NULL, array $data = NULL)

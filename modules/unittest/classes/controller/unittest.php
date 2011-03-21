@@ -2,15 +2,15 @@
 /**
  * PHPUnit Kohana web based test runner
  *
- * @package	   Kohana/Unittest
+ * @package    Kohana/UnitTest
  * @author     Kohana Team
  * @author     BRMatt <matthew@sigswitch.com>
- * @author	   Paul Banks
+ * @author     Paul Banks
  * @copyright  (c) 2008-2009 Kohana Team
  * @license    http://kohanaphp.com/license
  */
 
-Class Controller_UnitTest extends Controller_Template
+class Controller_UnitTest extends Controller_Template
 {
 	/**
 	 * Whether the archive module is available
@@ -20,7 +20,7 @@ Class Controller_UnitTest extends Controller_Template
 
 	/**
 	 * Unittest config
-	 * @var Kohana_Config
+	 * @var Config
 	 */
 	protected $config = NULL;
 
@@ -55,18 +55,18 @@ Class Controller_UnitTest extends Controller_Template
 	{
 		parent::before();
 
-		if ( ! Kohana_Tests::enabled())
+		if ( ! Unittest_tests::enabled())
 		{
 			// Pretend this is a normal 404 error...
 			$this->status = 404;
 
 			throw new Kohana_Request_Exception('Unable to find a route to match the URI: :uri',
-				array(':uri' => $this->request->uri));
+				array(':uri' => $this->request->uri()));
 		}
 
 		// Prevent the whitelist from being autoloaded, but allow the blacklist
 		// to be loaded
-		Kohana_Tests::configure_environment(FALSE);
+		Unittest_Tests::configure_environment(FALSE);
 
 		$this->config = Kohana::config('unittest');
 
@@ -92,7 +92,7 @@ Class Controller_UnitTest extends Controller_Template
 			->set('run_uri', $this->run_uri)
 			->set('report_uri', $this->report_uri)
 			->set('whitelistable_items', $this->get_whitelistable_items())
-			->set('groups', $this->get_groups_list(Kohana_Tests::suite()));
+			->set('groups', $this->get_groups_list(Unittest_tests::suite()));
 	}
 
 	/**
@@ -109,7 +109,7 @@ Class Controller_UnitTest extends Controller_Template
 		// We don't want to use the HTML layout, we're sending the user 100111011100110010101100
 		$this->auto_render = FALSE;
 
-		$suite     = Kohana_Tests::suite();
+		$suite     = Unittest_tests::suite();
 		$temp_path = rtrim($this->config->temp_path, '/').'/';
 		$group     = (array) Arr::get($_GET, 'group', array());
 
@@ -164,7 +164,7 @@ Class Controller_UnitTest extends Controller_Template
 
 			$runner->generate_report($group, $path, FALSE);
 
-			$this->request->redirect(URL::base(FALSE, TRUE).$folder.'index.html');
+			$this->request->redirect(URL::site($folder.'index.html', $this->request));
 		}
 	}
 
@@ -176,7 +176,7 @@ Class Controller_UnitTest extends Controller_Template
 		$this->template->body = View::factory('unittest/results');
 
 		// Get the test suite and work out which groups we're testing
-		$suite = Kohana_Tests::suite();
+		$suite = Unittest_tests::suite();
 		$group = (array) Arr::get($_GET, 'group', array());
 
 
@@ -227,6 +227,7 @@ Class Controller_UnitTest extends Controller_Template
 			->set('group',  Arr::get($this->get_groups_list($suite), reset($group), 'All groups'))
 			->set('groups', $this->get_groups_list($suite))
 
+			->set('run_uri',        $this->request->uri())
 			->set('report_uri',     $this->report_uri.url::query())
 
 			// Whitelist related stuff
@@ -268,7 +269,7 @@ Class Controller_UnitTest extends Controller_Template
 
 		$whitelist = array();
 
-		$whitelist['k_app'] = 'App';
+		$whitelist['k_app'] = 'Application';
 
 		$k_modules = array_keys(Kohana::modules());
 
@@ -308,7 +309,7 @@ Class Controller_UnitTest extends Controller_Template
 
 		if (count($whitelist))
 		{
-			Kohana_Tests::whitelist($whitelist);
+			Unittest_tests::whitelist($whitelist);
 		}
 
 		return $whitelist;

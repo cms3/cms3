@@ -41,12 +41,12 @@ class Model_Item extends Model {
 
 			if (! count($params))
 			{
-				return ! count(Request::instance()->param());
+				return ! count(Request::current()->param());
 			}
 			
 			foreach ($params as $name => $value)
 			{
-				if (Request::instance()->param($name) != $value)
+				if (Request::$initial->param($name) != $value)
 				{
 					return false;
 				}
