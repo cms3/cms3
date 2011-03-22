@@ -13,8 +13,8 @@ class Model_Item extends Model {
 		$meta->fields(array(
 				'id'			=> new Engine\Field_Primary,
 				'state'			=> new Engine\Field_Integer,
-				'title'			=> new Engine\Field_String_Multilingual,
-				'text'			=> new Engine\Field_Text_Multilingual,
+				'title'			=> new Engine\Field_String_Multilang,
+				'text'			=> new Engine\Field_Text_Multilang,
 			));
    }
 }

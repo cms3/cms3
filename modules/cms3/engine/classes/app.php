@@ -34,17 +34,28 @@ class App {
 		{
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
-		
-		\Cookie::$salt = 'CMS3 secret string 00001000'; // TODO
-		
+
 		Core::$config->attach(new Config_File);
   
 		$this->_config = Core::config('cms3\core');
+		
+		\Cookie::$salt = $this->get_cfg('cookie_salt');
   
 		date_default_timezone_set($this->get_cfg('timezone'));
 		
 		Core::$base_url = $this->get_cfg('base_url');
 		Core::$index_file = $this->get_cfg('index_file');
+		
+		$this->_languages = ORM::select('cms3\engine\language')
+			->where('active', '=', 1)
+			->execute();
+			
+		if (! count($this->_languages))
+		{
+			throw new Exception('No active languages');
+		}
+		
+		$this->set_language($this->get_cfg('default_language'));
 		
 		$this->modules = ORM::select('cms3\engine\module')
 			->where('enabled', '=', 1)
@@ -60,17 +71,8 @@ class App {
 			}
 		}
 		Core::modules($connect_modules);
-		
 		Cache::$default = $this->get_cfg('default_caching_driver');
 		
-		$this->_languages = ORM::select('cms3\engine\language')
-			->where('active', '=', 1)
-			->execute();
-			
-		if (! count($this->_languages))
-		{
-			throw new Exception('No active languages');
-		}
 		$this->_set_default_routes();
 		
 		if (! \Security::token())

@@ -13,7 +13,7 @@ class Model_User_Param extends Model {
 		$meta->fields(array(
 				'id' 		=> new Engine\Field_Primary,
 				'name'		=> new Engine\Field_String,
-				'label'		=> new Engine\Field_String_Multilingual,
+				'label'		=> new Engine\Field_String_Multilang,
 			));
    }
 }

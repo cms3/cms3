@@ -23,7 +23,7 @@ class Controller extends Controller_Component {
 		
 		$method_class::auth($params);
 		// Call only if auth provider don't redirect anywhere
-		//Request::instance()->redirect($params['return']);
+		//Request::current()->redirect($params['return']);
 	}
 	
 	public function action_logout($params = array())
@@ -31,12 +31,12 @@ class Controller extends Controller_Component {
 		Auth::instance()->logout();
 		
 		$return = isset($params['return']) ? base64_decode($params['return']) : '';
-		Request::instance()->redirect($return);
+		Request::current()->redirect($return);
 	}
 	
 	public function action_display_login_form($params = array())
 	{
-		$return = base64_encode(Request::instance()->uri);
+		$return = base64_encode(Request::current()->uri());
 		$user = Auth::instance()->current_user();
 		if (is_object($user))
 		{

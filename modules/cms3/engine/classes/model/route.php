@@ -9,7 +9,7 @@ class Model_Route extends Model {
 		$meta->fields(array(
 				'id' 		=> new Field_Primary,
 				'format'	=> new Field_String,
-				'title'		=> new Field_String_Multilingual,
+				'title'		=> new Field_String_Multilang,
 			));
    }
 }

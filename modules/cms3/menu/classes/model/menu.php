@@ -13,7 +13,7 @@ class Model_Menu extends Model {
 	{
 		$meta->fields(array(
 				'id'	=> new Engine\Field_Primary,
-				'title'	=> new Engine\Field_String_Multilingual,
+				'title'	=> new Engine\Field_String_Multilang,
 				'items'	=> new Engine\Field_HasMany(array('foreign' => 'cms3\menu\item.menu_id')),
 			));
    }

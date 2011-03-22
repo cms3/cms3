@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Мар 16 2011 г., 13:28
+-- Время создания: Мар 21 2011 г., 14:19
 -- Версия сервера: 5.0.45
 -- Версия PHP: 5.3.3
 
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `auth_tokens` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `token` (`token`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
@@ -209,18 +209,14 @@ CREATE TABLE IF NOT EXISTS `auth_user_param_values` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `content_items_history`
+-- Структура таблицы `content_items`
 --
 
-CREATE TABLE IF NOT EXISTS `content_items_history` (
+CREATE TABLE IF NOT EXISTS `content_items` (
   `id` int(11) unsigned NOT NULL auto_increment,
-  `item_id` int(11) unsigned NOT NULL,
-  `save_date` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-  `save_user` int(11) NOT NULL,
-  `save_coment` varchar(1000) NOT NULL,
   `state` tinyint(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 

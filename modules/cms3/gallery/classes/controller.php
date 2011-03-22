@@ -19,7 +19,7 @@ class Controller extends Controller_Component {
 
   public function action_display_product_images($params = array())
   {
-	$product_id = empty($params["product_id"]) ? Request::instance()->param("shop_product_id") : intval($params["product_id"]);
+	$product_id = empty($params["product_id"]) ? Request::current()->param("shop_product_id") : intval($params["product_id"]);
     if ($product_id)
     {
 		echo "Фотогалерея товара $product_id";

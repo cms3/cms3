@@ -11,7 +11,7 @@ class Model_PageHeader extends Model {
 				'condition'		=> new Field_BelongsTo,
 				'tag'			=> new Field_String,
 				'attribute'		=> new Field_String,
-				'value'			=> new Field_String_Multilingual,
+				'value'			=> new Field_String_Multilang,
 			));
    }
 }

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Мар 16 2011 г., 13:29
+-- Время создания: Мар 21 2011 г., 14:20
 -- Версия сервера: 5.0.45
 -- Версия PHP: 5.3.3
 
@@ -89,6 +89,12 @@ INSERT INTO `auth_method_basic` (`id`, `user_id`, `username`, `password`) VALUES
 -- Дамп данных таблицы `auth_tokens`
 --
 
+INSERT INTO `auth_tokens` (`id`, `user_id`, `token`, `created`, `expires`) VALUES
+(1, 1, 'aaSi9l5I36qc7It98k57VdGjsPRLlPUm', '2011-03-21 14:05:14', '2011-03-21 14:05:14'),
+(2, 1, 'DtiikMM4i4c9w7SFCP0qoDXtTmxkyCK0', '2011-03-21 14:05:15', '2011-03-21 14:05:15'),
+(3, 1, 'O47YjsULVVjagc9IXBw5Y9GOMHEWwYt6', '2011-03-21 14:05:16', '2011-03-21 14:05:16'),
+(4, 1, 'NHozd20ymY0SfmuPr1QUyPC1vp31R0aW', '2011-03-21 14:09:08', '2011-03-21 14:09:08'),
+(5, 1, 'ejL15mA4hO0qOXbItDjhkIDShfvYPnDS', '2011-03-21 14:09:12', '2011-03-21 14:09:12');
 
 --
 -- Дамп данных таблицы `auth_users`
@@ -120,9 +126,11 @@ INSERT INTO `auth_user_param_values` (`id`, `user_id`, `param_id`, `value`) VALU
 (1, 1, 1, 'Янис');
 
 --
--- Дамп данных таблицы `content_items_history`
+-- Дамп данных таблицы `content_items`
 --
 
+INSERT INTO `content_items` (`id`, `state`) VALUES
+(1, 1);
 
 --
 -- Дамп данных таблицы `content_items_i18n`
