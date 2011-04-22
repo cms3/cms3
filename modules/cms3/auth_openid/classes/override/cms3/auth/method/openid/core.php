@@ -38,7 +38,7 @@ class Method_OpenID_Core extends Method {
 		if ($openid_auth->complete_authentication())
 		{
 			$openid = $openid_auth->identity;
-			$method_data = Engine\ORM::select('auth_method_openid')->by_openid($openid)->execute();
+			$method_data = Engine\ORM::query('auth_method_openid')->by_openid($openid)->select();
 			
 			if ($method_data->loaded() && $method_data->user->loaded())
 			{
@@ -66,7 +66,7 @@ class Method_OpenID_Core extends Method {
 					
 					// TODO: $user->param('first_name', $user_data['fullname'])
 					
-					$param = Engine\ORM::select('user_param')
+					$param = Engine\ORM::query('user_param')
 						->where('name', '=', 'first_name')
 						->limit(1)
 						->execute();

@@ -20,7 +20,8 @@ class App {
 
 	public static function instance()
 	{
-		if (static::$_instance == NULL){
+		if (static::$_instance == NULL)
+		{
 			static::$_instance = new App();
 		}
 		
@@ -42,24 +43,23 @@ class App {
 		\Cookie::$salt = $this->get_cfg('cookie_salt');
   
 		date_default_timezone_set($this->get_cfg('timezone'));
+		$this->set_language($this->get_cfg('default_language'));
 		
 		Core::$base_url = $this->get_cfg('base_url');
 		Core::$index_file = $this->get_cfg('index_file');
 		
-		$this->_languages = ORM::select('cms3\engine\language')
+		$this->_languages = ORM::query('cms3\engine\language')
 			->where('active', '=', 1)
-			->execute();
+			->select();
 			
 		if (! count($this->_languages))
 		{
 			throw new Exception('No active languages');
 		}
 		
-		$this->set_language($this->get_cfg('default_language'));
-		
-		$this->modules = ORM::select('cms3\engine\module')
+		$this->modules = ORM::query('cms3\engine\module')
 			->where('enabled', '=', 1)
-			->execute();
+			->select();
 						
 		$connect_modules = array();
 		foreach ($this->modules as $module)
@@ -195,7 +195,7 @@ class App {
 		}
 		
 		Request::current()->set_params(array());	
-		$route_list = ORM::select('cms3\engine\route')->execute();
+		$route_list = ORM::query('cms3\engine\route')->select();
 		foreach ($route_list as $route)
 		{
 			$parse = $this->_replace_inline_route($route->format);
@@ -247,7 +247,7 @@ class App {
 	
 	protected function detect_theme()
 	{
-		$themes = ORM::select('cms3\engine\theme')->execute();
+		$themes = ORM::query('cms3\engine\theme')->select();
 		
 		foreach ($themes as $theme)
 		{

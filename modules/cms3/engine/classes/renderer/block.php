@@ -11,7 +11,7 @@ class Renderer_Block extends Renderer {
 			$params["position"] = "default";
 		}
 
-		$blocks = ORM::select('cms3\engine\block')->by_position($params["position"]);
+		$blocks = ORM::query('cms3\engine\block')->by_position($params["position"]);
 		
 		$data = "";
 		foreach ($blocks as $block)

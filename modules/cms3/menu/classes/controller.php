@@ -14,7 +14,7 @@ class Controller extends Controller_Component {
 		{
 			throw new Exception('Menu ID doesn\'t set'); 
 		}
-		$menu = ORM::select('cms3\menu\menu')->load($params['menu_id']);
+		$menu = ORM::query('cms3\menu\menu', $params['menu_id'])->select();
 		$items = $menu->get_items_array();
 		
 		echo $this->component->get_view('menu', array('items' => $items));

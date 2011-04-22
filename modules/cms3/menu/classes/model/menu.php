@@ -20,10 +20,10 @@ class Model_Menu extends Model {
    
    public function get_child_items($parent = 0)
    {
-		$items = ORM::select('cms3\menu\item')
+		$items = ORM::query('cms3\menu\item')
 			->where('parent_id', '=', $parent)
 			->order_by('ordering', 'asc')
-			->execute();
+			->select();
 		return $items;
    }
    

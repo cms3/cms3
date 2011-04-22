@@ -2,5 +2,5 @@
 
 namespace CMS3\Engine;
 
-abstract class Cache extends \Kohana_Cache {
+abstract class Cache extends \Cache {
 }

@@ -6,6 +6,6 @@ class Model_Builder_Block extends ORM_Builder {
 
 	public function by_position($position = "default")
 	{
-		return $this->where('position', '=', $position)->execute();
+		return $this->where('position', '=', $position)->select();
 	}
 }

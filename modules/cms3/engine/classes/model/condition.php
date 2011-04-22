@@ -9,7 +9,7 @@ class Model_Condition extends Model {
 		$meta->fields(array(
 				'id' 			=> new Field_Primary,
 				'condition'		=> new Field_String,
-				'title'			=> new Field_String_Multilingual,
+				'title'			=> new Field_String_Multilang,
 			));
    }
 }

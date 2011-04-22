@@ -1,9 +1,19 @@
-Jelly is a nice little ORM for Kohana. It is currently in beta.
+Jelly is a nice little ORM for Kohana 3.1+. It is currently in beta.
 
- * [View the user guide](http://jelly.jonathan-geiger.com/docs/jelly.getting-started)
- * [View the API reference](http://jelly.jonathan-geiger.com/docs/api/Jelly)
- * [Report an issue or feature request](http://github.com/jonathangeiger/kohana-jelly/issues)
- * [Run the unit tests](http://github.com/jonathangeiger/jelly-tests)
+IMPORTANT
+========
+
+The included Auth driver is the official [Kohana ORM](https://github.com/kohana/orm) Auth driver modified for Jelly.
+
+**Critical to know**:
+
+* use the default, `3.1/develop` branch
+* userguide is being updated
+
+**Useful stuff**:
+
+ * [Report an issue or feature request](https://github.com/creatoro/kohana-jelly-for-Kohana-3.1/issues)
+ * [Run the unit tests](https://github.com/creatoro/jelly-tests-for-Kohana-3.1)
  
 ## Notable Features
 

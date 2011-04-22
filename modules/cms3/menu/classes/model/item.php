@@ -21,7 +21,7 @@ class Model_Item extends Model {
 				'route'				=> new Engine\Field_BelongsTo,
 				'route_id'			=> new Engine\Field_Integer,
 				'uri'				=> new Engine\Field_String,
-				'title'				=> new Engine\Field_String_Multilingual,
+				'title'				=> new Engine\Field_String_Multilang,
 				'active_condition_id'	=> new Engine\Field_Integer, // TODO
 				'ordering'			=> new Engine\Field_Integer,
 				'params'			=> new Engine\Field_HasMany(array('foreign' => 'cms3\menu\item_param.item_id')),

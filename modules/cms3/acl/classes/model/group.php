@@ -15,7 +15,7 @@ class Model_Group extends Model_Editable implements \Acl_Role_Interface {
 			->fields(array(
 				'id' 			=> new Engine\Field_Primary,
 				'parent'		=> new Engine\Field_BelongsTo(array('model' => 'cms3\acl\group')),
-				'name' 			=> new Engine\Field_String_Multilingual,
+				'name' 			=> new Engine\Field_String_Multilang,
 				'ordering'		=> new Engine\Field_Integer,
 				'users'			=> new Engine\Field_HasMany,
 			));

@@ -37,7 +37,7 @@ abstract class Document {
 
 	private function _set_headers()
 	{
-		$page_headers = ORM::select('cms3\engine\pageheader')->execute();
+		$page_headers = ORM::query('cms3\engine\pageheader')->select();
 		
 		foreach ($page_headers as $header)
 		{

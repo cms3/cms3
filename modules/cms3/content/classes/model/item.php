@@ -14,7 +14,7 @@ class Model_Item extends Model {
 				'id'			=> new Engine\Field_Primary,
 				'state'			=> new Engine\Field_Integer,
 				'title'			=> new Engine\Field_String_Multilang,
-				'text'			=> new Engine\Field_Text_Multilang,
+				'text'			=> new Engine\Field_String_Multilang,
 			));
    }
 }

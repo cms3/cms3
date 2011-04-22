@@ -21,7 +21,7 @@ class Controller extends Controller_Component {
 		{
 			throw new Exception('Content ID doesn\'t set'); 
 		}
-		$item = ORM::select('cms3\content\item')->load($params['item_id']);
+		$item = ORM::query('cms3\content\item', $params['item_id'])->select();
 		if (! $item->loaded())
 		{
 			throw new \HTTP_Exception_404();

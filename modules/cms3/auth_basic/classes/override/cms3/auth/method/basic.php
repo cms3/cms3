@@ -16,7 +16,7 @@ class Method_Basic extends Auth_Method {
 		}
 		else
 		{
-			$obj = ORM::select('cms3\auth\auth_method_basic')->by_username($params['username'])->execute();
+			$obj = ORM::query('cms3\auth\auth_method_basic')->by_username($params['username'])->select();
 			
 			if ($obj->loaded() && $obj->user->loaded() && $obj->check_password($params['password']))
 			{

@@ -22,7 +22,7 @@ class Component extends Engine\Component {
 		
 		if ($user_id)
 		{
-			$user = ORM::select('cms3\auth\user')->load($user_id);
+			$user = ORM::query('cms3\auth\user', $user_id)->select();
 
 			if ($user->loaded())
 			{
@@ -61,7 +61,7 @@ class Component extends Engine\Component {
 	{
 		if ($token = \Cookie::get('auth_user_token'))
 		{
-			$token = ORM::select('cms3\auth\token')->where('token', '=', $token)->limit(1)->execute();
+			$token = ORM::query('cms3\auth\token')->where('token', '=', $token)->limit(1)->select();
 			
 			if ($token->loaded())
 			{
@@ -85,7 +85,7 @@ class Component extends Engine\Component {
 	{
 		if ($token = \Cookie::get('auth_user_token'))
 		{
-			$token = ORM::select('cms3\auth\token')->where('token', '=', $token)->limit(1)->execute();
+			$token = ORM::query('cms3\auth\token')->where('token', '=', $token)->limit(1)->select();
 			
 			if ($token->loaded() && $token->user->loaded() && $token->user->enabled)
 			{
