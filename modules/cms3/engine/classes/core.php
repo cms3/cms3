@@ -3,6 +3,27 @@
 namespace CMS3\Engine;
 
 class Core extends \Kohana {
+	
+	public static function modules(array $modules = NULL)
+	{
+		if (is_array($modules))
+		{
+			$expanded = array();
+			foreach ($modules as $key => $value)
+			{
+				if (is_numeric($key))
+				{
+					$expanded[$value] = MODPATH . str_replace('\\', DIRECTORY_SEPARATOR, $value); 
+				}
+				else
+				{
+					$expanded[$key] = $value;
+				}
+			}
+			return parent::modules($expanded);
+		}
+		return parent::modules($modules);
+	}
 
 	public static function find_file($dir, $file, $ext = NULL, $array = FALSE, $paths = NULL)
 	{
@@ -111,18 +132,18 @@ class Core extends \Kohana {
 		{
 			$native_paths = static::modules_to_paths(array(strtolower($namespace)));
 			$dir = strtolower(implode(DIRECTORY_SEPARATOR, $parts));
-			$override_paths = static::modules_to_paths($all_modules, 'override' . DIRECTORY_SEPARATOR . $dir);
+			$override_paths = static::modules_to_paths($all_modules, '_override' . DIRECTORY_SEPARATOR . $dir);
 		}
 		else // Global class
 		{
 			$native_paths = static::modules_to_paths($global_modules);
-			$override_paths = static::modules_to_paths($ns_modules, 'global');
+			$override_paths = static::modules_to_paths($ns_modules, '_global');
 		}
 
 		$paths[] = \APPPATH . 'classes';
 		$paths = array_merge($paths, $override_paths, $native_paths);
 		$paths[] = \SYSPATH . 'classes';
-		
+
 		$file_location = static::find_file('', $file, NULL, FALSE, $paths);
 
 		if (is_file($file_location))
@@ -139,7 +160,8 @@ class Core extends \Kohana {
 	}
 	
 	/**
-	 * @param   string  search area: NULL, 'global', 'namespace'
+	 * @param   string  Search area: NULL, 'global', 'namespace'
+	 * @return  array
 	 */
 	public static function get_module_names($area = NULL)
 	{

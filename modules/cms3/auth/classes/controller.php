@@ -28,7 +28,7 @@ class Controller extends Controller_Component {
 	
 	public function action_logout($params = array())
 	{
-		Auth::instance()->logout();
+		\Auth::instance()->logout();
 		
 		$return = isset($params['return']) ? base64_decode($params['return']) : '';
 		Request::current()->redirect($return);
@@ -37,7 +37,7 @@ class Controller extends Controller_Component {
 	public function action_display_login_form($params = array())
 	{
 		$return = base64_encode(Request::current()->uri());
-		$user = Auth::instance()->current_user();
+		$user = \Auth::instance()->current_user();
 		if (is_object($user))
 		{
 			$user_data = $user->as_array();

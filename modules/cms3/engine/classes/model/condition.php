@@ -7,9 +7,9 @@ class Model_Condition extends Model {
 	public static function initialize(ORM_Meta $meta)
 	{
 		$meta->fields(array(
-				'id' 			=> new Field_Primary,
-				'condition'		=> new Field_String,
-				'title'			=> new Field_String_Multilang,
-			));
+			'id' 			=> ORM::field('primary'),
+			'condition'		=> ORM::field('string'),
+			'title'			=> ORM::field('string_multilang'),
+		));
    }
 }

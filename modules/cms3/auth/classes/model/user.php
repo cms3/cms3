@@ -2,7 +2,6 @@
 
 namespace CMS3\Auth;
 
-use CMS3\Engine;
 use CMS3\Engine\Model;
 use CMS3\Engine\ORM_Meta;
 use CMS3\Engine\ORM;
@@ -13,13 +12,13 @@ class Model_User extends Model implements \Acl_Role_Interface {
 	public static function initialize(ORM_Meta $meta)
 	{
 		$meta->fields(array(
-				'id'		=> new Engine\Field_Primary,
-				'enabled'	=> new Engine\Field_Boolean,
-				'params'	=> new Engine\Field_HasMany(array(
-					'foreign' 	=> 'cms3\auth\user_param_value.user_id',
-					'model'		=> 'cms3\auth\user_param_value',
-				)),
-			));
+			'id'		=> ORM::field('primary'),
+			'enabled'	=> ORM::field('boolean'),
+			'params'	=> ORM::field('hasmany', array(
+				'foreign' 	=> 'cms3\auth\user_param_value.user_id',
+				'model'		=> 'cms3\auth\user_param_value',
+			)),
+		));
 	}
 
 	public function get_params_array()

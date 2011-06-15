@@ -4,7 +4,8 @@
  * Статический класс NS предоставляет набор методов для работы
  * с пространствами имен.
  *
- * @package CMS 3.0
+ * @package		CMS 3.0
+ * @category	Engine
  */
 
 namespace CMS3\Engine;
@@ -107,7 +108,7 @@ class NS {
 	 *     $foo = NS::have_namespace('CMS3\Test\Foo');
 	 *     
 	 * Функция вернет TRUE также и в том случае, если класс находится
-	 * в глобальном пространство имен, но это явно указано, например, '\Foo'
+	 * в глобальном пространство имен, и это явно указано, например, '\Foo'
 	 *
 	 * @param   string|object	$class
 	 * @return  boolean

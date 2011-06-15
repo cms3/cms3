@@ -6,9 +6,15 @@ abstract class Template {
 
 	protected static $_ext = '';
 
-	public $_current_theme;
+	public $engine;
 	
-	protected $_engine;
+	public $theme;
+	
+	public $template;
+	
+	public $real_path;
+	
+	public $url_path;
 	
 	protected $_theme_paths = array();
 	
@@ -19,10 +25,10 @@ abstract class Template {
 	public function __construct()
 	{
 		$this->_theme_paths = self::_get_theme_paths();
-		$this->_engine = NS::extract_class_name(get_class($this));
+		$this->engine = NS::extract_class_name(get_class($this));
 	}
 	
-	public function render_content($content, $data = array()) {}
+	public abstract function render_content($content, array $data = array());
 	
 	public static function factory($engine)
 	{
@@ -44,13 +50,13 @@ abstract class Template {
 		}
 		
 		$inst = static::factory($engine);
-		$inst->_current_theme = $theme;
+		$inst->theme = $theme;
 		$inst->_tpl_paths = $paths;
 		
 		return $inst->display($template, $format, $vars, $filename);
 	}
 	
-	public function display($name, $format = NULL, $vars = array(), $filename = NULL)
+	public function display($name, $format = NULL, array $vars = array(), $filename = NULL)
 	{
 		if ($format === NULL)
 		{
@@ -66,6 +72,11 @@ abstract class Template {
 			throw new View_Exception('The requested template :file could not be found', array(':file' => $name));
 		}
 
+		$this->template = $name;
+		$this->real_path = pathinfo($filename, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR;
+		$this->filename = pathinfo($filename, PATHINFO_BASENAME);
+		$this->url_path = URL::real_to_site($this->real_path);
+		
 		$tpl = file_get_contents($filename);
 
 		$content = $this->_parse_renderers($tpl);
@@ -73,7 +84,7 @@ abstract class Template {
 		
 		return $content;
 	}
-	
+
 	protected static function _get_theme_paths()
 	{
 		return array(
@@ -81,7 +92,7 @@ abstract class Template {
 			THEMESPATH
 		);
 	}
-	
+
 	protected function _parse_renderers($data)
 	{
 		$replace = array();
@@ -147,7 +158,7 @@ abstract class Template {
 		}
 		
 		$renderer = $this->_load_renderer($renderer);
-		if (is_object($renderer))
+		if (is_object($renderer) && $renderer instanceof Renderer)
 		{
 			$result = $renderer->render($name, $params);
 		}	
@@ -157,7 +168,14 @@ abstract class Template {
 
 	protected function _load_renderer($type)
 	{
-		$class = NS::add_namespace('Renderer_' . ucfirst($type), 'CMS3\Engine');
+		if (NS::extract_namespace($type) === NULL)
+		{
+			$class = NS::add_namespace('Renderer_' . ucfirst($type), 'CMS3\Engine');
+		}
+		else
+		{
+			$class = $type;
+		}
 
 		if (! class_exists($class))
 		{
@@ -204,7 +222,7 @@ abstract class Template {
 						}
 						
 						$tpl_ext = $class::get_ext();
-						$filename = $search_path . DIRECTORY_SEPARATOR . $format . DIRECTORY_SEPARATOR . $template . '.' . $tpl_ext;
+						$filename = $search_path . DIRECTORY_SEPARATOR . $format . DIRECTORY_SEPARATOR . $template . $tpl_ext;
 		
 						if (is_file($filename))
 						{
@@ -241,14 +259,14 @@ abstract class Template {
 		$paths = $this->_theme_paths;
 		foreach ($paths as &$path)
 		{
-			$path .= strtolower($this->_current_theme) . DIRECTORY_SEPARATOR;
+			$path .= strtolower($this->theme) . DIRECTORY_SEPARATOR;
 		}
 		return array_merge($paths, $this->_tpl_paths);
 	}
 	
 	protected function _get_filename($tpl_name, $format = 'html')
 	{
-		$dir = 'templates' . DIRECTORY_SEPARATOR . strtolower($this->_engine) .  DIRECTORY_SEPARATOR . strtolower($format);
+		$dir = 'templates' . DIRECTORY_SEPARATOR . strtolower($this->engine) .  DIRECTORY_SEPARATOR . strtolower($format);
 		$paths = $this->_get_paths();
 
 		return \CMS3::find_file($dir, strtolower($tpl_name), static::$_ext, FALSE, $paths);

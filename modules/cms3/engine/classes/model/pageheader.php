@@ -7,11 +7,11 @@ class Model_PageHeader extends Model {
 	public static function initialize(ORM_Meta $meta)
 	{
 		$meta->fields(array(
-				'id' 			=> new Field_Primary,
-				'condition'		=> new Field_BelongsTo,
-				'tag'			=> new Field_String,
-				'attribute'		=> new Field_String,
-				'value'			=> new Field_String_Multilang,
-			));
+			'id' 			=> ORM::field('primary'),
+			'condition'		=> ORM::field('belongsto'),
+			'tag'			=> ORM::field('string'),
+			'attribute'		=> ORM::field('string'),
+			'value'			=> ORM::field('string_multilang'),
+		));
    }
 }

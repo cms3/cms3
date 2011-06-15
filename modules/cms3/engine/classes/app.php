@@ -8,7 +8,7 @@ class App {
 
 	public $modules = array();
 
-	private $component_list = array();
+	public $component_list = array();
 
 	public $language;
 
@@ -41,14 +41,14 @@ class App {
 		$this->_config = Core::config('cms3\core');
 		
 		\Cookie::$salt = $this->get_cfg('cookie_salt');
-  
+  		
 		date_default_timezone_set($this->get_cfg('timezone'));
 		$this->set_language($this->get_cfg('default_language'));
 		
 		Core::$base_url = $this->get_cfg('base_url');
 		Core::$index_file = $this->get_cfg('index_file');
-		
-		$this->_languages = ORM::query('cms3\engine\language')
+
+		$this->_languages = Model::factory('language')->query()
 			->where('active', '=', 1)
 			->select();
 			
@@ -57,10 +57,10 @@ class App {
 			throw new Exception('No active languages');
 		}
 		
-		$this->modules = ORM::query('cms3\engine\module')
+		$this->modules = Model::factory('module')->query()
 			->where('enabled', '=', 1)
 			->select();
-						
+		
 		$connect_modules = array();
 		foreach ($this->modules as $module)
 		{
@@ -74,6 +74,13 @@ class App {
 		Cache::$default = $this->get_cfg('default_caching_driver');
 		
 		$this->_set_default_routes();
+		
+		$route_list = Model::factory('route')->query()->select();
+		foreach ($route_list as $route)
+		{
+			$parse = $this->_replace_inline_route($route->format);
+			Route::set($route->id, $parse[0], $parse[1]);
+		}
 		
 		if (! \Security::token())
 		{
@@ -132,7 +139,12 @@ class App {
 				}
 			}
 		}
-		
+  
+		if (count(explode(NS::DELIMITER, $controller)) < 3) // TODO: move it to Controller implementation
+		{
+			$controller = NS::add_namespace('Controller', $controller);
+		}
+
 		if (class_exists($controller))
 		{
 			$controller = new $controller(Request::current(), Request::current()->response());
@@ -141,7 +153,7 @@ class App {
 		else
 		{
 			throw new \HTTP_Exception_404('Controller :controller not found.', array(
-				':uri' => $uri,
+				':controller' => $controller,
 			)); 
 		}
 	}
@@ -184,6 +196,7 @@ class App {
 		$get_params = $this->fetch_query_params();
 		
 		$lang_list = $this->_languages->as_array('short_code');
+		//$doc->tpl = $path;
 
 		if (! empty($language) && isset($lang_list[$language]))
 		{
@@ -194,8 +207,8 @@ class App {
 			$this->set_language($this->get_cfg('default_language'));
 		}
 		
-		Request::current()->set_params(array());	
-		$route_list = ORM::query('cms3\engine\route')->select();
+		Request::current()->set_params(array());
+		$route_list = Model::factory('route')->query()->select();
 		foreach ($route_list as $route)
 		{
 			$parse = $this->_replace_inline_route($route->format);
@@ -205,6 +218,10 @@ class App {
 		$routes = Route::all();
 		unset($routes['default']);
 		unset($routes['action']);
+		
+		$this->document = Document::factory($format);
+		$this->document->language = $this->language;
+		$this->document->charset = Core::$charset;
 
 		$found = FALSE;
 
@@ -221,17 +238,13 @@ class App {
 				break;
 			}
 		}
-		
+
 		if (! $found && $path != '')
 		{
 			throw new HTTP_Exception_404();
 		}
 		
-		$this->document = Document::factory($format);
-		$this->document->language = $this->language;
-		$this->document->charset = Core::$charset;
 		$this->document->current_theme = $this->detect_theme();
-		
 		$this->document->render();
 		
 		if (isset($benchmark))
@@ -247,7 +260,7 @@ class App {
 	
 	protected function detect_theme()
 	{
-		$themes = ORM::query('cms3\engine\theme')->select();
+		$themes = Model::factory('theme')->query()->select();
 		
 		foreach ($themes as $theme)
 		{
@@ -284,7 +297,7 @@ class App {
 		$language = strtolower($language);
 		$this->language = $language;
 		\I18n::$lang = $language;
-		setlocale(LC_ALL, $language . '.utf-8');
+		setlocale(LC_ALL, $language . '.' . Core::$charset);
 	}
 
 	public static function check_page_condition($condition)

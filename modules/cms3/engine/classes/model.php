@@ -17,10 +17,25 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		return parent::save($validation);
 	}
 	
-	public static function factory($model, $values = NULL)
+	public static function factory($model = NULL, $key = NULL)
 	{
-		return ORM::factory($model, $values);
+		if ($model === NULL)
+		{
+			$model = get_called_class(); 
+		}
+		elseif (! NS::have_namespace($model))
+		{
+			$namespace = NS::extract_namespace(get_called_class());
+			$model = NS::add_namespace($model, $namespace);
+		}
+		
+		return ORM::factory($model, $key);
 	}
+	
+	public function query($key = NULL)
+	{
+		return ORM::query($this, $key);
+	} 
 	
 	public function get_resource_id()
 	{

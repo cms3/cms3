@@ -2,51 +2,20 @@
 
 namespace CMS3\Engine;
 
-class Controller_Component extends \Controller {
+class Controller_Component extends Controller {
 	
 	public $component = NULL;
 	
-	public function action_display() {}
-	
-	public function action($function, array $params = array())
+	public static function factory(Component $component, \Request $request = NULL, \Response $response = NULL)
 	{
-		$call = "action_" . $function;
-		return $this->$call($params);
+		$instance = new static($request, $response, $component);
+		
+		return $instance;
 	}
 	
-	public function action_csrf_protected($function, array $params = array())
+	public function __construct(\Request $request = NULL, \Response $response = NULL, $component = NULL)
 	{
-		$token = @$params['token'];
-		
-		if (! \Security::check($token))
-		{
-			throw new Exception('Token isn\'t valid'); // TODO: нормальное сообщение
-		} 
-		$this->action($function, $params);
-	}
-	
-	public function display($function = NULL, array $params = array())
-	{
-		$param_string = serialize(Request::current()->param() + $params);
-		$cache_id = sha1("component_output_" . $function . "_" . $param_string);
-		if (TRUE || ! $data = \Cache::instance()->get($cache_id))
-		{
-			$call = 'display';
-			if ($function != NULL)
-			{
-				$call .= '_' . $function;
-			}
-			ob_start();
-			$this->action($call, $params);
-			$data = ob_get_contents();
-			ob_end_clean();
-			\Cache::instance()->set($cache_id, $data);
-		}
-		else
-		{
-			$data .= " [cached id is $cache_id]";
-		}
-		
-		echo $data;
+		parent::__construct($request, $response);
+		$this->component = $component; 
 	}
 }

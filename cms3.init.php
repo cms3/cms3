@@ -61,12 +61,13 @@ Kohana::$config->attach(new Kohana_Config_File);
 /**
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
-Kohana::modules(array(
-		 'database'   	=> MODPATH . 'database',   // Database access
-		 'expression' 	=> MODPATH . 'expression',
-		 'cms3\engine'  => MODPATH . 'cms3/engine',
-		 'jelly'	  	=> MODPATH . 'jelly',
-		 'acl'		  	=> MODPATH . 'acl',
-	));
+CMS3::modules(array(
+	'cms3\engine',
+	'database',
+	'expression',
+	'formo',
+	'jelly',
+	'acl',
+));
 	
-\CMS3\Engine\App::instance()->initialize();
+CMS3\Engine\App::instance()->initialize();

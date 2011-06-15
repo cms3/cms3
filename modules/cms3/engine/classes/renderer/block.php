@@ -4,14 +4,14 @@ namespace CMS3\Engine;
  
 class Renderer_Block extends Renderer {
 
-	public function render($name, $params = array())
+	public function render($name, array $params = array())
 	{
 		if (empty($params["position"]))
 		{
 			$params["position"] = "default";
 		}
 
-		$blocks = ORM::query('cms3\engine\block')->by_position($params["position"]);
+		$blocks = Model::factory('block')->query()->by_position($params["position"]);
 		
 		$data = "";
 		foreach ($blocks as $block)
@@ -21,7 +21,15 @@ class Renderer_Block extends Renderer {
 				$content = $this->get_action_output($block->component, $block->get_params_hash(), $block->action);
 				if ($content)
 				{
-					$data .= Template::render("block", array('content' => $content));
+					$tpl = strtolower($params['template']);
+					if ($tpl == 'raw')
+					{
+						$data .= $content;
+					}
+					else
+					{
+						$data .= Template::render("block/" . $tpl, array('content' => $content));
+					}
 				}
 			}
 		}

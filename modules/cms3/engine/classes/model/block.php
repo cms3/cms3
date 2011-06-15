@@ -1,6 +1,8 @@
 <?php
 
 namespace CMS3\Engine;
+
+use CMS3\Engine\ORM;
  
 class Model_Block extends Model {
 
@@ -8,17 +10,21 @@ class Model_Block extends Model {
 
 	public static function initialize(ORM_Meta $meta)
 	{
-		$meta
-			->sorting(array('ordering' => 'ASC'))
-			->fields(array(
-				'id' 			=> new Field_Primary,
-				'position'		=> new Field_String,
-				'component' 	=> new Field_String,
-				'action' 		=> new Field_String,
-				'condition'		=> new Field_BelongsTo,
-				'ordering'		=> new Field_Integer,
-				'params'		=> new Field_HasMany(array('foreign' => 'cms3\engine\block_param.block_id')),
-			));
+		$meta->sorting(array('ordering' => 'ASC'));
+		
+		$meta->fields(array(
+			'id' 		=> ORM::field('primary'),
+			'position'	=> ORM::field('string'),
+			'component'	=> ORM::field('string'),
+			'action' 	=> ORM::field('string'),
+			'condition'	=> ORM::field('belongsto'),
+			'ordering'	=> ORM::field('integer'),
+			'params'	=> ORM::field('hasmany',
+				array(
+					'foreign' => 'cms3\engine\block_param.block_id'
+				)
+			),
+		));
 	}
    
 	public function get_params_hash()

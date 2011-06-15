@@ -4,6 +4,10 @@ namespace CMS3\Engine;
 
 class ORM extends \Jelly_Core {
 
+	protected static $_field_prefix = '\CMS3\Engine\Field_';
+	
+	protected static $_behavior_prefix = '\CMS3\Engine\ORM_Behavior_';
+
 	public static function class_name($model)
 	{	
 		if ($model instanceof Model)
@@ -50,4 +54,12 @@ class ORM extends \Jelly_Core {
 
 		return strtolower($model);
 	}
+	/*
+	public static function field($type, $options = NULL)
+	{
+		$field = ORM::$_field_prefix.$type;
+                
+		return new $field($options);	
+	}
+	*/
 }

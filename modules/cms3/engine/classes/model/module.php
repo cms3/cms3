@@ -6,14 +6,15 @@ class Model_Module extends Model {
 		
 	public static function initialize(ORM_Meta $meta)
 	{
-		$meta
-			->sorting(array('ordering' => 'ASC'))
-			->fields(array(
-				'id' 			=> new Field_Primary,
-				'name'			=> new Field_String,
-				'core' 			=> new Field_Boolean,
-				'component' 	=> new Field_Boolean,
-				'ordering'		=> new Field_Integer,
-			));
+		$meta->sorting(array('ordering' => 'ASC'));
+		$meta->fields(array(
+			'id' 			=> ORM::field('primary'),
+			'name'			=> ORM::field('string'),
+			'module'		=> ORM::field('string'),
+			'title'			=> ORM::field('string_multilang'),
+			'core' 			=> ORM::field('boolean'),
+			'component' 	=> ORM::field('boolean'),
+			'ordering'		=> ORM::field('integer')
+		));
    }
 }

@@ -2,7 +2,7 @@
 
 namespace CMS3\Menu;
 
-use CMS3\Engine;
+use CMS3\Engine\App;
 use CMS3\Engine\Model;
 use CMS3\Engine\ORM;
 use CMS3\Engine\ORM_Meta;
@@ -15,29 +15,36 @@ class Model_Item extends Model {
 	public static function initialize(ORM_Meta $meta)
 	{
 		$meta->fields(array(
-				'id'				=> new Engine\Field_Primary,
-				'menu'				=> new Engine\Field_BelongsTo,
-				'parent_id'			=> new Engine\Field_Integer,
-				'route'				=> new Engine\Field_BelongsTo,
-				'route_id'			=> new Engine\Field_Integer,
-				'uri'				=> new Engine\Field_String,
-				'title'				=> new Engine\Field_String_Multilang,
-				'active_condition_id'	=> new Engine\Field_Integer, // TODO
-				'ordering'			=> new Engine\Field_Integer,
-				'params'			=> new Engine\Field_HasMany(array('foreign' => 'cms3\menu\item_param.item_id')),
-				'children'			=> new Engine\Field_HasMany(array('foreign' => 'cms3\menu\item.parent_id')),
-			));
-   }
+			'id'					=> ORM::field('primary'),
+			'menu'					=> ORM::field('belongsto'),
+			'parent_id'				=> ORM::field('integer'),
+			'route'					=> ORM::field('belongsto',
+				array('foreign' => 'cms3\engine\route.:primary_key')
+			),
+			'route_id'				=> ORM::field('integer'),
+			'uri'					=> ORM::field('string'),
+			'title'					=> ORM::field('string_multilang'),
+			'active_condition_id'	=> ORM::field('integer'), // TODO
+			'ordering'				=> ORM::field('integer'),
+			'params'				=> ORM::field('hasmany',
+				array('foreign' => 'cms3\menu\item_param.item_id')
+			),
+			'children'				=> ORM::field('hasmany',
+				array('foreign' => 'cms3\menu\item.parent_id')
+			),
+		));
+	}
 	
 	public function is_active()
 	{
 		if (! empty($this->active_condition))
 		{
-			return \App::instance()->check_page_condition($this->active_condition);
+			return App::instance()->check_page_condition($this->active_condition);
 		}
-		else {
+		else
+		{
 			$params = $this->get_params_hash();
-			$params = \App::instance()->implode_request_params($params); // Непонятно, нужно ли делать здесь implode
+			$params = App::instance()->implode_request_params($params); // Непонятно, нужно ли делать здесь implode
 
 			if (! count($params))
 			{
@@ -80,11 +87,11 @@ class Model_Item extends Model {
 		{
 			$params = $this->get_params_hash();
 			
-			return \App::instance()->get_uri($this->route_id, $params);
+			return App::instance()->get_uri($this->route_id, $params);
 		}
 		else
 		{
-			return "/";
+			return '/';
 		}
 	}
 	

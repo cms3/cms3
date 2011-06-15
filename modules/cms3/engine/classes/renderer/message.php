@@ -4,7 +4,7 @@ namespace CMS3\Engine;
  
 class Renderer_Message extends Renderer {
 
-	public function render($name, $params = array())
+	public function render($name, array $params = array())
 	{
 		if ($message = @$_GET['message']) // TODO: получать из Request->param
 		{

@@ -7,6 +7,8 @@ use CMS3\Engine\Exception;
 use CMS3\Engine;
 use CMS3\Engine\Model;
 use CMS3\Engine\ORM;
+use CMS3\Engine\App;
+use CMS3\Engine\Format;
 
 class Component extends Engine\Component {
 
@@ -98,6 +100,27 @@ class Component extends Engine\Component {
 		}
 
 		return FALSE;
+	}
+	
+	public function result($success, $format = 'redirect', array $params = array())
+	{
+		if ($format == NULL || $format == 'redirect')
+		{
+			App::instance()->redirect(@$params['return'], @$params['message']);
+		}
+
+		$result = array('success' => $success);
+		if (isset($params['return']))
+		{
+			$result['return'] = $params['return'];
+		}
+		if (! $success)
+		{
+			$result['errors']['text'] = @$params['message'];
+		}
+		
+		// TODO: return only
+		echo Format::factory($format)->convert($result);
 	}
 
 }

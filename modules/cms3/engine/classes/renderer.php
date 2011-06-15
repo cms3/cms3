@@ -11,5 +11,5 @@ class Renderer {
 		$this->tpl_engine = $tpl_engine;
 	}
 
-	public function render($name, $params = array()){}
+	public function render($name, array $params = array()){}
 }

@@ -7,9 +7,9 @@ class Model_Route extends Model {
 	public static function initialize(ORM_Meta $meta)
 	{
 		$meta->fields(array(
-				'id' 		=> new Field_Primary,
-				'format'	=> new Field_String,
-				'title'		=> new Field_String_Multilang,
-			));
+			'id' 		=> ORM::field('primary'),
+			'format'	=> ORM::field('string'),
+			'title'		=> ORM::field('string_multilang')
+		));
    }
 }

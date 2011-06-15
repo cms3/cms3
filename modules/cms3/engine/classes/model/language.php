@@ -7,10 +7,10 @@ class Model_Language extends Model {
 	public static function initialize(ORM_Meta $meta)
 	{
 		$meta->fields(array(
-				'code'			=> new Field_Primary,
-				'short_code'	=> new Field_String,
-				'title'			=> new Field_String,
-				'active'		=> new Field_Boolean,
+				'code'			=> ORM::field('primary'),
+				'short_code'	=> ORM::field('string'),
+				'title'			=> ORM::field('string'),
+				'active'		=> ORM::field('boolean'),
 			));
    }
 }

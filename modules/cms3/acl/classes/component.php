@@ -30,7 +30,6 @@ class Component extends \CMS3\Engine\Component {
 		
 		foreach ($roles as $role)
 		{
-			print_r($role->parent); exit;
 			$this->_acl_core->add_role($role, $role->parent);
 		}
 		

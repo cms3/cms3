@@ -7,14 +7,16 @@ The included Auth driver is the official [Kohana ORM](https://github.com/kohana/
 
 **Critical to know**:
 
-* use the default, `3.1/develop` branch
+* keep a close eye on Github as updates can be frequent and require you to change your code
+* use the default, `3.1/develop` branch until a `3.1/master` branch is created
 * userguide is being updated
 
 **Useful stuff**:
 
  * [Report an issue or feature request](https://github.com/creatoro/kohana-jelly-for-Kohana-3.1/issues)
  * [Run the unit tests](https://github.com/creatoro/jelly-tests-for-Kohana-3.1)
- 
+ * [Leave feedback in the forum](http://forum.kohanaframework.org/discussion/8069/jelly-for-kohana-3.1-auth-driver-included)
+
 ## Notable Features
 
 * **Standard support for all of the common relationships** — This includes

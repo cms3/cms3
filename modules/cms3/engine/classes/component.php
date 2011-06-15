@@ -15,8 +15,7 @@ abstract class Component {
 		$this->name = NS::extract_namespace($this);
 		
 		$controller = NS::add_namespace('Controller', $this->name);
-		$this->controller = new $controller(Request::current(), Request::current()->response());
-		$this->controller->component = $this;
+		$this->controller = $controller::factory($this);
 		
 		$this->_load_config();
 	}
@@ -45,12 +44,17 @@ abstract class Component {
 			$name = get_called_class();
 		}
 		
-		$name = strtolower($name);
+		if (NS::extract_namespace($name) == NULL) // TODO: Костыль для глобальных классов-алиасов. Не гибко.
+		{
+			$name = get_parent_class($name);
+		}
 		
 		if (class_exists($name))
 		{
 			$name = NS::extract_namespace($name);
 		}
+
+		$name = strtolower($name);
 		
 		if (! isset($instances[$name]))
 		{

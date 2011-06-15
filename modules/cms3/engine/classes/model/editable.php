@@ -2,7 +2,7 @@
 
 namespace CMS3\Engine;
 
-class Model_Editable extends Model {
+abstract class Model_Editable extends Model {
 	
 	public function id()
 	{

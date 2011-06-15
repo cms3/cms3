@@ -2,7 +2,7 @@
 
 namespace CMS3\Engine;
 
-class HTML extends \Kohana_HTML {
+class HTML extends \HTML {
 
 	public static function tag($name, $content = NULL, $attributes = array(), $pair = FALSE)
 	{
