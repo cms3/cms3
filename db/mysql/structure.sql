@@ -2,10 +2,10 @@
 -- version 3.3.8.1
 -- http://www.phpmyadmin.net
 --
--- Хост: localhost
--- Время создания: Мар 21 2011 г., 14:19
--- Версия сервера: 5.0.45
--- Версия PHP: 5.3.3
+-- Host: localhost
+-- Generation Time: Jun 17, 2011 at 11:39 AM
+-- Server version: 5.0.45
+-- PHP Version: 5.3.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -16,13 +16,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `cms3_new`
+-- Database: `cms3_new`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acl_roles`
+-- Table structure for table `acl_roles`
 --
 
 CREATE TABLE IF NOT EXISTS `acl_roles` (
@@ -36,21 +36,23 @@ CREATE TABLE IF NOT EXISTS `acl_roles` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acl_roles_i18n`
+-- Table structure for table `acl_roles_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `acl_roles_i18n` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `role_id` int(10) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `name` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `role_id` (`role_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acl_roles_users`
+-- Table structure for table `acl_roles_users`
 --
 
 CREATE TABLE IF NOT EXISTS `acl_roles_users` (
@@ -63,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `acl_roles_users` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acl_rules`
+-- Table structure for table `acl_rules`
 --
 
 CREATE TABLE IF NOT EXISTS `acl_rules` (
@@ -82,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `acl_rules` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_methods`
+-- Table structure for table `auth_methods`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_methods` (
@@ -93,21 +95,23 @@ CREATE TABLE IF NOT EXISTS `auth_methods` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_methods_i18n`
+-- Table structure for table `auth_methods_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_methods_i18n` (
-  `id` int(12) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `method_id` int(12) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `name` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `method_id` (`method_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_method_basic`
+-- Table structure for table `auth_method_basic`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_method_basic` (
@@ -123,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `auth_method_basic` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_method_openid`
+-- Table structure for table `auth_method_openid`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_method_openid` (
@@ -138,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `auth_method_openid` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_tokens`
+-- Table structure for table `auth_tokens`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_tokens` (
@@ -150,12 +154,12 @@ CREATE TABLE IF NOT EXISTS `auth_tokens` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `token` (`token`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_users`
+-- Table structure for table `auth_users`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_users` (
@@ -167,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `auth_users` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_user_params`
+-- Table structure for table `auth_user_params`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_user_params` (
@@ -179,21 +183,23 @@ CREATE TABLE IF NOT EXISTS `auth_user_params` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_user_params_i18n`
+-- Table structure for table `auth_user_params_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_user_params_i18n` (
-  `id` int(12) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `user_param_id` int(12) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `label` char(255) NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `user_param_id` (`user_param_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth_user_param_values`
+-- Table structure for table `auth_user_param_values`
 --
 
 CREATE TABLE IF NOT EXISTS `auth_user_param_values` (
@@ -209,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `auth_user_param_values` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `content_items`
+-- Table structure for table `content_items`
 --
 
 CREATE TABLE IF NOT EXISTS `content_items` (
@@ -221,22 +227,24 @@ CREATE TABLE IF NOT EXISTS `content_items` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `content_items_i18n`
+-- Table structure for table `content_items_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `content_items_i18n` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `item_id` int(11) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `title` varchar(1024) NOT NULL,
   `text` text NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `item_id` (`item_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_blocks`
+-- Table structure for table `engine_blocks`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_blocks` (
@@ -246,13 +254,14 @@ CREATE TABLE IF NOT EXISTS `engine_blocks` (
   `action` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
   `condition_id` int(11) unsigned NOT NULL,
+  `params` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_block_params`
+-- Table structure for table `engine_block_params`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_block_params` (
@@ -267,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `engine_block_params` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_conditions`
+-- Table structure for table `engine_conditions`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_conditions` (
@@ -276,26 +285,28 @@ CREATE TABLE IF NOT EXISTS `engine_conditions` (
   `component` varchar(255) NOT NULL,
   `user` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_conditions_i18n`
+-- Table structure for table `engine_conditions_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_conditions_i18n` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `condition_id` int(11) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `titile` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `condition_id` (`condition_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_languages`
+-- Table structure for table `engine_languages`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_languages` (
@@ -310,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `engine_languages` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_modules`
+-- Table structure for table `engine_modules`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_modules` (
@@ -323,12 +334,26 @@ CREATE TABLE IF NOT EXISTS `engine_modules` (
   `enabled` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_pageheaders`
+-- Table structure for table `engine_modules_i18n`
+--
+
+CREATE TABLE IF NOT EXISTS `engine_modules_i18n` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `module_id` int(11) NOT NULL,
+  `language` char(5) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `engine_pageheaders`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_pageheaders` (
@@ -342,47 +367,51 @@ CREATE TABLE IF NOT EXISTS `engine_pageheaders` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_pageheaders_i18n`
+-- Table structure for table `engine_pageheaders_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_pageheaders_i18n` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `pageheader_id` int(11) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `value` varchar(1024) NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `pageheader_id` (`pageheader_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_routes`
+-- Table structure for table `engine_routes`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_routes` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `format` varchar(1024) character set cp1251 NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_routes_i18n`
+-- Table structure for table `engine_routes_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_routes_i18n` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `route_id` int(11) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `title` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `route_id` (`route_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine_themes`
+-- Table structure for table `engine_themes`
 --
 
 CREATE TABLE IF NOT EXISTS `engine_themes` (
@@ -391,12 +420,12 @@ CREATE TABLE IF NOT EXISTS `engine_themes` (
   `condition_id` int(11) unsigned NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `condition_id` (`condition_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu_items`
+-- Table structure for table `menu_items`
 --
 
 CREATE TABLE IF NOT EXISTS `menu_items` (
@@ -407,28 +436,31 @@ CREATE TABLE IF NOT EXISTS `menu_items` (
   `ordering` int(11) NOT NULL,
   `active_condition_id` int(11) unsigned NOT NULL,
   `route_id` int(11) unsigned NOT NULL,
+  `params` text NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `menu_id` (`menu_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu_items_i18n`
+-- Table structure for table `menu_items_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `menu_items_i18n` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `item_id` int(11) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `title` varchar(1024) character set cp1251 NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `item_id` (`item_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu_item_params`
+-- Table structure for table `menu_item_params`
 --
 
 CREATE TABLE IF NOT EXISTS `menu_item_params` (
@@ -443,7 +475,7 @@ CREATE TABLE IF NOT EXISTS `menu_item_params` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu_menus`
+-- Table structure for table `menu_menus`
 --
 
 CREATE TABLE IF NOT EXISTS `menu_menus` (
@@ -454,13 +486,15 @@ CREATE TABLE IF NOT EXISTS `menu_menus` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu_menus_i18n`
+-- Table structure for table `menu_menus_i18n`
 --
 
 CREATE TABLE IF NOT EXISTS `menu_menus_i18n` (
-  `id` int(11) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `menu_id` int(11) unsigned NOT NULL,
   `language` char(5) NOT NULL,
   `title` varchar(1024) NOT NULL,
-  PRIMARY KEY  (`id`,`language`),
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `menu_id` (`menu_id`,`language`),
   KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

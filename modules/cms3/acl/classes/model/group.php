@@ -5,8 +5,9 @@ namespace CMS3\Acl;
 use CMS3\Engine;
 use CMS3\Engine\Model;
 use CMS3\Engine\ORM_Meta;
+use CMS3\Engine\ORM;
 
-class Model_Group extends Model_Editable implements \Acl_Role_Interface {
+class Model_Group extends Model implements \Acl_Role_Interface {
 
 	public static function initialize(ORM_Meta $meta)
 	{
