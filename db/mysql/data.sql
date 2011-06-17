@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 17, 2011 at 11:41 AM
+-- Generation Time: Jun 17, 2011 at 01:52 PM
 -- Server version: 5.0.45
 -- PHP Version: 5.3.3
 
@@ -147,22 +147,13 @@ INSERT INTO `content_items_i18n` (`id`, `item_id`, `language`, `title`, `text`) 
 --
 
 INSERT INTO `engine_blocks` (`id`, `position`, `component`, `action`, `ordering`, `condition_id`, `params`) VALUES
-(1, 'center', 'cms3\\shop', '', 1, 1, ''),
-(2, 'center', 'cms3\\shop', 'catalog', 2, 2, ''),
-(3, 'center', 'cms3\\gallery', 'product_images', 2, 3, ''),
-(4, 'left', 'cms3\\menu', '', 1, 0, ''),
-(5, 'left', 'cms3\\auth', 'login_form', 2, 0, ''),
-(6, 'center', 'cms3\\content', '', 1, 4, ''),
-(7, 'admin', 'cms3\\admin', '', 0, 5, '');
-
---
--- Dumping data for table `engine_block_params`
---
-
-INSERT INTO `engine_block_params` (`id`, `block_id`, `name`, `value`) VALUES
-(1, 2, 'count', '10'),
-(2, 2, 'category_id', '150'),
-(4, 4, 'menu_id', '1');
+(1, 'center', 'cms3\\shop', '', 1, 1, 'a:0:{}'),
+(2, 'center', 'cms3\\shop', 'catalog', 2, 2, 'a:2:{s:5:"count";s:2:"10";s:11:"category_id";s:3:"150";}'),
+(3, 'center', 'cms3\\gallery', 'product_images', 2, 3, 'a:0:{}'),
+(4, 'left', 'cms3\\menu', '', 1, 0, 'a:1:{s:7:"menu_id";s:1:"1";}'),
+(5, 'left', 'cms3\\auth', 'login_form', 2, 0, 'a:0:{}'),
+(6, 'center', 'cms3\\content', '', 1, 4, 'a:0:{}'),
+(7, 'admin', 'cms3\\admin', '', 0, 5, 'a:0:{}');
 
 --
 -- Dumping data for table `engine_conditions`
@@ -271,13 +262,13 @@ INSERT INTO `engine_themes` (`id`, `name`, `condition_id`) VALUES
 --
 
 INSERT INTO `menu_items` (`id`, `menu_id`, `uri`, `parent_id`, `ordering`, `active_condition_id`, `route_id`, `params`) VALUES
-(1, 1, '', 0, 1, 0, 1, ''),
-(2, 1, '', 0, 2, 0, 1, ''),
-(3, 1, '', 2, 3, 0, 1, ''),
-(4, 1, '', 0, 4, 0, 2, ''),
-(5, 1, '/action/cms3/gallery/gallery/clear_cache', 0, 50, 0, 0, ''),
-(6, 1, '', 0, 5, 0, 4, ''),
-(7, 1, '/admin', 0, 0, 0, 0, '');
+(1, 1, '', 0, 1, 0, 1, 'a:0:{}'),
+(2, 1, '', 0, 2, 0, 1, 'a:1:{s:16:"shop_category_id";s:1:"1";}'),
+(3, 1, '', 2, 3, 0, 1, 'a:2:{s:16:"shop_category_id";s:1:"1";s:15:"shop_product_id";s:1:"1";}'),
+(4, 1, '', 0, 4, 0, 2, 'a:2:{s:16:"gallery_album_id";s:1:"1";s:16:"gallery_photo_id";s:1:"2";}'),
+(5, 1, '/action/cms3/gallery/gallery/clear_cache', 0, 50, 0, 0, 'a:0:{}'),
+(6, 1, '', 0, 5, 0, 4, 'a:1:{s:15:"content_item_id";s:1:"1";}'),
+(7, 1, '/admin', 0, 0, 0, 0, 'a:0:{}');
 
 --
 -- Dumping data for table `menu_items_i18n`
@@ -296,18 +287,6 @@ INSERT INTO `menu_items_i18n` (`id`, `item_id`, `language`, `title`) VALUES
 (10, 5, 'ru_ru', 'Очистить кэш'),
 (11, 6, 'ru_ru', 'О магазине'),
 (12, 7, 'ru_ru', 'Админпанель');
-
---
--- Dumping data for table `menu_item_params`
---
-
-INSERT INTO `menu_item_params` (`id`, `item_id`, `name`, `value`) VALUES
-(1, 4, 'gallery_album_id', '1'),
-(2, 4, 'gallery_photo_id', '2'),
-(3, 2, 'shop_category_id', '1'),
-(4, 3, 'shop_category_id', '1'),
-(5, 3, 'shop_product_id', '1'),
-(6, 6, 'content_item_id', '1');
 
 --
 -- Dumping data for table `menu_menus`

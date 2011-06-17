@@ -18,7 +18,7 @@ class Renderer_Block extends Renderer {
 		{
 			if (! empty($block->component) && App::check_page_condition($block->condition->condition))
 			{
-				$content = $this->get_action_output($block->component, $block->get_params_hash(), $block->action);
+				$content = $this->get_action_output($block->component, $block->params, $block->action);
 				if ($content)
 				{
 					$tpl = strtolower($params['template']);
@@ -42,7 +42,7 @@ class Renderer_Block extends Renderer {
 		$controller = Component::instance($comp_name)->controller;
 		
 		ob_start();
-		$controller->display($action, $params);
+		$controller->display($action, (array)$params);
 		$data = ob_get_contents();
 		ob_end_clean();
 		

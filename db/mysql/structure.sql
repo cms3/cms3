@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 17, 2011 at 11:39 AM
+-- Generation Time: Jun 17, 2011 at 01:51 PM
 -- Server version: 5.0.45
 -- PHP Version: 5.3.3
 
@@ -261,21 +261,6 @@ CREATE TABLE IF NOT EXISTS `engine_blocks` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `engine_block_params`
---
-
-CREATE TABLE IF NOT EXISTS `engine_block_params` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `block_id` int(11) unsigned NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `value` text NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `block_id` (`block_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `engine_conditions`
 --
 
@@ -456,21 +441,6 @@ CREATE TABLE IF NOT EXISTS `menu_items_i18n` (
   UNIQUE KEY `item_id` (`item_id`,`language`),
   KEY `language` (`language`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `menu_item_params`
---
-
-CREATE TABLE IF NOT EXISTS `menu_item_params` (
-  `id` int(11) unsigned NOT NULL auto_increment,
-  `item_id` int(11) unsigned NOT NULL,
-  `name` varchar(255) character set cp1251 NOT NULL,
-  `value` varchar(255) character set cp1251 NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `menuitem_id` (`item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 

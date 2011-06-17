@@ -26,9 +26,7 @@ class Model_Item extends Model {
 			'title'					=> ORM::field('string_multilang'),
 			'active_condition_id'	=> ORM::field('integer'), // TODO
 			'ordering'				=> ORM::field('integer'),
-			'params'				=> ORM::field('hasmany',
-				array('foreign' => 'cms3\menu\item_param.item_id')
-			),
+			'params'				=> ORM::field('serialized'),
 			'children'				=> ORM::field('hasmany',
 				array('foreign' => 'cms3\menu\item.parent_id')
 			),
@@ -43,7 +41,7 @@ class Model_Item extends Model {
 		}
 		else
 		{
-			$params = $this->get_params_hash();
+			$params = (array) $this->params;
 			$params = App::instance()->implode_request_params($params); // Непонятно, нужно ли делать здесь implode
 
 			if (! count($params))
@@ -62,21 +60,6 @@ class Model_Item extends Model {
 		}
 	}
 	
-	public function get_params_hash()
-	{
-		if ($this->params_hash != NULL)
-		{
-			return $this->params_hash;
-		}
-
-		$this->params_hash = array();
-		foreach ($this->params as $param)
-		{
-			$this->params_hash[$param->name] = $param->value;
-		}
-		return $this->params_hash;
-	}
-	
 	public function get_uri()
 	{
 		if ($this->uri != '')
@@ -85,9 +68,7 @@ class Model_Item extends Model {
 		}
 		elseif ($this->route_id)
 		{
-			$params = $this->get_params_hash();
-			
-			return App::instance()->get_uri($this->route_id, $params);
+			return App::instance()->get_uri($this->route_id, (array) $this->params);
 		}
 		else
 		{
