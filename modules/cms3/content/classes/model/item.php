@@ -14,7 +14,7 @@ class Model_Item extends Model {
 				'id'			=> ORM::field('primary'),
 				'state'			=> ORM::field('integer'),
 				'title'			=> ORM::field('string_multilang'),
-				'text'			=> ORM::field('string_multilang'),
+				'text'			=> ORM::field('text_multilang'),
 			));
    }
 }
