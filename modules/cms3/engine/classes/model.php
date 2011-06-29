@@ -148,8 +148,7 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 	
 	public function class_param()
 	{
-		$param = NS::remove_class_prefix($this->class_name(), 'Model_');
-		$param = strtolower(str_replace('\\', '-', $param));
+		$param = strtolower(str_replace('\\', '-', ORM::model_name($this)));
 		
 		return $param;
 	}

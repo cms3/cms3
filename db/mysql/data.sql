@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 17, 2011 at 01:52 PM
+-- Generation Time: Jun 29, 2011 at 07:04 PM
 -- Server version: 5.0.45
 -- PHP Version: 5.3.3
 
@@ -133,14 +133,16 @@ INSERT INTO `auth_user_param_values` (`id`, `user_id`, `param_id`, `value`) VALU
 --
 
 INSERT INTO `content_items` (`id`, `state`) VALUES
-(1, 1);
+(1, 1),
+(31, 4);
 
 --
 -- Dumping data for table `content_items_i18n`
 --
 
 INSERT INTO `content_items_i18n` (`id`, `item_id`, `language`, `title`, `text`) VALUES
-(1, 1, 'ru_ru', 'Я — контент!', 'Умею поддерживать <a href="http://ru.wikipedia.org/wiki/HTML"><b>HTML</b></a>.');
+(1, 1, 'ru_ru', 'kl22', '8888y'),
+(8, 31, 'ru_ru', 'Some', 'Русский текст');
 
 --
 -- Dumping data for table `engine_blocks`
@@ -170,6 +172,9 @@ INSERT INTO `engine_conditions` (`id`, `condition`, `component`, `user`) VALUES
 -- Dumping data for table `engine_conditions_i18n`
 --
 
+INSERT INTO `engine_conditions_i18n` (`id`, `condition_id`, `language`, `title`) VALUES
+(1, 5, 'ru_ru', 'Админка'),
+(2, 1, 'ru_ru', 'Главная');
 
 --
 -- Dumping data for table `engine_languages`
@@ -242,12 +247,18 @@ INSERT INTO `engine_routes` (`id`, `format`) VALUES
 (2, 'gallery(/<gallery_album_id>(/<gallery_photo_id>))'),
 (3, '<profile:profile>'),
 (4, 'content(/<content_item_id>)'),
-(5, '(<admin:admin>(/<id>))');
+(5, '<admin:admin>((/<model>)(/<id>))');
 
 --
 -- Dumping data for table `engine_routes_i18n`
 --
 
+INSERT INTO `engine_routes_i18n` (`id`, `route_id`, `language`, `title`) VALUES
+(1, 1, 'ru_ru', 'Магазин'),
+(2, 2, 'ru_ru', 'Галерея'),
+(3, 3, 'ru_ru', 'Профайлер'),
+(4, 4, 'ru_ru', 'Контент'),
+(5, 5, 'ru_ru', 'Админка');
 
 --
 -- Dumping data for table `engine_themes`
@@ -262,8 +273,8 @@ INSERT INTO `engine_themes` (`id`, `name`, `condition_id`) VALUES
 --
 
 INSERT INTO `menu_items` (`id`, `menu_id`, `uri`, `parent_id`, `ordering`, `active_condition_id`, `route_id`, `params`) VALUES
-(1, 1, '', 0, 1, 0, 1, 'a:0:{}'),
-(2, 1, '', 0, 2, 0, 1, 'a:1:{s:16:"shop_category_id";s:1:"1";}'),
+(1, 1, '', 0, 1, 0, 1, 's:5:"Array";'),
+(2, 1, '', 1, 2, 0, 1, 'a:1:{s:16:"shop_category_id";s:1:"1";}'),
 (3, 1, '', 2, 3, 0, 1, 'a:2:{s:16:"shop_category_id";s:1:"1";s:15:"shop_product_id";s:1:"1";}'),
 (4, 1, '', 0, 4, 0, 2, 'a:2:{s:16:"gallery_album_id";s:1:"1";s:16:"gallery_photo_id";s:1:"2";}'),
 (5, 1, '/action/cms3/gallery/gallery/clear_cache', 0, 50, 0, 0, 'a:0:{}'),

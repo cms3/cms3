@@ -88,6 +88,32 @@ class NS {
 	}
 	
 	/**
+	 * Удаляет возможный префикс из имени класса, которое может содержать указание
+	 * пространства имен. Регистр символов не учитывается
+	 *
+	 *     $foo = NS::add_class_prefix('CMS3\Test\Class_Foo', 'Class_');
+	 *     Значение $foo: 'CMS3\Test\Foo'
+	 *     
+	 * @param   string|object	$class
+	 * @param   string			$prefix
+	 * @return  string
+	 */
+	public static function remove_class_prefix($class, $prefix)
+	{
+		$result = static::extract_class_name($class);
+		if (substr(strtolower($result), 0, strlen($prefix)) == strtolower($prefix))
+		{
+			$result = substr($result, strlen($prefix));
+		}
+		if ($namespace = static::extract_namespace($class))
+		{
+			$result = static::add_namespace($result, $namespace);
+		}
+		
+		return $result;
+	}
+	
+	/**
 	 * Добавляет к имени класса указание пространства имен
 	 *
 	 *     $foo = NS::add_namespace('Foo', 'CMS3\Test');

@@ -37,15 +37,10 @@ class ORM extends \Jelly_Core {
 		{
 			$model = NS::extract_class_name($model);
 		}
-
-
 		$prefix_length = strlen(ORM::model_prefix());
 
 		// Compare the first parts of the names and chomp if they're the same
-		if (strtolower(substr($model, 0, $prefix_length)) === strtolower(ORM::model_prefix()))
-		{
-			$model = substr($model, $prefix_length);
-		}
+		$model = NS::remove_class_prefix($model, ORM::model_prefix());
 		
 		if ($namespace !== NULL)
 		{
