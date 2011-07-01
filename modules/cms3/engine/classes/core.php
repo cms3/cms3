@@ -132,12 +132,12 @@ class Core extends \Kohana {
 		{
 			$native_paths = static::modules_to_paths(array(strtolower($namespace)));
 			$dir = strtolower(implode(DIRECTORY_SEPARATOR, $parts));
-			$override_paths = static::modules_to_paths($all_modules, '_override' . DIRECTORY_SEPARATOR . $dir);
+			$override_paths = static::modules_to_paths($all_modules, '-override' . DIRECTORY_SEPARATOR . $dir);
 		}
 		else // Global class
 		{
 			$native_paths = static::modules_to_paths($global_modules);
-			$override_paths = static::modules_to_paths($ns_modules, '_global');
+			$override_paths = static::modules_to_paths($ns_modules, '-global');
 		}
 
 		$paths[] = \APPPATH . 'classes';
