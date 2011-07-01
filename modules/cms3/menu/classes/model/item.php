@@ -26,11 +26,26 @@ class Model_Item extends Model {
 			'title'					=> ORM::field('string_multilang'),
 			'active_condition_id'	=> ORM::field('integer'), // TODO
 			'ordering'				=> ORM::field('integer'),
-			'params'				=> ORM::field('serialized'),
+			'params'				=> ORM::field('params'),
 			'children'				=> ORM::field('hasmany',
 				array('foreign' => 'cms3\menu\item.parent_id')
 			),
 		));
+	}
+	public function get_uri()
+	{
+		if ($this->uri != '')
+		{
+			return $this->uri;
+		}
+		elseif ($this->route_id)
+		{
+			return App::instance()->get_uri($this->route_id, (array) $this->params);
+		}
+		else
+		{
+			return '/';
+		}
 	}
 	
 	public function is_active()
@@ -60,21 +75,6 @@ class Model_Item extends Model {
 		}
 	}
 	
-	public function get_uri()
-	{
-		if ($this->uri != '')
-		{
-			return $this->uri;
-		}
-		elseif ($this->route_id)
-		{
-			return App::instance()->get_uri($this->route_id, (array) $this->params);
-		}
-		else
-		{
-			return '/';
-		}
-	}
 	
 	public function is_selected()
 	{

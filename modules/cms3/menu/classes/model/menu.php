@@ -11,12 +11,12 @@ class Model_Menu extends Model {
 	public static function initialize(ORM_Meta $meta)
 	{
 		$meta->fields(array(
-				'id'	=> ORM::field('primary'),
-				'title'	=> ORM::field('string_multilang'),
-				'items'	=> ORM::field('hasmany',
-					array('foreign' => 'cms3\menu\item.menu_id')
-				),
-			));
+			'id'	=> ORM::field('primary'),
+			'title'	=> ORM::field('string_multilang'),
+			'items'	=> ORM::field('hasmany',
+				array('foreign' => 'cms3\menu\item.menu_id')
+			),
+		));
    }
    
    public function get_child_items($parent = 0)
@@ -25,6 +25,7 @@ class Model_Menu extends Model {
 			->where('parent_id', '=', $parent)
 			->order_by('ordering', 'asc')
 			->select();
+
 		return $items;
    }
    
@@ -34,7 +35,7 @@ class Model_Menu extends Model {
 		{
 			$items = $this->get_child_items();
 		}
-		
+
 		$array = array();
 		foreach ($items as $item)
 		{

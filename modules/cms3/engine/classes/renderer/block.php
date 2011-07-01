@@ -6,12 +6,12 @@ class Renderer_Block extends Renderer {
 
 	public function render($name, array $params = array())
 	{
-		if (empty($params["position"]))
+		if (empty($params['position']))
 		{
-			$params["position"] = "default";
+			$params['position'] = 'default';
 		}
 
-		$blocks = Model::factory('block')->query()->by_position($params["position"]);
+		$blocks = Model::factory('block')->query()->by_position($params['position']);
 		
 		$data = "";
 		foreach ($blocks as $block)
@@ -28,7 +28,7 @@ class Renderer_Block extends Renderer {
 					}
 					else
 					{
-						$data .= Template::render("block/" . $tpl, array('content' => $content));
+						$data .= Template::render('block/' . $tpl, array('content' => $content));
 					}
 				}
 			}
