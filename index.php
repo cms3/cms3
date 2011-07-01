@@ -109,7 +109,7 @@ if (is_file(APPPATH.'classes/cms3'.EXT))
 }
 else
 {
-	require MODPATH.'cms3/engine/classes/-global/cms3'.EXT;
+	require MODPATH.'cms3/engine/classes/@global/cms3'.EXT;
 }
 
 /**
