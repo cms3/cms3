@@ -8,15 +8,15 @@
  */
 class Formo_Core_Driver_Hidden extends Formo_Driver {
 
-	protected $_view_file = 'hidden';
+	protected $view = 'hidden';
 
 	public function html()
 	{
-		$this->_view
-			->set_var('tag', 'input')
+		$this->decorator
+			->set('tag', 'input')
 			->attr('type', 'hidden')
 			->attr('name', $this->name())
-			->attr('value', $this->_field->val());
+			->attr('value', $this->field->val());
 	}
 
 }

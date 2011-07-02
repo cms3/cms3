@@ -17,7 +17,7 @@ class Formo_Core_Field extends Formo_Validator_Field {
 	protected $_settings = array
 	(
 		// The field's driver
-		'driver'       => 'input',
+		'driver'       => 'text',
 		// The wah this field is rendered
 		'render_type'  => 'html',
 		// Whether the field should be rendered
@@ -55,7 +55,7 @@ class Formo_Core_Field extends Formo_Validator_Field {
 		$options = Arr::merge(array('driver' => $driver), $options);
 
 		// Add all the options to the object
-		$this->_load_options($options);
+		$this->load_options($options);
 
 		// Run the driver's post_construct() method
 		$this->driver()->post_construct();

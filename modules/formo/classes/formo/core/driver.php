@@ -9,12 +9,12 @@
 abstract class Formo_Core_Driver {
 
 	/**
-	 * View object
+	 * Decorator object
 	 *
 	 * @var object
 	 * @access protected
 	 */
-	protected $_view;
+	protected $decorator;
 
 	/**
 	 * Field or form object
@@ -22,7 +22,7 @@ abstract class Formo_Core_Driver {
 	 * @var object
 	 * @access protected
 	 */
-	protected $_field;
+	protected $field;
 
 	/**
 	 * The name of the variable passed into the view file
@@ -68,7 +68,7 @@ abstract class Formo_Core_Driver {
 	}
 
 	/**
-	 * Populate the field and view objects
+	 * Populate the field and decorator objects
 	 *
 	 * @access public
 	 * @param mixed Formo_Container $field
@@ -77,37 +77,46 @@ abstract class Formo_Core_Driver {
 	public function __construct(Formo_Container $field)
 	{
 		// Load the field instance
-		$this->_field = $field;
+		$this->field = $field;
 
-		// Determine the original view type
-		$kind = ($kind = $this->_field->get('kind'))
-			? $kind
+		// Determine the original decorator type
+		$type = ($type = $this->field->get('type'))
+			? $type
 			// Fall back on the default form type
-			: Kohana::config('formo')->kind;
+			: Kohana::config('formo')->type;
 
-		$this->make_view($kind);
+		$this->decorator($type);
 	}
 
 	/**
-	 * Create the view instance
+	 * Run methods on the decorator object
+	 *
+	 * @access public
+	 * @param mixed $method
+	 * @param mixed $args
+	 * @return void
+	 */
+	public function __call($func, $args)
+	{
+		// At this point we need to run the method through the decorator
+		$method = new ReflectionMethod($this->decorator, $func);
+		return $method->invokeArgs($this->decorator, $args);
+	}
+
+	/**
+	 * Create the decorator instance
 	 *
 	 * @access public
 	 * @param mixed $type
 	 * @return void
 	 */
-	public function make_view($type)
+	public function decorator($type)
 	{
 		// Make the class name
-		$class = 'Formo_View_'.$type;
+		$class = 'Formo_Decorator_'.ucfirst($type);
 
 		// Create the actual decorator object
-		$this->_view = new $class();
-		$this->_view->_field  = $this->_field;
-	}
-	
-	public function view()
-	{
-		return $this->_view;
+		$this->decorator = new $class($this->field, $this);
 	}
 	
 	/**
@@ -119,22 +128,31 @@ abstract class Formo_Core_Driver {
 	 */
 	public function append()
 	{
-		$this->_view->append();
+		$this->decorator->append();
 	}
 
 	public function set($variable, $value)
 	{
-		// Just set the field value
-		$this->_field->$variable = $value;
+		// If the variable is inside the decorator, set that
+		if (isset($this->decorator->$variable))
+			$this->decorator->set($variable, $value);
 
-		return $this->_field;
+		// Otherwise just set the field value
+		$this->field->$variable = $value;
+
+		return $this->field;
 	}
 
 	public function get($variable, $default, $shallow_look = FALSE)
 	{
-		// Return the field value if it's set, or the default value if it's not
-		return (isset($this->_field->$variable))
-			? $this->_field->$variable
+		if ($shallow_look !== TRUE AND isset($this->decorator->$variable))
+			// If the variable is inside the decorator, return that
+			// and only do so if not doing a shallow look
+			return $this->decorator->get($variable);
+
+		// Otherwise return the field value if it's set, or the default value if it's not
+		return (isset($this->field->$variable))
+			? $this->field->$variable
 			: $default;
 	}
 	
@@ -157,18 +175,7 @@ abstract class Formo_Core_Driver {
 	 * @access public
 	 * @return void
 	 */
-	public function pre_validate()
-	{
-		// Add not_empty rule for 'required'
-		if ($this->_field->get('required') === TRUE)
-		{
-			$val_field = ($this->_field instanceof Formo_Form)
-				? $this->_field
-				: $this->_field->parent();
-			
-			$val_field->rule($this->_field->alias(), 'not_empty');
-		}
-	}
+	public function pre_validate(){}
 
 	/**
 	 * Called just after running validate()
@@ -197,13 +204,13 @@ abstract class Formo_Core_Driver {
 	 * @access protected
 	 * @return void
 	 */
-	protected function _get_val()
+	protected function get_val()
 	{
-		$new_value = $this->_field->get('new_value');
+		$new_value = $this->field->get('new_value');
 
 		return (Formo::is_set($new_value) === TRUE)
 			? $new_value
-			: $this->_field->get('value');
+			: $this->field->get('value');
 	}
 
 	/**
@@ -213,9 +220,9 @@ abstract class Formo_Core_Driver {
 	 * @param mixed $value
 	 * @return void
 	 */
-	protected function _set_val($value)
+	protected function set_val($value)
 	{
-		$this->_field->set('new_value', $value);
+		$this->field->set('new_value', $value);
 	}
 
 	/**
@@ -228,20 +235,15 @@ abstract class Formo_Core_Driver {
 	public function val($value = NULL)
 	{
 		if (func_num_args() === 0)
-			return $this->_get_val();
+			return $this->get_val();
 
 		// Set the value
-		$this->_set_val($value);
+		$this->set_val($value);
 
 		// Run ORM methods
-		$this->_set_orm_fields($value);
+		$this->set_orm_fields($value);
 
 		return $this;
-	}
-	
-	public function val_isset()
-	{
-		return Formo::is_set($this->_field->get('new_value'));
 	}
 	
 	/**
@@ -252,14 +254,11 @@ abstract class Formo_Core_Driver {
 	 */
 	public function name()
 	{
-		if ( ! Kohana::config('formo')->namespaces)
-			return $this->_field->alias();
-
-		if ( ! $parent = $this->_field->parent())
+		if ( ! $parent = $this->field->parent())
 			// If there isn't a parent, don't namespace the name
-			return $this->_field->alias();
+			return $this->field->alias();
 
-		return $parent->alias().'['.$this->_field->alias().']';
+		return $parent->alias().'['.$this->field->alias().']';
 	}
 
 	/**
@@ -269,11 +268,11 @@ abstract class Formo_Core_Driver {
 	 * @param mixed $value
 	 * @return void
 	 */
-	protected function _set_orm_fields($value)
+	protected function set_orm_fields($value)
 	{
-		if ($orm = $this->_field->model(TRUE))
+		if ($orm = $this->field->model(TRUE))
 		{
-			$orm->set_field($this->_field, $value);
+			$orm->set_field($this->field, $value);
 		}
 	}
 
@@ -309,14 +308,12 @@ abstract class Formo_Core_Driver {
 	public function orm($method)
 	{
 		$args = array_slice(func_get_args(), 1);
-		return call_user_func_array(array($this->_field->orm_driver(), $method), $args);
+		return call_user_func_array(array($this->field->orm_driver(), $method), $args);
 	}
 	
 	public function has_orm()
 	{
-		return ($this->_field instanceof Formo_Form)
-			? empty($this->_field->orm) === FALSE
-			: empty($this->_field->parent()->orm) === FALSE;
+		return empty($this->field->orm) === FALSE;
 	}
 
 	/**
@@ -327,18 +324,32 @@ abstract class Formo_Core_Driver {
 	 */
 	public function pre_render()
 	{
-		if (isset($this->_field->orm))
+		if (isset($this->field->orm))
 		{
-			$this->_field->orm_driver()->pre_render();
+			$this->field->orm_driver()->pre_render();
 		}
 
-		$this->_view->pre_render();
+		$this->decorator->pre_render();
 
-		return $this->_field;
+		return $this->field;
 	}
 
 	/**
-	 * Run when open is called on the view
+	 * Render the field
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function render()
+	{
+		// First run and do any pre_render stuff
+		$this->pre_render();
+
+		return $this->decorator->render();
+	}
+
+	/**
+	 * Run when open is called on the decorator
 	 *
 	 * @access public
 	 * @return void
@@ -348,70 +359,49 @@ abstract class Formo_Core_Driver {
 		// First run and do any pre_render stuff
 		$this->pre_render();
 
-		return $this->_view->open();
+		return $this->decorator->open();
 	}
 
 	/**
-	 * Render a view from a field or form object
+	 * Generate a view from a field or form object
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function render($view_file = FALSE, $view_prefix = NULL)
+	public function generate($view_file = FALSE, $view_prefix = NULL)
 	{
-		if ($this->_field->get('render', NULL) === FALSE)
+		if ($this->field->get('render', NULL) === FALSE)
 			return;
 
 		// First run and do any pre_render stuff
 		$this->pre_render();
 
 		// Prefix acts as a templating system for views
-		$prefix = $this->_get_view_prefix($view_prefix);
+		$prefix = $this->get_view_prefix($view_prefix);
 
 		// Determine the view file
-		$view = $this->_get_view($view_file);
+		$view = $this->get_view($view_file);
 
 		// Skip the prefix if view prefix is FALSE
 		$skip_prefix = $view_prefix === FALSE;
-		
 
-		$this->_view
-			->bind('open', $open)
-			->bind('close', $close)
-			->bind('message', $message)
-			->bind('label', $label);
-		
-		$prefix = rtrim($prefix, '/');
-
-		$open = Formo_View::factory("$prefix/_open_tag", array('view' => $this->_view));
-		$open->_field = $this->_field;
-
-		$close = Formo_View::factory("$prefix/_close_tag", array('view' => $this->_view));
-		$close->_field = $this->_field;
-
-		$message = Formo_View::factory("$prefix/_message", array('view' => $this->_view));
-		$message->_field = $this->_field;
-
-		$label = Formo_View::factory("$prefix/_label", array('view' => $this->_view));
-		$label->_field = $this->_field;
-
-		return $this->_view->render("$prefix/$view");
+		return $this->decorator->generate($view, $prefix);
 	}
 
-	protected function _get_view($view = FALSE)
+	protected function get_view($view = FALSE)
 	{
 		// The defined view file takes precendence over the default one
-		// and the parameter passed into render() takes first precedence
+		// and the parameter passed into generate() takes first precedence
 		return ($view !== FALSE)
 			// Always choose the passed view if it exists
 			? $view
 			// Next look for the field-level view
-			: ($view = $this->_field->get('view'))
+			: ($view = $this->field->get('view'))
 				? $view
-				: $this->_view_file;
+				: $this->view;
 	}
 
-	protected function _get_view_prefix($prefix = NULL)
+	protected function get_view_prefix($prefix = NULL)
 	{
 		// If the specified prefix is FALSE, no prefix
 		if ($prefix === FALSE)
@@ -422,11 +412,11 @@ abstract class Formo_Core_Driver {
 			return rtrim($prefix, '/');
 
 		// Find the appropriate view_prefix
-		$prefix = $this->_field->get('view_prefix', NULL);
+		$prefix = $this->field->get('view_prefix', NULL);
 
 		if ($prefix === NULL)
 		{
-			$prefix = ($parent = $this->_field->parent())
+			$prefix = ($parent = $this->field->parent())
 				? $parent->get('view_prefix', NULL)
 				: NULL;
 		}
@@ -442,9 +432,9 @@ abstract class Formo_Core_Driver {
 
 	public function not_empty()
 	{
-		$new_value = $this->_field->get('new_value');
+		$new_value = $this->field->get('new_value');
 
-		if (Formo::is_set($new_value) === FALSE AND ! $this->_field->get('value'))
+		if (Formo::is_set($new_value) === FALSE AND ! $this->field->get('value'))
 			return FALSE;
 
 		return $new_value !== Formo::NOTSET;

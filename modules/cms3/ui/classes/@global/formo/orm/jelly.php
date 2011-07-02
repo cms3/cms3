@@ -200,6 +200,11 @@ class Formo_ORM_Jelly extends Formo_ORM {
 	{
 		$this->form = $form;
 	}
+	
+	protected function _config()
+	{
+		return $this->config;
+	}
 
 	/**
 	 * Load fields into the form
@@ -212,7 +217,7 @@ class Formo_ORM_Jelly extends Formo_ORM {
 	public function load(\Jelly_Model $model, array $fields = NULL, $skip_fields = FALSE)
 	{
 		$this->model = $model;
-		$this->config = Kohana::config('formo_jelly');
+		$this->_config = Kohana::config('formo_jelly');
 		$this->make_fields($fields, $skip_fields);
 		$this->load_meta();
 
@@ -260,11 +265,11 @@ class Formo_ORM_Jelly extends Formo_ORM {
 			if (empty($options['driver']))
 			{
 				$index = \CMS3\Engine\NS::extract_class_name(get_class($field));
-				if (! isset($this->config()->drivers[$index]))
+				if (! isset($this->_config->drivers[$index]))
 				{
 					$index = 'default';
 				}
-				$options['driver'] = $this->config()->drivers[$index];
+				$options['driver'] = $this->_config->drivers[$index];
 			}
 			
 			$this->form
@@ -492,8 +497,8 @@ class Formo_ORM_Jelly extends Formo_ORM {
 		if (empty($options['driver']))
 		{
 			// If the driver hasn't already been specified, specify it
-			$options['driver'] = (isset($this->config->drivers['Field_BelongsTo']))
-				? $this->config->drivers['Field_BelongsTo']
+			$options['driver'] = (isset($this->_config->drivers['Field_BelongsTo']))
+				? $this->_config->drivers['Field_BelongsTo']
 				: 'select';
 		}
 		
@@ -572,7 +577,7 @@ class Formo_ORM_Jelly extends Formo_ORM {
 
 				if (empty($options['driver']))
 				{
-					$options['driver'] = Arr::get($this->config->drivers, $type, 'checkboxes');
+					$options['driver'] = Arr::get($this->_config->drivers, $type, 'checkboxes');
 				}
 
 				$this->form->add($alias, $options);
@@ -730,9 +735,9 @@ class Formo_ORM_Jelly extends Formo_ORM {
 			return $options['driver'];
 
 		// Check to find a default driver for a Jelly Field
-		return ( ! empty($this->config()->drivers[$class]))
+		return ( ! empty($this->_config->drivers[$class]))
 			// Return the default driver
-			? $this->config()->drivers[$class]
+			? $this->_config->drivers[$class]
 			// Otherwise return the genral form default driver
 			: $this->form->get('config')->default_driver;
 	}
