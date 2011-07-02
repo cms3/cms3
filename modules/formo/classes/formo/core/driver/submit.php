@@ -8,24 +8,24 @@
  */
 class Formo_Core_Driver_Submit extends Formo_Driver {
 
-	protected $view = 'submit';
+	protected $_view_file = 'submit';
 
 	public function html()
 	{
-		$value = ($val = $this->field->get('value'))
+		$value = ($val = $this->_field->get('value'))
 			? $val
-			: $this->decorator->label();
+			: $this->_view->label();
 			
-		$this->decorator
-			->set('tag', 'input')
+		$this->_view
+			->set_var('tag', 'input')
 			->attr('type', 'submit')
 			->attr('name', $this->name())
 			->attr('value', $value);
 	}
-	
+
 	public function sent()
 	{
-		return $this->field->not_empty() !== FALSE;
+		return $this->_field->not_empty() !== FALSE;
 	}
 
 }

@@ -62,7 +62,7 @@ class Formo_Core_Form extends Formo_Validator {
 		// Set the default alias and driver if necessary
 		(empty($options['alias']) AND $options['alias'] = $this->get('config')->form_alias);
 		(empty($options['driver']) AND $options['driver'] = $this->get('config')->form_driver);
-		(empty($options['type']) AND $options['type'] = $this->get('config')->type);
+		(empty($options['kind']) AND $options['kind'] = $this->get('config')->kind);
 		
 		// Always process the driver first
 		$driver = $options['driver'];
@@ -74,12 +74,12 @@ class Formo_Core_Form extends Formo_Validator {
 		{
 			$this->set('orm_config', $orm_file);
 		}
-		
+
 		// Run validator setup
-		$this->setup_validation();
-		
+		$this->_setup_validation();
+
 		// Load the options
-		$this->load_options($options);
+		$this->_load_options($options);
 	}
 
 	/**
@@ -96,22 +96,23 @@ class Formo_Core_Form extends Formo_Validator {
 	{
 		// If Formo instnace was passed
 		if ($alias instanceof Formo_Form)
-			return $this->add_object($alias);
+			return $this->_add_object($alias);
 
 		if ($driver instanceof Formo_Form)
-			return $this->add_object($driver->alias($alias));
+			return $this->_add_object($driver->alias($alias));
 
 		if ($value instanceof Formo_Form)
-			return $this->add_object($value->set('driver', $driver)->alias($alias));
+			return $this->_add_object($value->set('driver', $driver)->alias($alias));
 
 		$orig_options = $options;
 		$options = func_get_args();
 		$options = Formo::args(__CLASS__, __FUNCTION__, $options);
 
+
 		// If a driver is named but not an alias, make the driver text and the alias the driver
 		if (empty($options['driver']))
 		{
-			$options['driver'] = Arr::get($this->config, 'default_driver', 'text');
+			$options['driver'] = Arr::get(Kohana::config('formo'), 'default_driver', 'input');
 		}
 
 		// Create the new field
@@ -150,7 +151,7 @@ class Formo_Core_Form extends Formo_Validator {
 	 * @param mixed Formo $subform
 	 * @return object
 	 */
-	protected function add_object(Formo_Container $subform)
+	protected function _add_object(Formo_Container $subform)
 	{
 		($subform instanceof Formo_Form AND $subform->bind('_settings', 'input', $this->_settings['input']));
 
@@ -205,7 +206,9 @@ class Formo_Core_Form extends Formo_Validator {
 			}
 
 			// Fetch the namespace for this form
-			$namespaced_input = Arr::get($input, $this->alias(), array());
+			$namespaced_input = Kohana::config('formo')->namespaces === TRUE
+				? Arr::get($input, $this->alias(), array())
+				: $input;
 
 			if (isset($namespaced_input[$input_key]))
 			{
