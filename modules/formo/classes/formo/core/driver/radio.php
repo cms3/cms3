@@ -8,19 +8,19 @@
  */
 class Formo_Core_Driver_Radio extends Formo_Driver {
 
-	protected $_view_file = 'radio';
+	protected $view = 'radio';
 	
 	public function html()
 	{
-		$this->_view
-			->set_var('tag', 'input')
+		$this->decorator
+			->set('tag', 'input')
 			->attr('type', 'radio')
-			->attr('name', $this->_field->parent()->name())
-			->attr('value', $this->_field->val());
+			->attr('name', $this->field->parent()->name())
+			->attr('value', $this->field->val());
 
-		if ($this->_field->parent()->val() == $this->_field->val())
+		if ($this->field->parent()->val() == $this->field->val())
 		{
-			$this->_field->view()->attr('checked', 'checked');
+			$this->field->attr('checked', 'checked');
 		}
 	}
 

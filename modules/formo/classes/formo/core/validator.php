@@ -36,7 +36,7 @@ abstract class Formo_Core_Validator extends Formo_Container {
 	 * @access protected
 	 * @return void
 	 */
-	protected function _setup_validation()
+	protected function setup_validation()
 	{
 		$this->_validation = Validation::factory(array())
 			->bind(':form', $this);
@@ -69,17 +69,9 @@ abstract class Formo_Core_Validator extends Formo_Container {
 	 * @access public
 	 * @return void
 	 */
-	public function validation(array $values = NULL)
+	public function validation()
 	{
-		if (func_num_args() === 0)
-		{
-			$values = $this->as_array('value');
-		}
-
-		$validation = new Validation($values);
-		$this->_add_rules($validation);
-
-		return $validation;
+		return $this->_validation;
 	}
 
 	/**
@@ -107,35 +99,64 @@ abstract class Formo_Core_Validator extends Formo_Container {
 			// If form wasn't sent, and sent is required, doesn't pass validation
 			return FALSE;
 
-		$this->driver()->pre_validate();
-
 		// Tracks if there were errors in any subforms
 		$subform_errors = FALSE;
 		// Tracks if there were any errors inside this form
-		$has_errors = FALSE;
-		// Keep all the error messages
-		$error_messages = array();
+		$errors = FALSE;
+
+		// Build the array
+		$array = array();
 
 		foreach ($this->fields() as $field)
 		{
 			if ($field->get('render') === FALSE OR $field->get('ignore') === TRUE)
 				continue;
 
-			if ( ! $field->validate($require_sent))
+			// Add the rules
+			$this->add_rules($field);
+
+			if ($field instanceof Formo_Form)
 			{
-				$has_errors = TRUE;
-				$error_messages[$field->alias()] = $field->error();
+				if ( ! $field->validate($require_sent))
+				{
+					$subform_errors = TRUE;
+				}
+
+				continue;
+			}
+			else
+			{
+				$array[$field->alias()] = $field->val();
 			}
 		}
+		
+		$validation = $this->_validation->copy($array);
 
-		if ($has_errors === FALSE)
+		// Only worry about this form's rules if the rest validated
+		if ($validation->check() === TRUE)
 		{
-			$this->_add_rules($this->_validation);
-			// Add this value to the validation object
-			$this->_validation[$this->alias()] = $this->val();
-			$has_errors = $this->_determine_errors() === FALSE;
+			// Add rules for this form as well
+			$this->add_rules();
+	
+			$array[$this->alias()] = $this->val();
+			
+			if ($this->has_orm() AND $driver = $this->orm_driver())
+			{
+				// Bind :model to the model
+				$this->_validation->bind(':model', $driver->model);
+				$this->_validation->labels($driver->model->labels());
+			}
+			
+			$validation = $this->_validation->copy($array);
 		}
-		return $has_errors === FALSE;
+		
+		$this->_validation = $validation;
+
+		$errors = $this->determine_errors();
+		
+		return ($subform_errors === FALSE)
+			? $errors === FALSE
+			: FALSE;
 	}
 
 	/**
@@ -145,30 +166,43 @@ abstract class Formo_Core_Validator extends Formo_Container {
 	 * @param mixed Formo_Container $field. (default: NULL)
 	 * @return void
 	 */
-	protected function _add_rules(Validation $validation)
+	protected function add_rules(Formo_Container $field = NULL)
 	{
-		if ( ! $rules = $this->get('rules'))
+		$obj = ($field !== NULL)
+			? $field
+			: $this;
+
+		if ( ! $rules = $obj->get('rules'))
 			// Only do anything if the field has rules
 			return;
 
-		$validation->label($this->alias(), $this->view()->label());
-		$validation->rules($this->alias(), $rules);
+		$this->validation()->label($obj->alias(), $obj->alias());
+		$this->validation()->rules($obj->alias(), $rules);
 	}
-
+	
 	/**
 	 * Make sure existing errors carry over from validation
-	 *
+	 * 
 	 * @access protected
 	 * @param mixed $errors
 	 * @param mixed array $existing_errors
 	 * @return boolean
 	 */
-	protected function _determine_errors()
+	protected function determine_errors()
 	{
-		if ($this->_validation->errors())
-			return FALSE;
-
-		return $this->_validation->check();
+		$existing_errors = $this->_validation->errors();
+		$errors = $this->_validation->check() === FALSE;
+		
+		if (empty($existing_errors))
+			// If there weren't any errors predefined before validation, return check() result
+			return $errors;
+		
+		foreach ($existing_errors as $key => $values)
+		{
+			$this->_validation->error($key, current($values));
+		}
+		
+		return (bool) $this->_validation->errors() === TRUE;
 	}
 
 	/**
@@ -181,7 +215,7 @@ abstract class Formo_Core_Validator extends Formo_Container {
 	 */
 	public function rules($field, array $rules)
 	{
-		$this->_val_field($field)->merge('rules', $rules);
+		$this->val_field($field)->merge('rules', $rules);
 
 		return $this;
 	}
@@ -198,7 +232,7 @@ abstract class Formo_Core_Validator extends Formo_Container {
 	public function rule($field, $rule, array $params = NULL)
 	{
 		$new_rule = array(array($rule, $params));
-		$this->_val_field($field)->merge('rules', $new_rule);
+		$this->val_field($field)->merge('rules', $new_rule);
 
 		return $this;
 	}
@@ -210,7 +244,7 @@ abstract class Formo_Core_Validator extends Formo_Container {
 	 * @param mixed $field
 	 * @return void
 	 */
-	protected function _val_field($field)
+	protected function val_field($field)
 	{
 		if ($field instanceof Formo_Container)
 			return $field;
@@ -236,12 +270,12 @@ abstract class Formo_Core_Validator extends Formo_Container {
 
 		if (empty($input))
 			return FALSE;
-
+		
 		foreach ($input as $alias => $value)
 		{
 			if ($this->find($alias) !== NULL)
 				return TRUE;
-
+			
 			// Check against a namespace
 			if (is_array($value))
 			{
@@ -268,29 +302,32 @@ abstract class Formo_Core_Validator extends Formo_Container {
 	 * @param mixed array $param_names. (default: NULL)
 	 * @return object or string
 	 */
-	public function error($field_alias = NULL, $message = NULL, array $params = NULL)
+	public function error($field = NULL, $message = NULL, array $params = NULL)
 	{
+		$this->_validation->label($field, $field);
+
 		$num_args = func_num_args();
 		if ($num_args !== 0)
 		{
 			if ($num_args === 1)
 			{
-				$message = $field_alias;
-				$params = (array) $message;
-				$field_alias = $this->alias();
-
-				$this->_validation->label($this->alias(), $this->view()->label());
-				$this->_validation->error($this->alias(), $message, $params);
-			}
-			else
-			{
-				$this->$field_alias->error($message, $params);
+				$field = '_form';
 			}
 
+			$this->_validation->error($field, $message, $params);
 			return $this;
 		}
 
-		return Arr::get($this->errors(), $this->alias());
+		$errors = Arr::get($this->errors(), $this->alias());
+
+		if (is_array($errors) AND isset($errors[0]))
+		{
+			return $errors[0];
+		}
+		else
+		{
+			return $errors;
+		}
 	}
 
 	/**
@@ -307,20 +344,7 @@ abstract class Formo_Core_Validator extends Formo_Container {
 			$file = $this->message_file();
 		}
 
-		$return_errors = $errors = $this->_validation->errors($file, $translate);
-
-		if (isset($errors[$this->alias()]))
-		{
-			$other_errors = $errors;
-			unset($other_errors[$this->alias()]);
-
-			if ( ! empty($other_errors))
-			{
-				unset($return_errors[$this->alias()]);
-			}
-		}
-
-		return $return_errors;
+		return $this->_validation->errors($file, $translate);
 	}
 
 	// Determine which message file to use
@@ -329,25 +353,6 @@ abstract class Formo_Core_Validator extends Formo_Container {
 		return $this->get('message_file')
 			? $this->get('message_file')
 			: Kohana::config('formo')->message_file;
-	}
-
-	public static function range($field, $form)
-	{
-		$value = $form->$field->val();
-		$max = $form->$field->attr('max');
-		$min = $form->$field->attr('min');
-		$step = $form->$field->attr('step');
-
-		if ($min AND $value <= $min)
-			return FALSE;
-
-		if ($max AND $value >= $max)
-			return FALSE;
-
-		// Use the default step of 1
-		( ! $step AND $step = 1);
-
-		return strpos(($value - $min) / $step, '.') === FALSE;
 	}
 
 }

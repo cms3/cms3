@@ -8,18 +8,18 @@
  */
 class Formo_Core_Driver_Option extends Formo_Driver {
 
-	protected $_view_file = 'option';
+	protected $view = 'option';
 
 	public function html()
 	{
-		$this->_view
-			->set_var('tag', 'option')
-			->text($this->_field->alias())
-			->attr('value', $this->_field->val());
+		$this->decorator
+			->set('tag', 'option')
+			->text($this->field->alias())
+			->attr('value', $this->field->val());
 
-		if ($this->_field->parent()->val() == $this->_field->val())
+		if ($this->field->parent()->val() == $this->field->val())
 		{
-			$this->_field->view()->attr('selected', 'selected');
+			$this->field->attr('selected', 'selected');
 		}
 	}
 	
