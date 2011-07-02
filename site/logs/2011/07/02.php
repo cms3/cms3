@@ -30,3 +30,5 @@
 2011-07-02 13:26:38 --- ERROR: HTTP_Exception_404 [ 404 ]: Controller cms3\gallery\gallery not found. ~ MODPATH\cms3\engine\classes\app.php [ 155 ]
 2011-07-02 13:26:38 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
 2011-07-02 13:26:51 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-02 13:30:35 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-02 13:30:55 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
