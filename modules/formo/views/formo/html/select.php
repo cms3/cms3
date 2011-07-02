@@ -1,16 +1,16 @@
 <?php echo $open; ?>
-	<label<?php if ($id = $this->attr('id')) echo ' for="'.$id.'"'; ?>>
+	<label>
 		<?php echo $label; ?>
 		<span class="field">
-			<?php if ($this->editable() === TRUE): ?>
-				<?php echo $this->open(); ?>
+			<?php if ($field->get('editable') === TRUE): ?>
+				<?php echo $field->open(); ?>
 					<option value=""></option>
-					<?php foreach ($this->fields() as $option): ?>
-						<?php echo $option->render()?>
+					<?php foreach ($field->fields() as $option): ?>
+						<?php echo $option->generate()?>
 					<?php endforeach; ?>
-				<?php echo $this->close(); ?>
+				<?php echo $field->close(); ?>
 			<?php else: ?>
-				<span><?php echo $this->val(); ?></span>
+				<span><?php echo $field->val(); ?></span>
 			<?php endif; ?>
 		</span>
 	</label>

@@ -359,7 +359,7 @@ class Formo_Core_Decorator_Html extends Formo_Decorator {
 			// Start a new benchmark
 			$benchmark = Profiler::start('Formo', __FUNCTION__);
 		}
-		
+
 		// If prefix is a string, rtrim it
 		($prefix and $prefix = rtrim($prefix, '/'));
 

@@ -1,3 +1,3 @@
 <span class="checkbox">
-	<label<?php if ($id = $this->attr('id')) echo ' for="'.$id.'"'; ?>><?php echo $this->html(); ?><?php echo $this->label(); ?></label>
+	<label><?php echo $field->render(); ?><?php echo UTF8::ucfirst($field->label()); ?></label>
 </span>

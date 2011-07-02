@@ -8,20 +8,20 @@
  */
 class Formo_Core_Driver_Button extends Formo_Driver {
 
-	protected $_view_file = 'button';
+	protected $view = 'button';
 	
 	public function html()
 	{
-		$this->_view
-			->set_var('tag', 'button')
+		$this->decorator
+			->set('tag', 'button')
 			->attr('name', $this->name())
 			->attr('value', $this->val())
-			->text($this->_field->alias());
+			->text($this->field->alias());
 	}
 
 	public function sent()
 	{
-		return $this->_field->not_empty() !== FALSE;
+		return $this->field->not_empty() !== FALSE;
 	}
 
 }

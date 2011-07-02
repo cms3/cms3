@@ -1,11 +1,11 @@
 <?php echo $open; ?>
-	<label<?php if ($id = $this->attr('id')) echo ' for="'.$id.'"'; ?>>
+	<label>
 		<?php echo $label; ?>
 		<span class="field">
-			<?php if ($this->editable() === TRUE): ?>
-				<?php echo $this->add_class('input')->html(); ?>
+			<?php if ($field->get('editable') === TRUE): ?>
+				<?php echo $field->add_class('input')->render(); ?>
 			<?php else: ?>
-				<span><?php echo $this->val(); ?></span>
+				<span><?php echo $field->val(); ?></span>
 			<?php endif; ?>
 		</span>
 	</label>

@@ -8,17 +8,17 @@
  */
 class Formo_Core_Driver_Select extends Formo_Driver {
 
-	protected $_view_file = 'select';
+	protected $view = 'select';
 	
 	public function html()
 	{		
-		foreach ($this->_field->get('options') as $label => $options)
+		foreach ($this->field->get('options') as $label => $options)
 		{			
-			$this->_field->append(Formo::field($label, 'option', $options));
+			$this->field->append(Formo::field($label, 'option', $options));
 		}
 		
-		$this->_view
-			->set_var('tag', 'select')
+		$this->decorator
+			->set('tag', 'select')
 			->attr('name', $this->name());		
 	}
 
