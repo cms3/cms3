@@ -1,0 +1,17 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2010-09-23 17:48:26 --- ERROR: ErrorException [ 1 ]: Call to a member function primary_key() on a non-object ~ MODPATH/jelly\classes\jelly\core.php [ 341 ]
+2010-09-23 17:58:04 --- ERROR: ErrorException [ 8 ]: Undefined variable: user_params ~ MODPATH/auth\classes\cms3\controller\auth.php [ 48 ]
+2010-09-23 17:58:13 --- ERROR: ErrorException [ 4096 ]: Object of class Jelly_Collection could not be converted to string ~ MODPATH/auth\classes\cms3\controller\auth.php [ 48 ]
+2010-09-23 17:58:14 --- ERROR: ErrorException [ 4096 ]: Object of class Jelly_Collection could not be converted to string ~ MODPATH/auth\classes\cms3\controller\auth.php [ 48 ]
+2010-09-23 18:00:08 --- ERROR: ErrorException [ 4096 ]: Object of class Jelly_Collection could not be converted to string ~ MODPATH/auth\classes\cms3\controller\auth.php [ 48 ]
+2010-09-23 18:05:22 --- ERROR: ErrorException [ 4096 ]: Object of class Model_User could not be converted to string ~ MODPATH/jelly\classes\jelly\model\core.php [ 254 ]
+2010-09-23 18:20:59 --- ERROR: ErrorException [ 2 ]: get_class() expects parameter 1 to be object, array given ~ MODPATH/database\classes\kohana\database\result.php [ 97 ]
+2010-09-23 18:35:39 --- ERROR: ErrorException [ 4096 ]: Object of class Model_PageHeader could not be converted to string ~ MODPATH/jelly\classes\jelly\field\belongsto.php [ 103 ]
+2010-09-23 18:42:13 --- ERROR: ErrorException [ 8 ]: Trying to get property of non-object ~ MODPATH/auth\classes\cms3\controller\auth.php [ 44 ]
+2010-09-23 18:42:15 --- ERROR: ErrorException [ 8 ]: Trying to get property of non-object ~ MODPATH/auth\classes\cms3\controller\auth.php [ 44 ]
+2010-09-23 18:42:16 --- ERROR: ErrorException [ 8 ]: Trying to get property of non-object ~ MODPATH/auth\classes\cms3\controller\auth.php [ 44 ]
+2010-09-23 18:44:21 --- ERROR: ErrorException [ 8 ]: Trying to get property of non-object ~ MODPATH/auth\classes\cms3\controller\auth.php [ 44 ]
+2010-09-23 18:46:25 --- ERROR: ErrorException [ 4 ]: syntax error, unexpected '{' ~ MODPATH/auth\classes\cms3\model\user.php [ 18 ]
+2010-09-23 18:46:31 --- ERROR: ErrorException [ 4 ]: syntax error, unexpected '[' ~ MODPATH/auth\classes\cms3\model\user.php [ 18 ]
+2010-09-23 18:46:36 --- ERROR: ErrorException [ 4 ]: syntax error, unexpected ')' ~ MODPATH/auth\classes\cms3\model\user.php [ 18 ]

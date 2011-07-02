@@ -1,0 +1,12 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2010-10-04 17:16:31 --- ERROR: ErrorException [ 1 ]: Call to a member function translate() on a non-object ~ E:\Users\янис\AppData\Local\Temp\tpl_00000000_string_fa311f4d13d72__iiT06WlOHOeicwpS_17kJQ.php [ 9 ]
+2010-10-04 17:17:31 --- ERROR: ErrorException [ 1 ]: Call to a member function translate() on a non-object ~ E:\Users\янис\AppData\Local\Temp\tpl_00000000_string_f0c118ffe034b__wGPHH44vXwN429LfI0TCMA.php [ 9 ]
+2010-10-04 17:37:23 --- ERROR: ErrorException [ 1 ]: Interface 'PHPTAL_TranslationService' not found ~ MODPATH/tplengine_phptal\classes\tplengine\phptal\translator.php [ 3 ]
+2010-10-04 17:38:57 --- ERROR: ErrorException [ 1 ]: Class TplEngine_Phptal_Translator contains 4 abstract methods and must therefore be declared abstract or implement the remaining methods (PHPTAL_TranslationService::setLanguage, PHPTAL_TranslationService::setEncoding, PHPTAL_TranslationService::useDomain, ...) ~ MODPATH/tplengine_phptal\classes\tplengine\phptal\translator.php [ 11 ]
+2010-10-04 17:40:49 --- ERROR: ErrorException [ 64 ]: Non-abstract method TplEngine_Phptal_Translator::setEncoding() must contain body ~ MODPATH/tplengine_phptal\classes\tplengine\phptal\translator.php [ 16 ]
+2010-10-04 17:43:59 --- ERROR: ErrorException [ 64 ]: Non-abstract method TplEngine_Phptal_Translator::setEncoding() must contain body ~ MODPATH/tplengine_phptal\classes\tplengine\phptal\translator.php [ 16 ]
+2010-10-04 17:44:33 --- ERROR: ErrorException [ 64 ]: Non-abstract method TplEngine_Phptal_Translator::setEncoding() must contain body ~ MODPATH/tplengine_phptal\classes\tplengine\phptal\translator.php [ 17 ]
+2010-10-04 17:44:34 --- ERROR: ErrorException [ 64 ]: Non-abstract method TplEngine_Phptal_Translator::setEncoding() must contain body ~ MODPATH/tplengine_phptal\classes\tplengine\phptal\translator.php [ 17 ]
+2010-10-04 17:44:35 --- ERROR: ErrorException [ 64 ]: Non-abstract method TplEngine_Phptal_Translator::setEncoding() must contain body ~ MODPATH/tplengine_phptal\classes\tplengine\phptal\translator.php [ 17 ]
+2010-10-04 17:44:36 --- ERROR: ErrorException [ 64 ]: Non-abstract method TplEngine_Phptal_Translator::setEncoding() must contain body ~ MODPATH/tplengine_phptal\classes\tplengine\phptal\translator.php [ 17 ]
