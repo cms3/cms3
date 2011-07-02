@@ -47,7 +47,7 @@ abstract class Formo_Core_Container {
 		'driver_instance' => NULL,
 		'label'           => NULL,
 		'order'           => FALSE,
-		'type'            => NULL,
+		'kind'            => NULL,
 		'rules'           => array(),
 	);
 
@@ -149,7 +149,7 @@ abstract class Formo_Core_Container {
 	 * @param mixed $value
 	 * @return object
 	 */
-	public function set($variable, $value, $force_into_field = FALSE)
+	public function set($variable, $value = NULL, $force_into_field = FALSE)
 	{
 		// Support array of key => values
 		if (is_array($variable))
@@ -193,6 +193,54 @@ abstract class Formo_Core_Container {
 
 		return $this;
 	}
+
+	/**
+	 * Run 'set' on each field as $key
+	 * 
+	 * @access public
+	 * @param mixed array $array
+	 * @return void
+	 */
+	public function set_all(array $array)
+	{
+		foreach ($array as $field => $data)
+		{
+			$this->$field->set($data);
+		}
+		
+		return $this;
+	}
+
+	/**
+	 * Run a method on a field
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function run($field, $method, array $args = NULL)
+	{
+		$method = new ReflectionMethod($this->$field, $method);
+		$method->invokeArgs($this->$field, (array) $args);
+		
+		return $this;
+	}
+	
+	/**
+	 * Run method on a field for each item in the array
+	 * 
+	 * @access public
+	 * @param mixed array $array
+	 * @return void
+	 */
+	public function run_all(array $array)
+	{
+		foreach ($array as $data)
+		{
+			$this->run(Arr::get($data, 0), Arr::get($data, 1), Arr::get($data, 2, array()));
+		}
+		
+		return $this;
+	}
 	
 	/**
 	 * Merge new array with original array
@@ -226,14 +274,14 @@ abstract class Formo_Core_Container {
 	 * @param mixed $value. (default: NULL)
 	 * @return object
 	 */
-	protected function load_options($option, $value = NULL)
+	protected function _load_options($option, $value = NULL)
 	{
 		// Support array of options
 		if (is_array($option))
 		{
 			foreach ($option as $_option => $_value)
 			{
-				$this->load_options($_option, $_value);
+				$this->_load_options($_option, $_value);
 			}
 
 			return $this;
@@ -373,7 +421,7 @@ abstract class Formo_Core_Container {
 		// Append the new subform
 		$this->append($subform);
 
-		return $this;
+		return $subform;
 	}
 
 	/**
@@ -387,8 +435,8 @@ abstract class Formo_Core_Container {
 	{
 		// Set the field's parent
 		$field->set('parent', $this);
-		$field->set('type', $this->get('type'));
-		$this->_defaults['fields'][] = $field;
+		$field->set('kind', $this->get('kind'));
+		$this->_defaults['fields'][$field->alias()] = $field;
 
 		// Look for order and process it for ordering this field
 		if ($field->get('order') !== FALSE)
@@ -423,7 +471,7 @@ abstract class Formo_Core_Container {
 	public function prepend($item)
 	{
 		$item->_defaults['parent'] = $this;
-		$item->set('type', $this->get('type'));
+		$item->set('kind', $this->get('kind'));
 
 		array_unshift($this->_defaults['fields'], $item);
 
@@ -468,12 +516,15 @@ abstract class Formo_Core_Container {
 	 * @param mixed $value. (default: NULL)
 	 * @return array
 	 */
-	public function as_array($value = NULL)
+	public function as_array($value = NULL, array $fields = NULL)
 	{
 		// Create the empty array to fill
 		$array = array();
 		foreach ($this->_defaults['fields'] as $field)
 		{
+			if ($fields AND ! in_array($field->alias(), $fields))
+				continue;
+
 			$alias = $field->alias();
 			
 			if ($field instanceof Formo_form)
@@ -587,7 +638,7 @@ abstract class Formo_Core_Container {
 	 * @param mixed $search
 	 * @return mixed
 	 */
-	protected function find_order($search, array $fields = NULL)
+	protected function _find_order($search, array $fields = NULL)
 	{
 		$fields = ($fields !== NULL)
 			? $fields
@@ -614,7 +665,7 @@ abstract class Formo_Core_Container {
 	 * @param mixed $field
 	 * @return mixed
 	 */
-	protected function find_fieldkey($field)
+	protected function _find_fieldkey($field)
 	{
 		foreach ($this->_defaults['fields'] as $key => $value)
 		{
@@ -643,12 +694,12 @@ abstract class Formo_Core_Container {
 		$fields = $field->parent()->get('fields');
 
 		// Delete the current place
-		unset($fields[$this->find_fieldkey($field->alias())]);
+		unset($fields[$this->_find_fieldkey($field->alias())]);
 
 		// If the new order is a string, it's a comparative order
 		if ( ! ctype_digit($new_order) AND is_string($new_order))
 		{
-			$position = $this->find_order($relative_field, $fields);
+			$position = $this->_find_order($relative_field, $fields);
 
 			// If the place wasn't found, do nothing
 			if ($position === FALSE)
@@ -684,7 +735,7 @@ abstract class Formo_Core_Container {
 			return $instance;
 
 		// Build the class name
-		$driver_class_name = Kohana::config('formo')->driver_prefix.UTF8::ucfirst($driver);
+		$driver_class_name = Kohana::config('formo')->driver_prefix.ucfirst($driver);
 
 		$instance = new $driver_class_name($this);
 
@@ -698,6 +749,17 @@ abstract class Formo_Core_Container {
 
 		// Return the new driver instance
 		return $instance;
+	}
+	
+	/**
+	 * Retrieve the view file
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function view()
+	{
+		return $this->driver()->view();
 	}
 
 	/**
@@ -742,12 +804,12 @@ abstract class Formo_Core_Container {
 	 * @param mixed $type
 	 * @return void
 	 */
-	public function type($type)
+	public function kind($kind)
 	{
-		$this->driver()->decorator($type);
+		$this->driver()->decorator($kind);
 		foreach ($this->fields() as $field)
 		{
-			$field->decorator($type);
+			$field->decorator($kind);
 		}
 
 		return $this;
