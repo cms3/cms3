@@ -1,0 +1,17 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2010-12-30 13:43:50 --- ERROR: ErrorException [ 1 ]: Class 'ORM' not found ~ MODPATH\openid\classes\model\openid\user.php [ 7 ]
+2010-12-30 13:52:27 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 13:53:22 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 14:07:47 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 14:08:32 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 14:08:33 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 14:08:33 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 14:08:33 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 14:08:34 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 14:09:07 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 14:11:59 --- ERROR: ErrorException [ 1 ]: Call to a member function model() on a non-object ~ MODPATH\jelly\classes\jelly\core.php [ 356 ]
+2010-12-30 15:11:25 --- ERROR: ErrorException [ 1 ]: Class 'CMS3\Auth\App' not found ~ MODPATH\cms3\auth_basic\classes\override\cms3\auth\method\basic.php [ 29 ]
+2010-12-30 15:11:26 --- ERROR: ErrorException [ 1 ]: Class 'CMS3\Auth\App' not found ~ MODPATH\cms3\auth_basic\classes\override\cms3\auth\method\basic.php [ 29 ]
+2010-12-30 15:11:26 --- ERROR: ErrorException [ 1 ]: Class 'CMS3\Auth\App' not found ~ MODPATH\cms3\auth_basic\classes\override\cms3\auth\method\basic.php [ 29 ]
+2010-12-30 15:11:27 --- ERROR: ErrorException [ 1 ]: Class 'CMS3\Auth\App' not found ~ MODPATH\cms3\auth_basic\classes\override\cms3\auth\method\basic.php [ 29 ]
