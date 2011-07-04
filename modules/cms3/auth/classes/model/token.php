@@ -14,10 +14,7 @@ class Model_Token extends Model {
 		
 		$meta->fields(array(
 			'id' 		=> ORM::field('primary'),
-			'user' 		=> ORM::field('belongsto', array(
-				'foreign'	=> 'user.id',
-				'column'	=> 'user_id', 
-			)),
+			'user' 		=> ORM::field('belongsto'),
 			//'user_id'	=> ORM::field('integer'),
 			'token'		=> ORM::field('string', array(
 				// TODO: uncomment this

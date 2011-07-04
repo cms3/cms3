@@ -36,7 +36,14 @@ class Editor_Grid extends Editor {
 				{
 					echo '<a href="/admin/' . $class . '/' . $item->{$field->name} . '">';
 				}
-				echo HTML::chars($item->{$field->name});
+				if (is_object($item->{$field->name}))
+				{
+					echo get_class($item->{$field->name});
+				}
+				else
+				{
+					echo HTML::chars($item->{$field->name});
+				}
 				if ($field->name == $this->_model->meta()->primary_key())
 				{ 
 					echo ' [edit]</a>';

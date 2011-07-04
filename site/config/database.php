@@ -21,7 +21,7 @@ return array
 			'username'   => 'root',
 			'password'   => '',
 			'persistent' => FALSE,
-			'database'   => 'cms3_new',
+			'database'   => 'cms3',
 		),
 		'table_prefix' => '',
 		'charset'      => 'utf8',
