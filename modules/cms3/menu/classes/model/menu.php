@@ -14,7 +14,7 @@ class Model_Menu extends Model {
 			'id'	=> ORM::field('primary'),
 			'title'	=> ORM::field('string_multilang'),
 			'items'	=> ORM::field('hasmany',
-				array('foreign' => 'cms3\menu\item.menu_id')
+				array('foreign' => 'item.menu_id')
 			),
 		));
    }

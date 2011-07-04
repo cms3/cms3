@@ -9,8 +9,6 @@ use CMS3\Engine\ORM_Meta;
 use CMS3\Engine\Request;
 
 class Model_Item extends Model {
-
-	private $params_hash = NULL;
 	
 	public static function initialize(ORM_Meta $meta)
 	{
@@ -19,7 +17,7 @@ class Model_Item extends Model {
 			'menu'					=> ORM::field('belongsto'),
 			'parent_id'				=> ORM::field('integer'),
 			'route'					=> ORM::field('belongsto',
-				array('foreign' => 'cms3\engine\route.:primary_key')
+				array('namespace' => 'cms3\engine')
 			),
 			'route_id'				=> ORM::field('integer'),
 			'uri'					=> ORM::field('string'),
@@ -28,10 +26,11 @@ class Model_Item extends Model {
 			'ordering'				=> ORM::field('integer'),
 			'params'				=> ORM::field('params'),
 			'children'				=> ORM::field('hasmany',
-				array('foreign' => 'cms3\menu\item.parent_id')
+				array('foreign' => 'item.parent_id')
 			),
 		));
 	}
+	
 	public function get_uri()
 	{
 		if ($this->uri != '')
@@ -57,7 +56,7 @@ class Model_Item extends Model {
 		else
 		{
 			$params = (array) $this->params;
-			$params = App::instance()->implode_request_params($params); // Непонятно, нужно ли делать здесь implode
+			$params = App::instance()->implode_request_params($params); // TODO: Непонятно, нужно ли делать здесь implode
 
 			if (! count($params))
 			{
@@ -74,7 +73,6 @@ class Model_Item extends Model {
 			return true;
 		}
 	}
-	
 	
 	public function is_selected()
 	{

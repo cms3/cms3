@@ -29,7 +29,7 @@ class Model_Rule extends Model  {
 				)
 			),
 			'assert_condition' => ORM::field('belongsto',
-				array('model' => 'cms3\engine\condition')
+				array('foreign' => 'cms3\engine\condition')
 			),
 			'allow' => ORM::field('boolean'),
 		));
