@@ -13,6 +13,9 @@ class Model_Item extends Model {
 		$meta->fields(array(
 				'id'			=> ORM::field('primary'),
 				'state'			=> ORM::field('integer'),
+				'user'			=> ORM::field('belongsto',
+					array('foreign' => 'cms3\auth\user.:primary_key')
+				),
 				'title'			=> ORM::field('string_multilang'),
 				'text'			=> ORM::field('text_multilang'),
 			));
