@@ -16,7 +16,7 @@ class Model_Group extends Model implements \Acl_Role_Interface {
 			->fields(array(
 				'id' 			=> ORM::field('primary'),
 				'parent'		=> ORM::field('belongsto',
-					array('model' => 'cms3\acl\group')
+					array('foreign' => 'group')
 				),
 				'name' 			=> ORM::field('string_multilang'),
 				'ordering'		=> ORM::field('integer'),
