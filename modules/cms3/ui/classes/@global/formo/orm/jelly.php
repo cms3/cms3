@@ -505,7 +505,7 @@ class Formo_ORM_Jelly extends Formo_ORM {
 		// Also determine the value
 		if ( ! isset($options['value']))
 		{
-			$options['value'] = $this->model->$alias;
+			$options['value'] = $this->model->loaded() ? $this->model->$alias : NULL;
 		}
 
 		return $foreign_key;
