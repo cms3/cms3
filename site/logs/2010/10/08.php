@@ -1,8 +1,0 @@
-<?php defined('SYSPATH') or die('No direct script access.'); ?>
-
-2010-10-08 16:15:26 --- ERROR: Kohana_Request_Exception [ 0 ]: Unable to find a route to match the URI: shop/1/1,ч=1 ~ SYSPATH/classes\kohana\request.php [ 612 ]
-2010-10-08 17:42:10 --- ERROR: CMS3_Exception [ 0 ]: Format  doesn't supported ~ MODPATH/cms3\classes\cms3\document.php [ 26 ]
-2010-10-08 17:48:30 --- ERROR: ErrorException [ 2048 ]: call_user_func() expects parameter 1 to be a valid callback, non-static method Controller_Gallery::action_test() should not be called statically ~ MODPATH/cms3\classes\cms3\application.php [ 106 ]
-2010-10-08 17:51:52 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Kohana_Request, none given, called in G:\Data\Sites\home\cms3\www\modules\cms3\classes\cms3\application.php on line 106 and defined ~ SYSPATH/classes\kohana\controller.php [ 37 ]
-2010-10-08 17:51:53 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Kohana_Request, none given, called in G:\Data\Sites\home\cms3\www\modules\cms3\classes\cms3\application.php on line 106 and defined ~ SYSPATH/classes\kohana\controller.php [ 37 ]
-2010-10-08 17:51:54 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Kohana_Request, none given, called in G:\Data\Sites\home\cms3\www\modules\cms3\classes\cms3\application.php on line 106 and defined ~ SYSPATH/classes\kohana\controller.php [ 37 ]
