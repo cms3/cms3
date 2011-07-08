@@ -336,14 +336,14 @@ abstract class Jelly_Core_Model
 				$this->_unmapped[$key] = $value;
 				continue;
 			}
-
+			
 			// Compare the new value with the current value
 			// If it's not changed, we don't need to continue
 			$value = $field->set($value);
 			$current_value = array_key_exists($field->name, $this->_changed)
 			               ? $this->_changed[$field->name]
 			               : $this->_original[$field->name];
-
+			
 			// Set an empty value to NULL for deleting relationships
 			if (($field instanceof Jelly_Field_HasMany OR $field instanceof Jelly_Field_ManyToMany) AND empty($value))
 			{

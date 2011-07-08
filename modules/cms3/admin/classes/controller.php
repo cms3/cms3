@@ -50,6 +50,7 @@ class Controller extends Controller_Component {
 			//$model->load_values(array('id' => $params['form']['id']));
 			$model = $model->query($params['form']['id'])->select(); // TODO: Не загружать модель при сохранении
 		}
+		unset($params['form']['model']);
 		$model->set($params['form']);
 		$model->save();
 		

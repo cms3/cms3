@@ -141,3 +141,4 @@ echo \CMS3\Engine\Request::factory()
 	->send_headers()
 	->body();
 
+	//print_r(CMS3::$_paths_cache);

@@ -70,7 +70,7 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 			// Do we even have to update anything in the row?
 			if ($values)
 			{
-				Jelly::query($this, $key)
+				ORM::query($this, $key)
 					 ->set($values)
 					 ->update();
 			}

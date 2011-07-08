@@ -189,7 +189,6 @@ abstract class Template {
 	
 	public static function detect_engine($theme, $template, $format, $tpl_paths, &$filename_out)
 	{
-			
 		$engines = array();
 		$search_paths = array();
 		$paths = static::_get_theme_paths();

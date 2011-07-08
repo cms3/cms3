@@ -27,7 +27,7 @@ return array
 	// ORM driver to use
 	'orm_driver'             => 'Formo_ORM_Jelly',
 	// Config file for the ORM driver
-	'orm_config'             => 'formo_kohana',
+	'orm_config'             => 'formo_jelly',
 	// If set to true, all Validate helper functions are auto-preceded
 	// by :value if it's not explicitly set
 	'validate_compatible'    => TRUE,
