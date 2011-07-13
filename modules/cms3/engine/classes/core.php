@@ -3,6 +3,14 @@
 namespace CMS3\Engine;
 
 class Core extends \Kohana {
+
+	public static function run()
+	{
+		echo Request::factory()
+			->execute()
+			->send_headers()
+			->body();
+	}
 	
 	public static function modules(array $modules = NULL)
 	{
@@ -121,7 +129,6 @@ class Core extends \Kohana {
 		list($class_name, $namespace) = static::_parse_namespace($class);
 		$file = str_replace('_', DIRECTORY_SEPARATOR, strtolower($class_name));
 		
-		//echo '<br>' . $class;
 		$file_location = static::find_entity_file($file, $namespace, 'classes');
 
 		if (is_file($file_location))
@@ -139,7 +146,7 @@ class Core extends \Kohana {
 	
 	public static function find_entity_file($name, $namespace, $group, $ext = NULL)
 	{
-		$paths = static::_get_possible_paths($namespace, $group);
+		$paths = static::get_possible_paths($namespace, $group);
 
 		return static::find_file('', $name, $ext, FALSE, $paths);
 	}
@@ -172,27 +179,8 @@ class Core extends \Kohana {
 		return $modules;
 	}
 	
-	protected static function _parse_namespace($entity)
-	{
-		$parts = explode('\\', $entity);
-		
-		return array(
-			array_pop($parts),
-			implode('\\', $parts)
-		);
-	}
-	
-	public static $_paths_cache = array();
-	
-	protected static function _get_possible_paths($namespace, $group)
+	public static function get_possible_paths($namespace, $group)
 	{	
-		$cache_ns = $namespace ? $namespace : 'global';
-		if (isset(static::$_paths_cache[strtolower($cache_ns)][strtolower($group)]))
-		{
-			//print_r(static::$_paths_cache[strtolower($cache_ns)][strtolower($group)]);
-			//return static::$_paths_cache[strtolower($cache_ns)][strtolower($group)];
-		}
-		
 		$all_modules = static::get_module_names();
 		$global_modules = static::get_module_names('global');
 		$ns_modules = static::get_module_names('namespace');
@@ -214,11 +202,10 @@ class Core extends \Kohana {
 		}
 
 		$paths[] = \APPPATH . $group;
+		/* --- */
 		$paths = array_merge($paths, $override_paths, $native_paths);
 		$paths[] = \SYSPATH . $group;
 		$paths = array_merge($paths, $extend_paths);
-		
-		static::$_paths_cache[strtolower($cache_ns)][strtolower($group)] = $paths;
 		
 		return $paths;
 	}
@@ -239,4 +226,13 @@ class Core extends \Kohana {
 		return $paths;
 	}
 	
+	protected static function _parse_namespace($entity)
+	{
+		$parts = explode('\\', $entity);
+		
+		return array(
+			array_pop($parts),
+			implode('\\', $parts)
+		);
+	}
 }

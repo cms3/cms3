@@ -2,6 +2,8 @@
 
 namespace CMS3\Engine;
 
+use CMS3\Template\Template;
+
 class View extends \View {
 
 	public static function factory($file = NULL, array $data = NULL)

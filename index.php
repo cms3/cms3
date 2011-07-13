@@ -1,5 +1,10 @@
 <?php
 
+if (! defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 5 || (PHP_MAJOR_VERSION == 5 && PHP_MINOR_VERSION < 3))
+{
+	die('Only PHP 5.3+ supported. Your PHP version is ' . phpversion());
+}
+
 /**
  * The directory in which your application specific resources are located.
  * The application directory must contain the bootstrap.php file.
@@ -136,9 +141,4 @@ require DOCROOT.'cms3.init'.EXT;
  * If no source is specified, the URI will be automatically detected.
  */
 
-echo \CMS3\Engine\Request::factory()
-	->execute()
-	->send_headers()
-	->body();
-
-	//print_r(CMS3::$_paths_cache);
+CMS3::run();

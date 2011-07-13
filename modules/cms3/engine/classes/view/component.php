@@ -2,6 +2,8 @@
 
 namespace CMS3\Engine;
 
+use CMS3\Template\Template;
+
 class View_Component extends View {
 		
 	protected $_component = NULL;

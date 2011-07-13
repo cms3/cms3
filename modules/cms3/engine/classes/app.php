@@ -2,6 +2,8 @@
 
 namespace CMS3\Engine;
 
+use CMS3\Template\Template;
+
 class App {
 
 	public $document = NULL;
@@ -218,7 +220,7 @@ class App {
 		$routes = Route::all();
 		unset($routes['default']);
 		unset($routes['action']);
-		
+
 		$this->document = Document::factory($format);
 		$this->document->language = $this->language;
 		$this->document->charset = Core::$charset;
@@ -238,13 +240,16 @@ class App {
 				break;
 			}
 		}
-
+		
 		if (! $found && $path != '')
 		{
 			throw new HTTP_Exception_404();
 		}
 		
 		$this->document->current_theme = $this->detect_theme();
+		echo \CMS3\Template\Template::display('test', array('data' => 'string'));
+		exit;
+		
 		$this->document->render();
 		
 		if (isset($benchmark))

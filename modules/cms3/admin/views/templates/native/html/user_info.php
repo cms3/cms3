@@ -1,1 +1,0 @@
-<form action="/action/cms3/auth/controller/logout" method="post">Вы вошли как <b><?= $this->user['params']['first_name'] ?></b>&nbsp;<input type="submit" value="Выйти" /><input type="hidden" name="return" value="L2FkbWlu" /></form>

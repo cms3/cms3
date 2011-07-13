@@ -9,6 +9,8 @@
 
 namespace CMS3\Engine;
 
+use CMS3\Template\Template;
+
 abstract class Document {
 
 	/**

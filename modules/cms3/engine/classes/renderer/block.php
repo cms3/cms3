@@ -1,6 +1,8 @@
 <?php
 
 namespace CMS3\Engine;
+
+use CMS3\Template\Template;
  
 class Renderer_Block extends Renderer {
 
