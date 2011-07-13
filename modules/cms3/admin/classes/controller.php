@@ -123,7 +123,7 @@ class Controller extends Controller_Component {
 				$user_info = '';
 			}
 
-			echo Template::render('admin', array_merge($params, array(
+			echo Template::display('admin', array_merge($params, array(
 				'ui' => $this->ui,
 				'menu' => $menu,
 				'user_info' => $user_info

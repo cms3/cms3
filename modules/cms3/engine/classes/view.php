@@ -2,8 +2,6 @@
 
 namespace CMS3\Engine;
 
-use CMS3\Template\Template;
-
 class View extends \View {
 
 	public static function factory($file = NULL, array $data = NULL)
@@ -13,7 +11,7 @@ class View extends \View {
 	
 	protected static function capture($view_filename, array $view_data = array())
 	{
-		return Template::render($view_filename, $view_data);
+		return Template::display($view_filename, $view_data);
 	}	
 	
 	public function set_filename($file)

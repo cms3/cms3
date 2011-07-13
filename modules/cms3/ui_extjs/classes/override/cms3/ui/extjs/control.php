@@ -29,7 +29,7 @@ abstract class ExtJS_Control extends Control {
 	public function render($template, array $data = array())
 	{
 		$file = $template . ExtJS::EXT;
-		return Template::render($file, $data);
+		return Template::display($file, $data);
 	}
 	*/
 	

@@ -2,8 +2,6 @@
 
 namespace CMS3\Engine;
 
-use CMS3\Template\Template;
-
 class App {
 
 	public $document = NULL;
@@ -247,9 +245,6 @@ class App {
 		}
 		
 		$this->document->current_theme = $this->detect_theme();
-		echo \CMS3\Template\Template::display('test', array('data' => 'string'));
-		exit;
-		
 		$this->document->render();
 		
 		if (isset($benchmark))

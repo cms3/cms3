@@ -9,8 +9,6 @@
 
 namespace CMS3\Engine;
 
-use CMS3\Template\Template;
-
 abstract class Document {
 
 	/**
@@ -68,7 +66,7 @@ abstract class Document {
 	{
 		$this->_set_headers();
 	  
-		echo Template::render($template);
+		echo Template::display($template);
 	}
 	
 	/**
