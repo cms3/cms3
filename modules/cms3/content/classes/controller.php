@@ -27,6 +27,6 @@ class Controller extends Controller_Component {
 			throw new \HTTP_Exception_404();
 		}
 		
-		echo $this->component->get_view('article', array('title' => $item->title, 'text' => $item->text));
+		echo $this->component->get_view('article', array('title' => $item->title, 'text' => $item->text, 'user' => $item->user));
 	}
 }
