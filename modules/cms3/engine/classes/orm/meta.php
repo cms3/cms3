@@ -4,6 +4,8 @@ namespace CMS3\Engine;
 
 class ORM_Meta extends \Jelly_Core_Meta {
 	
+	public $data = NULL;
+
 	public function finalize($model)
 	{
 		if ($this->_initialized)
@@ -36,10 +38,7 @@ class ORM_Meta extends \Jelly_Core_Meta {
 		if (empty($this->_table))
 		{
 			$this->_table = \Inflector::plural($class);
-			if ($module != NULL)
-			{
-				$this->_table = $module . '_' . $this->_table;
-			}
+			$this->_table = DB::add_table_module($this->_table, $module);
 		}
 		
 		// See if we have a special builder class to use
@@ -109,5 +108,16 @@ class ORM_Meta extends \Jelly_Core_Meta {
 		
 		// Final meta callback
 		$this->_events->trigger('meta.after_finalize', $this);
+	}
+	
+	// Allow to override table every time
+	public function table($value = NULL)
+	{
+		if (func_num_args() !== 0)
+		{
+			$this->_table = $value;
+		}
+
+		return $this->_table;
 	}
 }

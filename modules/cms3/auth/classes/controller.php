@@ -40,8 +40,7 @@ class Controller extends Controller_Component {
 		$user = \Auth::instance()->current_user();
 		if (is_object($user))
 		{
-			$user_data = $user->as_array();
-			$user_data['params'] = $user->get_params_array();
+			$user_data = $user->as_array(NULL, TRUE);
 
 			echo $this->component->get_view("form/logout", array(
 				'user'		=> $user_data,

@@ -41,5 +41,5 @@ class View extends \View {
 		return $this;
 	}
 	
-	protected function prepare_data($data) {}
+	protected function _prepare_data($data) {}
 }

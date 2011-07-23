@@ -196,7 +196,6 @@ class App {
 		$get_params = $this->fetch_query_params();
 		
 		$lang_list = $this->_languages->as_array('short_code');
-		//$doc->tpl = $path;
 
 		if (! empty($language) && isset($lang_list[$language]))
 		{
@@ -243,7 +242,16 @@ class App {
 		{
 			throw new HTTP_Exception_404();
 		}
+		/*
+		$user = Model::factory('cms3\auth\user')->query(1)->execute();
 		
+		foreach ($user->properties as $name => $value)
+		{
+			echo "$name = $value <br />";
+		}
+
+		exit;
+		*/
 		$this->document->current_theme = $this->detect_theme();
 		$this->document->render();
 		

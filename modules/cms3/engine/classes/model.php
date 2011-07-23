@@ -5,7 +5,7 @@ namespace CMS3\Engine;
 class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 
 	public $language;
-	
+
 	public function __construct($key = NULL)
 	{
 		$this->language = App::instance()->language;
@@ -112,6 +112,17 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		return $this;
 	}
 	
+	public function load_values($values, $partial = FALSE)
+	{
+		$result = parent::load_values($values);
+		if ($partial)
+		{
+			$this->_loaded = FALSE;
+		}
+		
+		return $result;
+	}
+	
 	public static function factory($model = NULL, $key = NULL)
 	{
 		if ($model === NULL)
@@ -129,6 +140,42 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		}
 		
 		return ORM::factory($model, $key);
+	}
+	
+	public function as_array(array $fields = NULL, $recursive = FALSE)
+	{
+		$fields = $fields ? $fields : array_keys($this->_meta->fields());
+		$result = array();
+
+		foreach($fields as $field)
+		{
+			$result[$field] = $this->__get($field);
+			if ($recursive && is_object($result[$field]) && method_exists($result[$field], 'as_array'))
+			{
+				$result[$field] = $result[$field]->as_array(NULL, TRUE);
+			}
+		}
+
+		return $result;
+	}
+	
+	public function load($key)
+	{
+		$result = $this->query($key)
+		     ->as_object(FALSE)
+		     ->select();
+
+		if ($result)
+		{
+			$this->load_values($result);
+		}
+		
+		return $this->_loaded;
+	}
+	
+	public static function extend_fields(ORM_Meta $meta, array $fields)
+	{
+		$meta->fields($meta->fields() + $fields);
 	}
 	
 	public function query($key = NULL)
