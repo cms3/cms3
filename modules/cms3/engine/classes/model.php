@@ -62,6 +62,11 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 			{
 				$saveable[$column] = $value;
 			}
+			elseif (($field instanceof Field_Supports_Change) && $field->changed())
+			{
+				echo $column;
+				$saveable[$column] = $value;
+			}
 		}
 
 		// If we have a key, we're updating
@@ -93,18 +98,18 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 			$this->set($column, $value);
 		}
 
+		// Save the relations
+		foreach ($saveable as $field => $value)
+		{
+			$this->_meta->field($field)->save($this, $value, (bool) $key);
+		}
+		
 		// Set the changed data back as original
 		$this->_original = array_merge($this->_original, $this->_changed);
 
 		// We're good!
 		$this->_loaded = $this->_saved = TRUE;
 		$this->_retrieved = $this->_changed = array();
-
-		// Save the relations
-		foreach ($saveable as $field => $value)
-		{
-			$this->_meta->field($field)->save($this, $value, (bool) $key);
-		}
 
 		// Trigger post-save callback
 		$this->_meta->events()->trigger('model.after_save', $this);
@@ -171,6 +176,11 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		}
 		
 		return $this->_loaded;
+	}
+	
+	public function change($field = NULL)
+	{
+		$this->_changed[$field] = $this->$field;	
 	}
 	
 	public static function extend_fields(ORM_Meta $meta, array $fields)
