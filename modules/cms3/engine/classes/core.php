@@ -202,7 +202,6 @@ class Core extends \Kohana {
 		}
 
 		$paths[] = \APPPATH . $group;
-		/* --- */
 		$paths = array_merge($paths, $override_paths, $native_paths);
 		$paths[] = \SYSPATH . $group;
 		$paths = array_merge($paths, $extend_paths);

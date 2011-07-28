@@ -243,17 +243,6 @@ class App {
 			throw new HTTP_Exception_404();
 		}
 		
-		$user = Model::factory('cms3\auth\user')->query(1)->execute();
-		//$user->properties->age = 25; 
-		$user->save();
-		
-		foreach ($user->properties as $name => $value)
-		{
-			echo "$name = $value <br />";
-		}
-
-		exit;
-		
 		$this->document->current_theme = $this->detect_theme();
 		$this->document->render();
 		
