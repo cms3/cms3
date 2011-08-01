@@ -25,11 +25,11 @@ abstract class Singleton {
 	*/
 	public static function instance()
 	{
-		if (self::$_instance === NULL)
+		if (static::$_instance === NULL)
 		{
-			self::$_instance = new static();
+			static::$_instance = new static();
 		}
-		return self::$_instance;
+		return static::$_instance;
 	}
 	
 	/**

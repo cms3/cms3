@@ -242,7 +242,7 @@ class App {
 		{
 			throw new HTTP_Exception_404();
 		}
-		
+
 		$this->document->current_theme = $this->detect_theme();
 		$this->document->render();
 		
