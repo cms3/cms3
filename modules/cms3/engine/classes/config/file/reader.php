@@ -2,36 +2,36 @@
 
 namespace CMS3\Engine;
 
-class Config_File extends \Config_Reader {
+class Config_File_Reader implements \Kohana_Config_Reader {
 
-	// Configuration group name
-	protected $_configuration_group;
+	/**
+	 * The directory where config files are located
+	 * @var string
+	 */
+	protected $_directory = '';
 
-	// Has the config group changed?
-	protected $_configuration_modified = FALSE;
-
+	/**
+	 * Creates a new file reader using the given directory as a config source
+	 *
+	 * @param string Configuration directory to search
+	 */
 	public function __construct($directory = 'config')
 	{
 		// Set the configuration directory name
 		$this->_directory = trim($directory, '/');
-
-		// Load the empty array
-		parent::__construct();
 	}
 
-	public function load($group, array $config = NULL)
+	public function load($group)
 	{
-		$parts = explode('\\', $group);
-		$module = array_pop($parts);
-		$ns = array_shift($parts);
+		$config = array();
+
+		$module = NS::extract_module_name($group);
+		$ns = NS::extract_namespace($group);
 		
 		$dir = $module . DIRECTORY_SEPARATOR . $this->_directory . DIRECTORY_SEPARATOR . $ns;
 		
 		if ($files = \CMS3::find_file($dir, $module, NULL, TRUE))
 		{
-			// Initialize the config array
-			$config = array();
-
 			foreach ($files as $file)
 			{
 				// Merge each file to the configuration array
@@ -39,7 +39,7 @@ class Config_File extends \Config_Reader {
 			}
 		}
 
-		return parent::load($group, $config);
+		return $config;
 	}
 
 }

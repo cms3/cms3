@@ -22,7 +22,7 @@ abstract class Component {
 	
 	protected function _load_config()
 	{
-		$this->_config = \CMS3::config($this->name);
+		$this->_config = \CMS3::$config->load($this->name);
 	}
 	
 	public function explode_params($params)

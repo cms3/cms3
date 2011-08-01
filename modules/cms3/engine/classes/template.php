@@ -194,7 +194,8 @@ class Template {
 		$paths = \CMS3::get_possible_paths($namespace, 'views');
 
 		//TODO: найти более красивое решение, это похоже на костыль
-		array_splice($paths, 1, 0, \THEMESPATH . $this->theme . DIRECTORY_SEPARATOR . 'views');
+		$theme_dir = \DOCROOT . 'themes' . DIRECTORY_SEPARATOR . $this->theme . DIRECTORY_SEPARATOR . 'views';
+		array_splice($paths, 1, 0, $theme_dir);
 		
 		foreach ($paths as $path)
 		{

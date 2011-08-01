@@ -28,9 +28,6 @@ $modules = 'modules';
  */
 $system = 'system';
 
-/******/
-$themes = 'themes';
-
 /**
  * The default extension of resource files. If you change this, all resources
  * must be renamed to use the new extension.
@@ -64,15 +61,15 @@ error_reporting(E_ALL | E_STRICT);
 // Set the full path to the docroot
 define('DOCROOT', realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR);
 
-// Make the application relative to the docroot
+// Make the application relative to the docroot, for symlink'd index.php
 if ( ! is_dir($application) AND is_dir(DOCROOT.$application))
 	$application = DOCROOT.$application;
 
-// Make the modules relative to the docroot
+// Make the modules relative to the docroot, for symlink'd index.php
 if ( ! is_dir($modules) AND is_dir(DOCROOT.$modules))
 	$modules = DOCROOT.$modules;
 
-// Make the system relative to the docroot
+// Make the system relative to the docroot, for symlink'd index.php
 if ( ! is_dir($system) AND is_dir(DOCROOT.$system))
 	$system = DOCROOT.$system;
 
@@ -81,41 +78,8 @@ define('APPPATH', realpath($application).DIRECTORY_SEPARATOR);
 define('MODPATH', realpath($modules).DIRECTORY_SEPARATOR);
 define('SYSPATH', realpath($system).DIRECTORY_SEPARATOR);
 
-define('THEMESPATH', realpath($themes).DIRECTORY_SEPARATOR);
-
 // Clean up the configuration vars
 unset($application, $modules, $system);
-
-if (file_exists('install'.EXT))
-{
-	// Load the installation check
-	return include 'install'.EXT;
-}
-
-// Load the core Kohana class
-require SYSPATH.'classes/kohana/core'.EXT;
-
-if (is_file(APPPATH.'classes/kohana'.EXT))
-{
-	// App extends the core
-	require APPPATH.'classes/kohana'.EXT;
-}
-else
-{
-	// Load empty core extension
-	require SYSPATH.'classes/kohana'.EXT;
-}
-
-require MODPATH.'cms3/engine/classes/core'.EXT;
-
-if (is_file(APPPATH.'classes/cms3'.EXT))
-{
-	require APPPATH.'classes/cms3'.EXT;
-}
-else
-{
-	require MODPATH.'cms3/engine/classes/@global/cms3'.EXT;
-}
 
 /**
  * Define the start time of the application, used for profiling.

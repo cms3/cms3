@@ -37,6 +37,11 @@ abstract class Jelly_Core_Field_File extends Jelly_Field implements Jelly_Field_
 	protected $_filename;
 
 	/**
+	 * @var  boolean  file is automatically deleted if set to TRUE.
+	 */
+	public $delete_file = FALSE;
+
+	/**
 	 * Ensures there is a path for saving set.
 	 *
 	 * @param  array  $options
@@ -91,6 +96,31 @@ abstract class Jelly_Core_Field_File extends Jelly_Field implements Jelly_Field_
 	}
 
 	/**
+	 * Deletes the file if automatic file deletion
+	 * is enabled.
+	 *
+	 * @param   Jelly_Model  $model
+	 * @param   mixed        $key
+	 * @return  void
+	 */
+	public function delete($model, $key)
+	{
+		// Set the field name
+		$field = $this->name;
+
+		// Set file
+		$file = $this->path.$model->$field;
+
+		if ($this->delete_file AND is_file($file))
+		{
+			// Delete file
+			unlink($file);
+		}
+
+		return;
+	}
+
+	/**
 	 * Logic to deal with uploading the image file and generating thumbnails according to
 	 * what has been specified in the $thumbnails array.
 	 *
@@ -101,10 +131,13 @@ abstract class Jelly_Core_Field_File extends Jelly_Field implements Jelly_Field_
 	 */
 	public function _upload(Validation $validation, $model, $field)
 	{
-		if ( ! is_array($validation[$field]) OR ! isset($validation[$field]['name']) OR empty($validation[$field]['name']))
+		// Get the file from the validation object
+		$file = $validation[$field];
+
+		if ( ! is_array($file) OR ! isset($file['name']) OR empty($file['name']))
 		{
 			// Nothing uploaded
-			return;
+			return FALSE;
 		}
 
 		if ($validation->errors())
@@ -113,11 +146,8 @@ abstract class Jelly_Core_Field_File extends Jelly_Field implements Jelly_Field_
 			return FALSE;
 		}
 
-		// Get the image from the validation object
-		$file = $validation[$field];
-
 		// Check if it's a valid file
-		if ( ! is_array($file) OR ! Upload::valid($file) OR ! Upload::not_empty($file))
+		if ( ! Upload::not_empty($file) OR ! Upload::valid($file))
 		{
 			// Add error
 			$validation->error($field, 'invalid_file');

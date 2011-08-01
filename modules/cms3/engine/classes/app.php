@@ -36,9 +36,9 @@ class App {
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
 
-		Core::$config->attach(new Config_File);
+		Core::$config->attach(new Config_File_Reader);
   
-		$this->_config = Core::config('cms3\core');
+		$this->_config = \CMS3::$config->load('cms3\core');
 		
 		\Cookie::$salt = $this->get_cfg('cookie_salt');
   		

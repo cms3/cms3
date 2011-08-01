@@ -2,6 +2,31 @@
 
 //-- Environment setup --------------------------------------------------------
 
+// Load the core Kohana class
+require SYSPATH.'classes/kohana/core'.EXT;
+
+if (is_file(APPPATH.'classes/kohana'.EXT))
+{
+	// App extends the core
+	require APPPATH.'classes/kohana'.EXT;
+}
+else
+{
+	// Load empty core extension
+	require SYSPATH.'classes/kohana'.EXT;
+}
+
+require MODPATH.'cms3/engine/classes/core'.EXT;
+
+if (is_file(APPPATH.'classes/cms3'.EXT))
+{
+	require APPPATH.'classes/cms3'.EXT;
+}
+else
+{
+	require MODPATH.'cms3/engine/classes/@global/cms3'.EXT;
+}
+
 /**
  * Enable the Kohana auto-loader.
  *
@@ -25,13 +50,16 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
 I18n::lang('en-us');
 
 /**
- * Set Kohana::$environment if $_ENV['KOHANA_ENV'] has been supplied.
- * 
+ * Set Kohana::$environment if a 'KOHANA_ENV' environment variable has been supplied.
+ *
+ * Note: If you supply an invalid environment name, a PHP warning will be thrown
+ * saying "Couldn't find constant Kohana::<INVALID_ENV_NAME>"
  */
-if (isset($_ENV['KOHANA_ENV']))
+if (isset($_SERVER['KOHANA_ENV']))
 {
-	Kohana::$environment = $_ENV['KOHANA_ENV'];
+	Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
 }
+
 
 /**
  * Initialize Kohana, setting the default options.
@@ -63,8 +91,8 @@ Kohana::$config->attach(new Kohana_Config_File);
  */
 CMS3::modules(array(
 	'cms3\engine',
+	'cms3\expression',
 	'database',
-	'expression',
 	'formo',
 	'jelly',
 	'acl',

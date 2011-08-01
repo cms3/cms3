@@ -97,7 +97,7 @@ class Core extends \Kohana {
 		
 		return $found;
 	}
-	
+	/*
 	public static function config($group)
 	{
 		static $config;
@@ -123,7 +123,7 @@ class Core extends \Kohana {
 			return $config[$group];
 		}
 	}
-	
+	*/
 	public static function auto_load($class)
 	{
 		list($class_name, $namespace) = static::_parse_namespace($class);

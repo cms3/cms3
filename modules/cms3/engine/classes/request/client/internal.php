@@ -2,14 +2,11 @@
 
 namespace CMS3\Engine;
 
-class Request_Client extends \Kohana_Request_Client_Internal {
-
-	public function execute(Request $request)
+class Request_Client_Internal extends \Kohana_Request_Client_Internal
+{
+	
+	public function execute_request(Request $request)
 	{
-		// Check for cache existance
-		if ($this->_cache instanceof Cache AND ($response = $this->cache_response($request)) instanceof \Response)
-			return $response;
-
 		// Create the class prefix
 		$prefix = 'controller_';
 
@@ -24,8 +21,8 @@ class Request_Client extends \Kohana_Request_Client_Internal {
 			// Add the directory name to the class prefix
 			$prefix .= str_replace(array('\\', '/'), '_', trim($directory, '/')).'_';
 		}
-		
-		if (\CMS3::$profiling)
+
+		if (\Kohana::$profiling)
 		{
 			// Set the benchmark name
 			$benchmark = '"'.$request->uri().'"';
@@ -51,11 +48,8 @@ class Request_Client extends \Kohana_Request_Client_Internal {
 
 		try
 		{
-			// Initiate response time
-			$this->_response_time = time();
-			
 			$class_name = NS::add_class_prefix($controller, $prefix);
-
+		
 			if ( ! class_exists($class_name))
 			{
 				throw new \HTTP_Exception_404('The requested URL :uri was not found on this server.',
@@ -67,7 +61,7 @@ class Request_Client extends \Kohana_Request_Client_Internal {
 
 			if ($class->isAbstract())
 			{
-				throw new Exception('Cannot create instances of abstract :controller',
+				throw new Kohana_Exception('Cannot create instances of abstract :controller',
 					array(':controller' => $class_name));
 			}
 
@@ -89,31 +83,18 @@ class Request_Client extends \Kohana_Request_Client_Internal {
 			}
 
 			$method = $class->getMethod('action_'.$action);
-
-			/**
-			 * Execute the main action with the parameters
-			 *
-			 * @deprecated $params passing is deprecated since version 3.1
-			 *             will be removed in 3.2.
-			 */
-			$method->invokeArgs($controller, $params);
+			$method->invoke($controller);
 
 			// Execute the "after action" method
 			$class->getMethod('after')->invoke($controller);
-
-			// Stop response time
-			$this->_response_time = (time() - $this->_response_time);
-
-			// Add the default Content-Type header to initial request if not present
-			if ($initial_request AND ! $request->headers('content-type'))
-			{
-				$request->headers('content-type', \CMS3::$content_type.'; charset='.\CMS3::$charset);
-			}
 		}
-		catch (\Exception $e)
+		catch (Exception $e)
 		{
 			// Restore the previous request
-			Request::$current = $previous;
+			if ($previous instanceof Request)
+			{
+				Request::$current = $previous;
+			}
 
 			if (isset($benchmark))
 			{
@@ -132,12 +113,6 @@ class Request_Client extends \Kohana_Request_Client_Internal {
 		{
 			// Stop the benchmark
 			\Profiler::stop($benchmark);
-		}
-
-		// Cache the response if cache is available
-		if ($this->_cache instanceof Cache)
-		{
-			$this->cache_response($request, $request->response());
 		}
 
 		// Return the response

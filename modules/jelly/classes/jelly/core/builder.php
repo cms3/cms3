@@ -64,6 +64,11 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 	protected $_alias_cache = array();
 
 	/**
+	 * @var  array  With cache
+	 */
+	protected $_with_cache = array();
+
+	/**
 	 * Constructs a new Jelly_Builder instance.
 	 *
 	 * $model is not actually allowed to be NULL. It has
@@ -702,7 +707,7 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 	 * It is possible to join a relationship to a join using
 	 * the following syntax:
 	 *
-	 * $post->join("author:role");
+	 * $post->with('author:role');
 	 *
 	 * Assuming a post belongs to an author and an author has one role.
 	 *
@@ -710,22 +715,33 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 	 * been made, so joining a model twice will result in
 	 * a failed query.
 	 *
-	 * @param   string  $relationship
-	 * @return Jelly_Builder
+	 * @param   string         $relationship
+	 * @return  Jelly_Builder
 	 */
 	public function with($relationship)
 	{
 		// Ensure the main model is selected
 		$this->select_column($this->_model.'.*');
 
-		// We'll start with the first one and work our way down
+		// Get paths from relationship
 		$paths = explode(":", $relationship);
-		$parent = $this->_meta->model();
+
+		// Set parent model
+		$parent_model = $this->_meta->model();
+
+		// Set origin table
+		$origin_table = $this->_meta->table();
+
+		// Create an empty chain
 		$chain = '';
 
-		foreach ($paths as $iteration => $path)
+		// Reference the with cache
+		$_with = & $this->_with_cache;
+
+		foreach ($paths as $path)
 		{
-			$field = Jelly::meta($parent)->field($path);
+			// Load the field from the parent model
+			$field = Jelly::meta($parent_model)->field($path);
 
 			if ( ! $field->supports(Jelly_Field::WITH))
 			{
@@ -733,38 +749,55 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 				break;
 			}
 
-			// If we're on the first iteration, the parent path is just the
-			// name of the model, otherwise we use the chain
-			if ($iteration === 0)
-			{
-				$prev_chain = $parent;
-			}
-			else
-			{
-				$prev_chain = $chain;
-			}
-
-			$chain .= ":".$field->name;
-
-			// Set the next iteration's parent
 			$model = $field->foreign['model'];
-			$meta = Jelly::meta($model);
 
-			// Select all of the model's fields
-			foreach ($meta->fields() as $alias => $select)
+			// Check we haven't already joined this field on this query
+			if ( ! isset($_with[$path]))
 			{
-				if ($select->in_db)
-				{
-					// We select from the field alias rather than the model to allow multiple joins to same model
-					$this->select_column($parent.':'.$field->name.'.'.$alias, $chain.':'.$alias);
-				}
-			}
+				$meta = Jelly::meta($model);
 
-			// Let the field finish the rest
-			$field->with($this);
+				// Build the table alias name
+				$table_alias = $origin_table.$chain.':'.$field->name;
+
+				// Pre-populate the alias cache with the correct relation name.
+				$this->_model_alias(array($model, $table_alias));
+
+				// Pretend to be a different model for the benefit of the foreign field
+				$_model_backup = $this->_model;
+				$field_model_backup = $field->model;
+				$field->model = $this->_model = $origin_table.$chain;
+
+				// Let the field join appropriately
+				$field->with($this);
+
+				// Take off our mask
+				$this->_model = $_model_backup;
+				$field->model = $field_model_backup;
+
+				// Build the field output alias
+				$field_alias_prefix = $chain.':'.$field->name;
+
+				// Select all of the model's fields
+				foreach ($meta->fields() as $alias => $select)
+				{
+					if ($select->in_db)
+					{
+						// We select from the field alias rather than the model to allow multiple joins to same model
+						$this->select_column($table_alias.'.'.$select->name, $field_alias_prefix.':'.$alias);
+					}
+				}
+
+			}
 
 			// Model now becomes the parent
-			$parent = $model;
+			$parent_model = $model;
+
+			// Add the current path to the relationship chain
+			$chain .= ':'.$path;
+
+			// We sink into this branch of the _with tree
+			$_with[$path] = isset($_with[$path]) ? $_with[$path] : array();
+			$_with = & $_with[$path];
 		}
 
 		return $this;
@@ -842,7 +875,19 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 		}
 
 		// Check to see if it's a known alias first
-		if (isset($this->_alias_cache[$model]))
+		if (isset($alias) and isset($this->_alias_cache[$alias]))
+		{
+			return $this->_alias_cache[$alias];
+		}
+
+		if (strpos($model, ':') === 0)
+		{
+			$tmp = $this->_model_alias($this->_model);
+
+			$model = $tmp[1].$model;
+		}
+
+		if ( ! isset($alias) and isset($this->_alias_cache[$model]))
 		{
 			return $this->_alias_cache[$model];
 		}
@@ -857,20 +902,19 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 				$alias = $alias ? $alias : $table;
 			}
 			// Joinable field was passed, use its model
-			else if (($pos = strpos($model, ':')) !== FALSE)
+			elseif (($pos = strpos($model, ':')) !== FALSE)
 			{
-				if ($pos !== 0)
+				$chain = explode(':', $model);
+
+				$parent = array_shift($chain);
+				while ( ! empty($chain))
 				{
-					list($parent, $field) = explode(':', $model, 2);
-				}
-				else
-				{
-					$field = substr($model, 1);
-					$parent = $this->_model;
+					$field = array_shift($chain);
+					$parent = Jelly::meta($parent)->field($field)->foreign['model'];
 				}
 
-				$alias = $alias ? $alias : $parent.':'.$field;
-				$model = Jelly::meta($parent)->field($field)->foreign['model'];
+				$alias = $alias ? $alias : $model;
+				$model = $parent;
 				$table = Jelly::meta($model)->table();
 			}
 			// Unknown Table
@@ -883,12 +927,8 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 
 			// Cache what we've found
 			$this->_model_cache[$original] = array($table, $alias, $model);
-			$this->_alias_cache[$alias]    = $this->_model_cache[$original];
+			$this->_alias_cache[$alias]    = & $this->_model_cache[$original];
 		}
-
-
-
-
 
 		return $this->_model_cache[$original];
 	}
@@ -1119,4 +1159,5 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 
 		return $db;
 	}
+
 } // End Jelly_Core_Builder

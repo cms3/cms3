@@ -1,0 +1,38 @@
+3600
+s:493:"
+
+<ul>
+	<li>
+		
+		<span class="selected">Админпанель</span>
+		
+  </li><li>
+		
+		<span class="selected">Главная</span>
+		<ul>
+	<li>
+		<a href="/shop/1">Категория</a>
+		
+		<ul>
+	<li>
+		<a href="/shop/1/1">Товар</a>
+		
+		
+  </li>
+</ul>
+  </li>
+</ul>
+  </li><li>
+		<a href="/gallery/1/2">Галерея</a>
+		
+		
+  </li><li>
+		<a href="/content/1">О магазине</a>
+		
+		
+  </li><li>
+		
+		<span class="selected">Очистить кэш</span>
+		
+  </li>
+</ul>";

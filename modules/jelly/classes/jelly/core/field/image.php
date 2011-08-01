@@ -115,38 +115,83 @@ abstract class Jelly_Core_Field_Image extends Jelly_Field_File {
 	}
 
 	/**
+	 * Deletes the image and the thumbnails if automatic file deletion
+	 * is enabled.
+	 *
+	 * @param   Jelly_Model  $model
+	 * @param   mixed        $key
+	 * @return  void
+	 */
+	public function delete($model, $key)
+	{
+		if ( ! $this->delete_file)
+		{
+			// Stop here if automatic deletion is disabled
+			return;
+		}
+
+		// Set the field name
+		$field = $this->name;
+
+		// Set file
+		$file = $this->path.$model->$field;
+
+		if (is_file($file))
+		{
+			// Delete file
+			unlink($file);
+		}
+
+		// Set thumbnails
+		$thumbnails = $model->meta()->field($field)->thumbnails;
+
+		foreach ($thumbnails as $thumbnail)
+		{
+			// Set file name
+			$file = $thumbnail['prefix'].$model->$field;
+
+			if (isset($thumbnail['path']))
+			{
+				// Add path to file name if set
+				$file = $thumbnail['path'].$file;
+			}
+			else
+			{
+				// Add the path of the original image
+				$file = $this->path.$file;
+			}
+
+			if (is_file($file))
+			{
+				// Delete file
+				unlink($file);
+			}
+		}
+
+		return;
+	}
+
+	/**
 	 * Logic to deal with uploading the image file and generating thumbnails according to
 	 * what has been specified in the $thumbnails array.
 	 *
 	 * @param   Validation   $validation
 	 * @param   Jelly_Model  $model
 	 * @param   string       $field
-	 * @return  void
+	 * @return  bool
 	 * @uses    Image::factory
 	 */
 	public function _upload(Validation $validation, $model, $field)
 	{
 		if ( ! parent::_upload($validation, $model, $field))
 		{
-			// Save the original untouched
-			return;
+			// Couldn't save the original untouched
+			return FALSE;
 		}
 
 		// Set the filename and the source
 		$filename = $this->_filename;
 		$source   = $this->path.$filename;
-
-		// Create the image from the source
-		$original = Image::factory($source, $this->driver);
-
-		if ($this->transformations !== NULL)
-		{
-			// Process image transformations
-			$image = $this->_transform($original, $this->transformations);
-
-			// Save the image
-			$image->save($source, $this->quality);
-		}
 
 		if ($model->changed($field))
 		{
@@ -165,13 +210,30 @@ abstract class Jelly_Core_Field_Image extends Jelly_Field_File {
 				// Delete old file if necessary
 				$this->_delete_old_file($thumbnail['prefix'].$model->original($field), $thumbnail['path']);
 
+				// Set thumb
+				$thumb = Image::factory($source, $this->driver);
+
 				// Process thumbnail transformations
-				$thumb = $this->_transform($original, $thumbnail['transformations']);
+				$thumb = $this->_transform($thumb, $thumbnail['transformations']);
 
 				// Save the thumbnail
 				$thumb->save($destination, $thumbnail['quality']);
 			}
 		}
+
+		if ($this->transformations !== NULL)
+		{
+			// Set image
+			$image = Image::factory($source, $this->driver);
+
+			// Process image transformations
+			$image = $this->_transform($image, $this->transformations);
+
+			// Save the image
+			$image->save($source, $this->quality);
+		}
+
+		return TRUE;
 	}
 
 	/**

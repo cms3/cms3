@@ -7,7 +7,7 @@ class Inflector extends \Kohana_Inflector {
 		if (Inflector::$uncountable === NULL)
 		{
 			// Cache uncountables
-			Inflector::$uncountable = array_merge(Kohana::config('inflector')->uncountable, \CMS3::config('cms3\inflector')->uncountable);
+			Inflector::$uncountable = array_merge(\CMS3::$config->load('inflector')->uncountable, \CMS3::$config->load('cms3\inflector')->uncountable);
 
 			// Make uncountables mirrored
 			Inflector::$uncountable = array_combine(Inflector::$uncountable, Inflector::$uncountable);
