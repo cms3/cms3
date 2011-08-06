@@ -6,13 +6,27 @@ use CMS3\Engine\ORM;
 use CMS3\Engine\Exception;
 use CMS3\Engine\Controller_Component;
 use CMS3\Engine\Request;
+use CMS3\Engine\Model;
 
 class Controller extends Controller_Component {
 	
 	public function action_display($params = array())
 	{
-		$item_id = $this->component->get_param('item_id');  // TODO: автоматически
-		$this->display('item', array('item_id' => $item_id));
+		$item_id = (int)$this->component->get_param('item_id');  // TODO: автоматически
+		if ($item_id)
+		{
+			$this->display('item', array('item_id' => $item_id));
+		}
+		else
+		{
+			$this->display('list');
+		}
+	}
+	
+	public function action_display_list($params = array())
+	{
+		$items = Model_Item::factory()->query()->select();
+		print_r($items); exit;
 	}
 	
 	public function action_display_item($params = array())
@@ -21,7 +35,7 @@ class Controller extends Controller_Component {
 		{
 			throw new Exception('Content ID doesn\'t set'); 
 		}
-		$item = ORM::query('cms3\content\item', $params['item_id'])->select();
+		$item = Model_Item::factory()->query($params['item_id'])->select();
 		if (! $item->loaded())
 		{
 			throw new \HTTP_Exception_404();

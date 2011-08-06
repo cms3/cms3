@@ -6,9 +6,10 @@ class Route extends \Kohana_Route {
 
 	public static function remove($name)
 	{
-		if (isset(static::$_routes[$name])){
+		if (isset(static::$_routes[$name]))
+		{
 			unset(static::$_routes[$name]);
 		}
+		
 	}
-
 }

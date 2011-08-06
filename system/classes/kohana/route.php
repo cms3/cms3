@@ -222,6 +222,7 @@ class Kohana_Route {
 		// The URI should be considered literal except for keys and optional parts
 		// Escape everything preg_quote would escape except for : ( ) < >
 		$expression = preg_replace('#'.Route::REGEX_ESCAPE.'#', '\\\\$0', $uri);
+		
 
 		if (strpos($expression, '(') !== FALSE)
 		{
@@ -244,7 +245,7 @@ class Kohana_Route {
 			// Replace the default regex with the user-specified regex
 			$expression = str_replace($search, $replace, $expression);
 		}
-
+		
 		return '#^'.$expression.'$#uD';
 	}
 

@@ -35,7 +35,7 @@ class Core extends \Kohana {
 
 	public static function find_file($dir, $file, $ext = NULL, $array = FALSE, $paths = NULL)
 	{
-		if (static::$profiling === TRUE AND class_exists('Profiler', FALSE))
+		if (\Kohana::$profiling === TRUE AND class_exists('Profiler', FALSE))
 		{
 			// Start a new benchmark
 			$benchmark = \Profiler::start('CMS3', __FUNCTION__);
@@ -123,6 +123,7 @@ class Core extends \Kohana {
 			return $config[$group];
 		}
 	}
+	
 	*/
 	public static function auto_load($class)
 	{

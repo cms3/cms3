@@ -89,7 +89,7 @@ abstract class Kohana_Database_Query_Builder extends Database_Query {
 
 					// Database operators are always uppercase
 					$op = strtoupper($op);
-
+					
 					if ($op === 'BETWEEN' AND is_array($value))
 					{
 						// BETWEEN always has exactly two arguments
@@ -182,16 +182,16 @@ abstract class Kohana_Database_Query_Builder extends Database_Query {
 				// Make the direction uppercase
 				$direction = strtoupper($direction);
 			}
-
+		
 			if ($column)
 			{
 				// Quote the column, if it has a value
 				$column = $db->quote_column($column);
 			}
-
+		
 			$sort[] = trim($column.' '.$direction);
 		}
-
+		
 		return 'ORDER BY '.implode(', ', $sort);
 	}
 

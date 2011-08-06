@@ -11,6 +11,8 @@ class App {
 	public $component_list = array();
 
 	public $language;
+	
+	protected $_params;
 
 	private $_languages = array();
 
@@ -26,6 +28,20 @@ class App {
 		}
 		
 		return static::$_instance;
+	}
+	
+	public function param($name, $module = NULL, $value = NULL)
+	{
+		if (! $module)
+		{
+			$module = '@global';		
+		}
+		if ($value !== NULL)
+		{
+			$this->_params[$module][$name] = $value;
+		}
+		
+		return @$this->_params[$module][$name];
 	}
   
 	public function initialize()
@@ -72,7 +88,7 @@ class App {
 		}
 		Core::modules($connect_modules);
 		Cache::$default = $this->get_cfg('default_caching_driver');
-		
+
 		$this->_set_default_routes();
 		
 		$route_list = Model::factory('route')->query()->select();
@@ -92,7 +108,7 @@ class App {
 			\Profiler::stop($benchmark);
 		}
 	}
-  
+
 	private function _set_default_routes()
 	{
 		$action_defaults = array(
@@ -100,6 +116,7 @@ class App {
 			'action'			=> 'call',
 			'call_path'			=> '',
 		);
+		
 		Route::set('action',
 			$this->get_cfg('route_action'),
 			array('call_path' => '([a-zA-Z0-9_/-])*', 'params' => '.*'))
@@ -115,7 +132,7 @@ class App {
 		);
 		
 		$lang_codes = array_keys($this->_languages->as_array('short_code'));
-
+		
 		$lang_regexp = '(' . implode('|', $lang_codes) . ')';
 
 		// TODO: разные поддомены для языков
@@ -124,7 +141,7 @@ class App {
 			array('path' => '([a-zA-Z0-9_/-])*', 'format' => '[a-zA-Z]*', 'language' => $lang_regexp, 'params' => '.*'))
 			->defaults($defaults);
 	}
-	
+
 	public function dispatch_action($controller, $action) // TODO
 	{
 		$params = $this->fetch_query_params();
@@ -139,7 +156,7 @@ class App {
 				}
 			}
 		}
-  
+
 		if (count(explode(NS::DELIMITER, $controller)) < 3) // TODO: move it to Controller implementation
 		{
 			$controller = NS::add_namespace('Controller', $controller);
@@ -161,8 +178,8 @@ class App {
 	private function _replace_inline_route($uri)
 	{
 		$regex = array();
-		
-		// Find inline regex and remove it
+
+		// Find inline regex and remove it  
 		if (preg_match_all('/<(.+?):(.+?)>/', $uri, $matches, PREG_SET_ORDER))
 		{
 			$replace = array();
@@ -192,14 +209,14 @@ class App {
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
 		//$get_params = Request::current()->param('params');
-				
+		
 		$get_params = $this->fetch_query_params();
 		
 		$lang_list = $this->_languages->as_array('short_code');
 
 		if (! empty($language) && isset($lang_list[$language]))
 		{
-			$this->set_language($lang_list[$language]["code"]);
+			$this->set_language($lang_list[$language]['code']);
 		}
 		else
 		{
@@ -242,6 +259,8 @@ class App {
 		{
 			throw new HTTP_Exception_404();
 		}
+		
+		$this->_params = $this->_build_params_tree(Request::current()->param());
 
 		$this->document->current_theme = $this->detect_theme();
 		$this->document->render();
@@ -270,6 +289,27 @@ class App {
 		}
 
 		return $this->get_cfg('default_theme');
+	}
+	
+	protected function _build_params_tree($params)
+	{
+		$result = array(); 
+		foreach ($params as $param => $value)
+		{
+			$parts = explode('.', $param);
+		 	if (count($parts) >= 3)
+		 	{
+		 		$module = array_shift($parts);
+		 	}
+		 	else
+		 	{
+				$module = '@global';
+		 	}
+		 	$name = implode('.', $parts);
+		 	$result[$module][$name] = $value;
+		 }
+		 
+		 return $result;
 	}
 	
 	public function fetch_query_params()
