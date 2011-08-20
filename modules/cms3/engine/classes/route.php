@@ -10,6 +10,5 @@ class Route extends \Kohana_Route {
 		{
 			unset(static::$_routes[$name]);
 		}
-		
 	}
 }

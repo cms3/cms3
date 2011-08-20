@@ -30,20 +30,55 @@ class App {
 		return static::$_instance;
 	}
 	
-	public function param($name, $module = NULL, $value = NULL)
+	public function param($module = NULL, $model = NULL)
 	{
-		if (! $module)
+		// TODO: !!!
+		if ($module !== NULL)
 		{
-			$module = '@global';		
+			if ($model !== NULL)
+			{
+				return @($this->_params[$module][$model]);
+			}
+			else
+			{
+				return @($this->_params[$module]);
+			}
 		}
-		if ($value !== NULL)
-		{
-			$this->_params[$module][$name] = $value;
-		}
-		
-		return @$this->_params[$module][$name];
+
+		return $this->_params;
 	}
-  
+
+	protected function _build_params_tree($params)
+	{
+		$result = array();
+		foreach ($params as $param => $value)
+		{
+			$parts = explode('.', $param);
+		 	if (count($parts) >= 2)
+		 	{
+				$parent = &$result;
+				$name = array_shift($parts);
+				$i = 0;
+				while (count($parts) && $i < 2) // TODO: некрасиво
+				{
+					$parent[$name] = array();
+					$parent =& $parent[$name];
+					$name = array_shift($parts);
+					$i++;
+				}
+				array_unshift($parts, $name);
+				$name = implode('.', $parts);
+				$parent[$name] = $value;
+		 	}
+		 	else
+		 	{
+				$result['@global'][$param] = $value;
+		 	}
+		}
+
+		return $result;
+	}
+
 	public function initialize()
 	{
 		Core::$caching = TRUE; // TODO
@@ -211,7 +246,7 @@ class App {
 		//$get_params = Request::current()->param('params');
 		
 		$get_params = $this->fetch_query_params();
-		
+
 		$lang_list = $this->_languages->as_array('short_code');
 
 		if (! empty($language) && isset($lang_list[$language]))
@@ -222,7 +257,6 @@ class App {
 		{
 			$this->set_language($this->get_cfg('default_language'));
 		}
-		
 		Request::current()->set_params(array());
 		$route_list = Model::factory('route')->query()->select();
 		foreach ($route_list as $route)
@@ -259,10 +293,10 @@ class App {
 		{
 			throw new HTTP_Exception_404();
 		}
-		
+
 		$this->_params = $this->_build_params_tree(Request::current()->param());
 
-		$this->document->current_theme = $this->detect_theme();
+		$this->document->current_theme = $this->_detect_theme();
 		$this->document->render();
 		
 		if (isset($benchmark))
@@ -276,7 +310,7 @@ class App {
 		}
 	}
 	
-	protected function detect_theme()
+	protected function _detect_theme()
 	{
 		$themes = Model::factory('theme')->query()->select();
 		
@@ -289,27 +323,6 @@ class App {
 		}
 
 		return $this->get_cfg('default_theme');
-	}
-	
-	protected function _build_params_tree($params)
-	{
-		$result = array(); 
-		foreach ($params as $param => $value)
-		{
-			$parts = explode('.', $param);
-		 	if (count($parts) >= 3)
-		 	{
-		 		$module = array_shift($parts);
-		 	}
-		 	else
-		 	{
-				$module = '@global';
-		 	}
-		 	$name = implode('.', $parts);
-		 	$result[$module][$name] = $value;
-		 }
-		 
-		 return $result;
 	}
 	
 	public function fetch_query_params()
@@ -405,7 +418,7 @@ class App {
 	{
 		$params = $this->implode_request_params($params);
 		$path = Route::get($route_id)->uri($params);
-		
+
 		return $this->expand_uri($path, $format, $language);
 	}
 

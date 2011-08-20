@@ -7,6 +7,7 @@ use CMS3\Engine\Exception;
 use CMS3\Engine\Controller_Component;
 use CMS3\Engine\Request;
 use CMS3\Engine\Model;
+use CMS3\Engine\App;
 
 class Controller extends Controller_Component {
 	
@@ -25,7 +26,7 @@ class Controller extends Controller_Component {
 	
 	public function action_display_list($params = array())
 	{
-		$items = Model_Item::factory()->query()->select();
+		$items = Model_Item::factory()->query()->filter()->select()->as_array();
 		print_r($items); exit;
 	}
 	

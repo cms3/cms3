@@ -2,7 +2,7 @@
 
 namespace CMS3\Engine;
 
-class Field_HasMany extends \Jelly_Field_HasMany
+class Field_HasMany extends \Jelly_Field_HasMany implements Field_Relationship_Interface
 {
 	public $namespace = NULL;
 	
@@ -28,5 +28,18 @@ class Field_HasMany extends \Jelly_Field_HasMany
 				$this->foreign['model'] = NS::add_namespace($this->foreign['model'], $namespace);
 			}
 		}
+	}
+
+	public function add_filter($model, $value, $builder, $alias = NULL)
+	{
+		$meta = ORM::meta($this->model);
+		$foreign_meta = ORM::meta($this->foreign['model']);
+		
+		$foreign_field = $foreign_meta->table() . '.' . $this->foreign['field'];
+
+		$builder->join(array($foreign_meta->table(), $alias))
+				->on($foreign_field, '=', $meta->table() . '.' . $meta->primary_key());
+
+		return $this->foreign['model'];
 	}
 }

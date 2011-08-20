@@ -4,7 +4,7 @@
  * Abstract document class
  * 
  * @package		CMS 3.0
- * @category	Engine
+ * @subpackage	Engine
  */
 
 namespace CMS3\Engine;

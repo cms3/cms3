@@ -6,6 +6,8 @@ class ORM_Meta extends \Jelly_Core_Meta {
 	
 	public $data = NULL;
 
+	protected $_language = NULL;
+
 	public function finalize($model)
 	{
 		if ($this->_initialized)
@@ -33,6 +35,11 @@ class ORM_Meta extends \Jelly_Core_Meta {
 		$namespace = NS::extract_namespace($model);
 		$module = NS::extract_module_name($model);
 		$class = NS::extract_class_name($model);
+
+		if (empty($this->_language))
+		{
+			$this->_language = App::instance()->language;
+		}
 
 		// Table should be a sensible default
 		if (empty($this->_table))
@@ -119,5 +126,15 @@ class ORM_Meta extends \Jelly_Core_Meta {
 		}
 
 		return $this->_table;
+	}
+
+	public function language($value = NULL)
+	{
+		if (func_num_args() !== 0)
+		{
+			$this->_language = $value;
+		}
+
+		return $this->_language;
 	}
 }

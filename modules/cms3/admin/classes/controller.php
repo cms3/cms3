@@ -84,7 +84,7 @@ class Controller extends Controller_Component {
 		}
 		else
 		{
-			$result = $model->query()->select();
+			$result = $model->query()->filter()->select();
 			echo '<h3>' . $result . '</h3>';
 			$editor = new \CMS3\UI\Editor_Grid($model, $result);
 			echo $editor->render();

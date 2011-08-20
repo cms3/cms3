@@ -5,7 +5,7 @@
  * с пространствами имен.
  *
  * @package		CMS 3.0
- * @category	Engine
+ * @subpackage	Engine
  */
 
 namespace CMS3\Engine;

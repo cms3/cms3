@@ -12,17 +12,27 @@ class Field_String_Multilang extends Field_String implements \Jelly_Field_Suppor
 	
 	public $table = NULL;
 	
-	public $foreign_column = NULL; 
+	public $foreign_column = NULL;
+	
+	public $language = NULL;
 	
 	public function initialize($model, $column)
 	{
-		if (empty($this->table))
+		if (App::instance()->get_cfg('multilingual'))
 		{
-			$this->table = ORM::meta($model)->table() . static::SUFFIX;
-		}
-		if (empty($this->foreign_column))
-		{
-			$this->foreign_column = ORM::meta($model)->foreign_key();
+			if (empty($this->table))
+			{
+				$this->table = ORM::meta($model)->table() . static::SUFFIX;
+			}
+			if (empty($this->foreign_column))
+			{
+				$this->foreign_column = ORM::meta($model)->foreign_key();
+			}
+			if (empty($this->language))
+			{
+				$this->language = ORM::meta($model)->language();
+			}
+			$this->column = $column;
 		}
 		
 		parent::initialize($model, $column);
@@ -33,8 +43,8 @@ class Field_String_Multilang extends Field_String implements \Jelly_Field_Suppor
 		if (App::instance()->get_cfg('multilingual'))
 		{
 			$obj = ORM::query($this->table)
-				->where($this->foreign_column, '=', $model->id())
-				->where($this->language_column, '=', strtolower($model->language))
+				->where($this->table . '.' . $this->foreign_column, '=', $model->id())
+				->where($this->table . '.' . $this->language_column, '=', strtolower($this->language))
 				->limit(1)
 				->select();
 			
@@ -50,30 +60,28 @@ class Field_String_Multilang extends Field_String implements \Jelly_Field_Suppor
 	{
 		if (App::instance()->get_cfg('multilingual'))
 		{
-			$language = strtolower($model->language);
-			$table = ORM::meta($model)->table() . $this->i18n_suffix;
 			$column = ORM::meta($model)->foreign_key();
 
 			// TODO: делать только один запрос
 			if ($this->get($model, $value) !== NULL)
 			{
-				ORM::query($table)
+				ORM::query($this->table)
 				    ->set(array(
 				     	$this->column => $value
 				    ))
-				    ->where($column, '=', $model->id())
-				    ->where($this->language_column, '=', $language)
+				    ->where($this->table . '.' . $column, '=', $model->id())
+				    ->where($this->table . '.' . $this->language_column, '=', strtolower($this->language))
 				    ->update();
 			}
 			else {
-				ORM::query($table)
+				ORM::query($this->table)
 					->columns(array(
 						$this->language_column,
 						$column,
 						$this->column
 					))
 					->values(array(
-						$language,
+						strtolower($this->language),
 						$model->id(),
 						$value
 					))
@@ -85,5 +93,25 @@ class Field_String_Multilang extends Field_String implements \Jelly_Field_Suppor
 		{
 			return parent::save($model, $value, $loaded);
 		}
+	}
+
+	public function add_filter($model, $value, $builder, $alias = NULL)
+	{
+		if (App::instance()->get_cfg('multilingual'))
+		{
+			$lang = strtolower($this->language);
+			if (! empty($alias))
+			{
+				$join_alias = $builder->make_alias($alias, static::SUFFIX);
+			}
+			else
+			{
+				$join_alias = $this->table;
+			}
+			$builder->join(array($this->table, $join_alias))
+				->on($join_alias . '.' . $this->foreign_column, '=', ORM::meta($model)->primary_key())
+				->on($join_alias . '.' . $this->language_column, '=', DB::expr(\Database::instance()->quote($lang)));
+		}
+		$builder->where($join_alias . '.' . $this->column, '=', $value);
 	}
 }

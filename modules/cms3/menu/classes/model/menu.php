@@ -18,16 +18,18 @@ class Model_Menu extends Model {
 			),
 		));
    }
-   
-   public function get_child_items($parent = 0)
-   {
-		$items = ORM::query('cms3\menu\item')
+
+	// TODO: получать дерево автоматически
+	public function get_child_items($parent = 0)
+	{
+		$items = Model_Item::factory()->query()
+			->filter() // TODO
 			->where('parent_id', '=', $parent)
 			->order_by('ordering', 'asc')
 			->select();
 
 		return $items;
-   }
+	}
    
    public function get_items_array($items = NULL)
    {
