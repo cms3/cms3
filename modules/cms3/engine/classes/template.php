@@ -32,7 +32,7 @@ class Template {
 	public $engine = NULL;
 	
 	/**
-	 * @var  object 
+	 * @var  string 
 	 */
 	protected $_filename = NULL;
 	
@@ -138,13 +138,15 @@ class Template {
 		
 		foreach ($paths as $path)
 		{
-			$list = scandir($path);
+			$iterator = new \DirectoryIterator($path);
 			
-			foreach ($list as $engine)
+			foreach ($iterator as $file_info)
 			{
-				if ($engine != '.' && $engine != '..' && is_dir($path . DIRECTORY_SEPARATOR . $engine))
+				if ($file_info->isDir() && ! $file_info->isDot())
 				{
-					$class = NS::add_class_prefix(ucfirst($engine), Template_Engine::CLASS_PREFIX); 				
+					$engine = $file_info->getFilename();
+
+					$class = NS::add_class_prefix(ucfirst($engine), Template_Engine::CLASS_PREFIX);
 					$class = NS::add_namespace($class, Template_Engine::NAME_SPACE);
 					
 					if (class_exists($class))
@@ -154,7 +156,7 @@ class Template {
 						if (is_file($filename))
 						{
 							$this->_filename = $filename;
-							
+
 							return $engine;
 						}
 					}

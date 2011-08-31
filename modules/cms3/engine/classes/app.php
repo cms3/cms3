@@ -29,7 +29,43 @@ class App {
 		
 		return static::$_instance;
 	}
-	
+/*
+	public function filter($module = NULL, $model = NULL)
+	{
+		if ($module !== NULL)
+		{
+			if ($model !== NULL)
+			{
+				return @($this->_filters[$module][$model]);
+			}
+			else
+			{
+				return @($this->_filters[$module]);
+			}
+		}
+
+		return $this->_filters;
+	}
+
+	protected function _build_filter_tree($params)
+	{
+		$result = array();
+
+		foreach ($params['filter'] as $param => $value)
+		{
+			$parts = explode('.', $param);
+
+			if (count($parts) >= 2)
+			{
+				//$parent =
+			}
+		}
+
+		return $result;
+	}
+	*/
+
+	// TODO: remove it from here
 	public function param($module = NULL, $model = NULL)
 	{
 		// TODO: !!!
@@ -48,11 +84,16 @@ class App {
 		return $this->_params;
 	}
 
+	// TODO: remove it from here
 	protected function _build_params_tree($params)
 	{
 		$result = array();
 		foreach ($params as $param => $value)
 		{
+			if (is_array($value))
+			{
+				continue;
+			}
 			$parts = explode('.', $param);
 		 	if (count($parts) >= 2)
 		 	{
@@ -79,6 +120,37 @@ class App {
 		return $result;
 	}
 
+	// TODO: убрать это отсюда
+	// TODO: переписать этот говнокод
+	public function ordering($model = NULL)
+	{
+		$parse = function ($order)
+		{
+			@list($column, $dir) = explode(',', $order);
+			$result = array(
+				'column' => $column,
+				'dir'    => $dir
+			);
+
+			return $result;
+		};
+		$ordering = (array)@$_REQUEST['ordering'];
+
+		if (! empty($model))
+		{
+			$ordering = $parse(@$ordering[strtolower($model)]);
+		}
+		else
+		{
+			foreach ($ordering as $what => $order)
+			{
+				$ordering[$what] = $parse($order);
+			}
+		}
+
+		return $ordering;
+	}
+
 	public function initialize()
 	{
 		Core::$caching = TRUE; // TODO
@@ -102,7 +174,7 @@ class App {
 		$this->_languages = Model::factory('language')->query()
 			->where('active', '=', 1)
 			->select();
-			
+		
 		if (! count($this->_languages))
 		{
 			throw new Exception('No active languages');
@@ -312,7 +384,7 @@ class App {
 	
 	protected function _detect_theme()
 	{
-		$themes = Model::factory('theme')->query()->select();
+		$themes = Model_Theme::factory()->query()->select();
 		
 		foreach ($themes as $theme)
 		{
@@ -321,7 +393,7 @@ class App {
 				return $theme->name;
 			}
 		}
-
+		
 		return $this->get_cfg('default_theme');
 	}
 	
@@ -340,7 +412,7 @@ class App {
 			$_SERVER['QUERY_STRING'] = $request[1]; // TODO
 		}
 		$_GET = $params; // TODO!
-		$_REQUEST = $params + $_POST; // TODO!
+		//$_REQUEST = $params + $_POST; // TODO!
 		return $params + $_POST;
 	}
 

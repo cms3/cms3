@@ -53,7 +53,7 @@ class Component extends Engine\Component {
 		
 		if ($remember)
 		{
-			$token = Model::factory('cms3\auth\token');
+			$token = Model_Token::factory();
 			$token->create($user->id, $this->_config['lifetime']);
 			\Cookie::set('auth_user_token', $token->token, $this->_config['lifetime']);
 		}
@@ -63,7 +63,10 @@ class Component extends Engine\Component {
 	{
 		if ($token = \Cookie::get('auth_user_token'))
 		{
-			$token = ORM::query('cms3\auth\token')->where('token', '=', $token)->limit(1)->select();
+			$token = Model_Token::factory()->query()
+				->where('token', '=', $token)
+				->limit(1)
+				->select();
 			
 			if ($token->loaded())
 			{
@@ -87,7 +90,10 @@ class Component extends Engine\Component {
 	{
 		if ($token = \Cookie::get('auth_user_token'))
 		{
-			$token = ORM::query('cms3\auth\token')->where('token', '=', $token)->limit(1)->select();
+			$token = Model_Token::factory()->query()
+				->where('token', '=', $token)
+				->limit(1)
+				->select();
 			
 			if ($token->loaded() && $token->user->loaded() && $token->user->enabled)
 			{

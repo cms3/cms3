@@ -56,7 +56,6 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 			}
 			elseif (($field instanceof Field_Supports_Change) && $field->changed())
 			{
-				echo $column;
 				$saveable[$column] = $value;
 			}
 		}
@@ -161,7 +160,7 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		$result = $this->query($key)
 		     ->as_object(FALSE)
 		     ->select();
-
+	
 		if ($result)
 		{
 			$this->load_values($result);
@@ -179,12 +178,13 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 	{
 		$meta->fields($meta->fields() + $fields);
 	}
-	
+
 	public function query($key = NULL)
 	{
 		return ORM::query($this, $key);
-	} 
-	
+	}
+
+	// Implementation of Acl_Resource_Interface
 	public function get_resource_id()
 	{
 		return ORM::model_name($this);
@@ -200,5 +200,10 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		$param = strtolower(str_replace('\\', '-', ORM::model_name($this)));
 		
 		return $param;
+	}
+
+	public static function method($method_name)
+	{
+		return new Wrapper_Method(get_called_class(), $method_name);
 	}
 }

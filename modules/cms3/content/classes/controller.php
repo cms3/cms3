@@ -27,7 +27,7 @@ class Controller extends Controller_Component {
 	public function action_display_list($params = array())
 	{
 		$items = Model_Item::factory()->query()->filter()->select()->as_array();
-		print_r($items); exit;
+		//print_r($items); exit;
 	}
 	
 	public function action_display_item($params = array())

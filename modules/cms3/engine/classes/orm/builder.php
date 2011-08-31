@@ -45,8 +45,18 @@ class ORM_Builder extends \Jelly_Builder {
 			}
 		}
 		$this->group_by(ORM::meta($this->_model)->primary_key());
+		$this->_add_ordering($module . '.' . $model);
 		
 		return $this;
+	}
+
+	protected function _add_ordering($model_path)
+	{
+		$ordering = App::instance()->ordering($model_path);
+		if (! empty($ordering))
+		{
+			$this->order_by($ordering['column'], $ordering['dir']);
+		}
 	}
 
 	protected function _add_param_filter($model, $name, $value, $basic_alias, $rel_alias = NULL)
@@ -58,6 +68,13 @@ class ORM_Builder extends \Jelly_Builder {
 		
 		if ($field = $meta->field($field_name))
 		{
+			$filter_rules = $field->get_filtration_rules();
+
+			if (! $filter_rules->enabled)
+			{
+				return;
+			}
+
 			if (count($parts))
 			{
 				if ($field instanceof Field_Relationship_Interface)
@@ -76,6 +93,21 @@ class ORM_Builder extends \Jelly_Builder {
 				$alias = ($rel_alias === NULL) ? NULL : $this->make_alias($basic_alias, $rel_alias);
 				$field->add_filter($model, $value, $this, $alias);
 			}
+		}
+	}
+
+	protected function _get_value()
+	{
+		return $this->_protection_data[$this->_current_value];
+	}
+
+	protected function _get_model_default_filters($model)
+	{
+		$meta = ORM::meta($model);
+
+		foreach ($meta->fields() as $field)
+		{
+
 		}
 	}
 }

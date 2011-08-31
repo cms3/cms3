@@ -17,26 +17,27 @@ class Component extends \CMS3\Engine\Component {
 	
 	protected function _load_acl()
 	{
-		$users = ORM::query('cms3\auth\user')
+		$users = CMS3\Auth\Model::factory('cms3\auth\user')->query()
 			->where('enabled', '=', 1)
 			->select();
-				
+		
 		foreach ($users as $user)
 		{
 			$this->_acl_core->add_role($user);
 		}
-
-		$roles = ORM::query('cms3\acl\role')->select();
+		
+		$roles = Model_Role::factory()->query()
+			->select();
 		
 		foreach ($roles as $role)
 		{
 			$this->_acl_core->add_role($role, $role->parent);
 		}
 		
-		$rules = ORM::query('cms3\acl\rule')
+		$rules = Model_Rule::factory()->query()
 			->where('enabled', '=', 1)
 			->select();
-			
+		
 		foreach ($rules as $rule)
 		{
 			$this->add_rule($rule->role, $rule->resource, $rule->privilege, $rule->allow);
