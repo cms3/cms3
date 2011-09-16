@@ -294,7 +294,7 @@ class App {
 			// Remove all inline regex
 			$uri = strtr($uri, $replace);
 		}
-	
+		
 		return array($uri, $regex);
 	}
   
