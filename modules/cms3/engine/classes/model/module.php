@@ -13,7 +13,6 @@ class Model_Module extends Model {
 			'module'		=> ORM::field('string'),
 			'title'			=> ORM::field('string_multilang'),
 			'core' 			=> ORM::field('boolean'),
-			'component' 	=> ORM::field('boolean'),
 			'ordering'		=> ORM::field('integer')
 		));
    }

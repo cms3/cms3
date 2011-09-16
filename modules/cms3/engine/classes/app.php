@@ -8,8 +8,6 @@ class App {
 
 	public $modules = array();
 
-	public $component_list = array();
-
 	public $language;
 	
 	protected $_params;
@@ -188,10 +186,6 @@ class App {
 		foreach ($this->modules as $module)
 		{
 			$connect_modules[$module->name] = MODPATH . $module->name;
-			if ($module->component)
-			{
-				$this->component_list[] = $module->name;
-			}
 		}
 		Core::modules($connect_modules);
 		Cache::$default = $this->get_cfg('default_caching_driver');
@@ -264,14 +258,9 @@ class App {
 			}
 		}
 
-		if (count(explode(NS::DELIMITER, $controller)) < 3) // TODO: move it to Controller implementation
+		$controller = Controller::factory($controller);
+		if ($controller)
 		{
-			$controller = NS::add_namespace('Controller', $controller);
-		}
-
-		if (class_exists($controller))
-		{
-			$controller = new $controller(Request::current(), Request::current()->response());
 			$controller->action($action, $params);
 		}
 		else
@@ -281,11 +270,11 @@ class App {
 			)); 
 		}
 	}
-	
+
 	private function _replace_inline_route($uri)
 	{
 		$regex = array();
-
+		
 		// Find inline regex and remove it  
 		if (preg_match_all('/<(.+?):(.+?)>/', $uri, $matches, PREG_SET_ORDER))
 		{
@@ -448,6 +437,7 @@ class App {
 		return $this->modify_request_params($params, "implode");
 	}
 
+	//TODO
 	protected function modify_request_params($params, $function)
 	{
 		/*
@@ -462,14 +452,14 @@ class App {
 				$used_components[] = $parts[0];
 			}
 		}
-		*/
+
 		$used_components = $this->component_list;
 		
 		$function = $function . "_params";
 		foreach ($used_components as $component)
 		{
 			$params = Component::instance($component)->$function($params);
-		}
+		}*/
 		return $params;
 	}
 

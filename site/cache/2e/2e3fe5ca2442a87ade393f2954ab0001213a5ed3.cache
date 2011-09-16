@@ -1,5 +1,5 @@
 3600
-s:493:"
+s:487:"
 
 <ul>
 	<li>
@@ -11,11 +11,11 @@ s:493:"
 		<span class="selected">Главная</span>
 		<ul>
 	<li>
-		<a href="/shop/1">Категория</a>
+		<a href="/shop">Категория</a>
 		
 		<ul>
 	<li>
-		<a href="/shop/1/1">Товар</a>
+		<a href="/shop">Товар</a>
 		
 		
   </li>

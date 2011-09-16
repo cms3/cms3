@@ -13,12 +13,12 @@ class Renderer_Block extends Renderer implements Renderer_Interface {
 
 		$blocks = Model::factory('block')->query()->by_position($params['position']);
 		
-		$data = "";
+		$data = '';
 		foreach ($blocks as $block)
 		{
-			if (! empty($block->component) && App::check_page_condition($block->condition->condition))
+			if (! empty($block->module) && App::check_page_condition($block->condition->condition))
 			{
-				$content = $this->get_action_output($block->component, $block->params, $block->action);
+				$content = $this->get_action_output($block->module, $block->params, $block->action);
 				if ($content)
 				{
 					$tpl = strtolower($params['template']);
@@ -37,14 +37,19 @@ class Renderer_Block extends Renderer implements Renderer_Interface {
 		return $data;
 	}
 
-	protected function get_action_output($comp_name, $params, $action)
+	protected function get_action_output($module, $params, $action)
 	{
-		$controller = Component::instance($comp_name)->controller;
-		
-		ob_start();
-		$controller->display($action, (array)$params);
-		$data = ob_get_contents();
-		ob_end_clean();
+		$data = '';
+
+		$controller = Controller::factory($module);
+
+		if ($controller instanceof Controller)
+		{
+			ob_start();
+				$controller->display($action, (array)$params);
+				$data = ob_get_contents();
+			ob_end_clean();
+		}
 		
 		return $data;
 	}

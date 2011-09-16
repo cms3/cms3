@@ -500,7 +500,7 @@ class Kohana_Validation implements ArrayAccess {
 				// All values must be strings
 				$values[':value'] = implode(', ', Arr::flatten($values[':value']));
 			}
-
+			
 			if ($params)
 			{
 				foreach ($params as $key => $value)

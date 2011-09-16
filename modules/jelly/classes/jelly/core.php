@@ -89,6 +89,7 @@ abstract class Jelly_Core
 	 * @param   string|Jelly_Model  $model
 	 * @return  Jelly_Meta
 	 */
+
 	public static function meta($model)
 	{
 		$model = Jelly::model_name($model);

@@ -2,11 +2,12 @@
 
 namespace CMS3\Auth;
 
-use CMS3\Engine\Controller_Component;
+use CMS3\Engine\Controller as Abstract_Controller;
 use CMS3\Engine\NS;
 use CMS3\Engine\Request;
+use CMS3\Engine\View;
 
-class Controller extends Controller_Component {
+class Controller extends Abstract_Controller {
 
 	public function action_login($params = array())
 	{
@@ -42,14 +43,14 @@ class Controller extends Controller_Component {
 		{
 			$user_data = $user->as_array(NULL, TRUE);
 
-			echo $this->component->get_view("form/logout", array(
+			echo View::factory('cms3\auth\form_logout', array( // TODO
 				'user'		=> $user_data,
 				'return'	=> $return,
 			));
 		}
 		else
 		{
-			echo $this->component->get_view("form/login", array(
+			echo View::factory('cms3\auth\form_login', array( // TODO
 				'return'	=> $return,
 			));
 		}
@@ -57,5 +58,6 @@ class Controller extends Controller_Component {
 	
 	public function action_display_register_form($params = array())
 	{
+		
 	}
 }

@@ -2,18 +2,24 @@
 
 namespace CMS3\Shop;
 
-use CMS3\Engine\Controller_Component;
+use CMS3\Engine\Controller as Abstract_Controller;
+use CMS3\Engine\Request;
+use CMS3\Engine\View;
 
-class Controller extends Controller_Component {
+class Controller extends Abstract_Controller {
   
   public function action_display($params = array())
   {
-    if ($product_id = $this->component->get_param("product_id"))
+	$params = Request::$initial->param();
+	$path = @$params['shop_path'];
+	@list($params["category_id"], $params["product_id"]) = explode('/', $path);
+
+    if ($product_id = @$params["product_id"])
     {
 			$params = array("product_id" => $product_id, "title" => "Страница товара");
 			$this->display('product', $params);
     }
-    elseif ($category_id = $this->component->get_param("category_id"))
+    elseif ($category_id = @$params["category_id"])
     {
 			$params = array("category_id" => $category_id, "title" => "Страница категории");
 			$this->display('catalog', $params);
@@ -61,7 +67,7 @@ class Controller extends Controller_Component {
 	public function action_display_product($params = array())
 	{
 		$product_id = empty($params["product_id"]) ? 0 : intval($params["product_id"]);
-		echo $this->component->get_view('product', array(
+		echo View::factory('cms3\shop\product', array( // TODO
 			'title' => $params["title"],
 			'product_id' => $product_id
 		));

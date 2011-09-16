@@ -4,9 +4,10 @@ namespace CMS3\Menu;
 
 use CMS3\Engine\ORM;
 use CMS3\Engine\Exception;
-use CMS3\Engine\Controller_Component;
+use CMS3\Engine\Controller as Abstract_Controller;
+use CMS3\Engine\View;
 
-class Controller extends Controller_Component {
+class Controller extends Abstract_Controller {
   
   public function action_display($params = array())
   {
@@ -17,6 +18,10 @@ class Controller extends Controller_Component {
 		$menu = ORM::query('cms3\menu\menu', $params['menu_id'])->select();
 		$items = $menu->get_items_array();
 		
-		echo $this->component->get_view('menu', array('items' => $items));
+		$view_data = array(
+			'items' => $items
+		);
+		
+		echo View::factory('cms3\menu\menu', $view_data); // TODO
   }
 }

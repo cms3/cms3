@@ -23,13 +23,14 @@ class Controller extends \Controller {
 	public function action($function, array $params = array())
 	{
 		$call = "action_" . $function;
+		
 		return $this->$call($params);
 	}
 	
 	public function action_safe($function, array $params = array())
 	{
 		$token = @$params['token'];
-		
+
 		if (! \Security::check($token))
 		{
 			throw new Exception('Token isn\'t valid'); // TODO: нормальное сообщение
@@ -60,5 +61,33 @@ class Controller extends \Controller {
 		}
 		
 		echo $data;
+	}
+
+	public static function factory($module = NULL)
+	{
+		if (count(explode(NS::DELIMITER, $module)) >= 3)
+		{
+			$class = $module;
+		}
+		else
+		{
+			if ($module !== NULL)
+			{
+				$class = NS::add_namespace('Controller', $module);
+			}
+			else
+			{
+				$class = get_called_class();
+			}
+		}
+		
+		if (class_exists($class))
+		{
+			return new $class;
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 }

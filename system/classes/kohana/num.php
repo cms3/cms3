@@ -187,13 +187,12 @@ class Kohana_Num {
 			}
 		}
 	}
-
+	
 	/**
 	 * Converts a file size number to a byte value. File sizes are defined in
 	 * the format: SB, where S is the size (1, 8.5, 300, etc.) and B is the
 	 * byte unit (K, MiB, GB, etc.). All valid byte units are defined in
 	 * Num::$byte_units
-	 *
 	 *     echo Num::bytes('200K');  // 204800
 	 *     echo Num::bytes('5MiB');  // 5242880
 	 *     echo Num::bytes('1000');  // 1000

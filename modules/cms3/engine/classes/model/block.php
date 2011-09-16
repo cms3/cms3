@@ -11,7 +11,7 @@ class Model_Block extends Model {
 		$meta->fields(array(
 			'id' 		=> ORM::field('primary'),
 			'position'	=> ORM::field('string'),
-			'component'	=> ORM::field('string'),
+			'module'	=> ORM::field('string'),
 			'action' 	=> ORM::field('string'),
 			'condition'	=> ORM::field('belongsto'),
 			'ordering'	=> ORM::field('integer'),

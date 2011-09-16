@@ -9,8 +9,9 @@ use CMS3\Engine\Model;
 use CMS3\Engine\ORM;
 use CMS3\Engine\App;
 use CMS3\Engine\Format;
+use CMS3\Engine\Singleton;
 
-class Component extends Engine\Component {
+class Component extends Singleton { // TODO
 
 	public function current_user()
 	{

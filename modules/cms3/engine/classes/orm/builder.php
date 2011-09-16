@@ -35,7 +35,7 @@ class ORM_Builder extends \Jelly_Builder {
 		{
 			$params = (array)(App::instance()->param($module, $model));
 		}
-
+		
 		$alias = $this->make_alias($module, $model);
 		foreach ($params as $name => $value)
 		{
@@ -45,11 +45,11 @@ class ORM_Builder extends \Jelly_Builder {
 			}
 		}
 		$this->group_by(ORM::meta($this->_model)->primary_key());
-		$this->_add_ordering($module . '.' . $model);
+		//$this->_add_ordering($module . '.' . $model); TODO
 		
 		return $this;
 	}
-
+	
 	protected function _add_ordering($model_path)
 	{
 		$ordering = App::instance()->ordering($model_path);

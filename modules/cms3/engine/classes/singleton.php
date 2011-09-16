@@ -16,7 +16,7 @@ abstract class Singleton {
 	* 
 	* @var	string
 	*/
-	private static $_instance = NULL;
+	protected static $_instance = NULL;
 	
 	/**
 	* Get instance of class

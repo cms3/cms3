@@ -44,4 +44,60 @@ abstract class Editor {
 	{
 		return NULL;
 	}
+
+	public function preload($interface)
+	{
+		$observer = new \CMS3\Engine\ORM_Builder();
+		$spl = new InheritedObject();
+		$interface = $spl->createInterface($interface);
+
+		foreach ($interface->fields as $field)
+		{
+			if ($field->can_executed)
+			{
+				$this->extension->add($field);
+				\CMS3\Engine\Template_Engine::instance()->build($field->template);
+				//$this->load_
+			}
+			else
+			{
+				$this->load_ui($interface->ui_engine);
+			}
+		}
+
+		return $observer;
+	}
+
+	public static function load($class)
+	{
+		// Sanitize class name.
+		$class = strtolower($class);
+
+		// If the class already exists do nothing.
+		if (class_exists($class)) {
+			  return;
+		}
+
+		// If the class is registered include the file.
+		if (isset(self::$_classes[$class]))
+		{
+			include self::$_classes[$class];
+			return true;
+		}
+
+		return false;
+	}
+
+	public function load_ui($name)
+	{
+		if ($ui = UI_Library::load($name))
+		{
+			$this->_append_library($ui);
+		}
+	}
+
+	protected function _append_library($instance)
+	{
+		// TODO!
+	}
 }

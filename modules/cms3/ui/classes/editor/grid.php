@@ -5,6 +5,16 @@ namespace CMS3\UI;
 use CMS3\Engine\HTML;
 
 class Editor_Grid extends Editor {
+
+	public function display()
+	{
+		$view_vars = array(
+			'model' => $this->_model,
+			'data' => $this->data
+		);
+		
+		echo View::factory('cms3\ui_grid\grid', $view_vars);
+	}
 	
 	public function render()
 	{

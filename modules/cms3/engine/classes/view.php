@@ -12,11 +12,12 @@ class View extends \View {
 	protected static function capture($view_filename, array $view_data = array())
 	{
 		return Template::display($view_filename, $view_data);
-	}	
+	}
 	
 	public function set_filename($file)
 	{
 		$this->_file = $file;
+		
 		return $this;
 	}
 	

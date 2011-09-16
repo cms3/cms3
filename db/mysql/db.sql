@@ -2,14 +2,12 @@
 -- version 3.4.3.1
 -- http://www.phpmyadmin.net
 --
--- Хост: localhost
--- Время создания: Авг 12 2011 г., 13:24
--- Версия сервера: 5.0.45
--- Версия PHP: 5.3.3
+-- Host: localhost
+-- Generation Time: Sep 16, 2011 at 05:53 PM
+-- Server version: 5.0.45
+-- PHP Version: 5.3.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT=0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,16 +17,15 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `cms3`
+-- Database: `cms3`
 --
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acl__roles`
+-- Table structure for table `acl__roles`
 --
 
-DROP TABLE IF EXISTS `acl__roles`;
 CREATE TABLE IF NOT EXISTS `acl__roles` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `parent_id` int(11) unsigned NOT NULL,
@@ -38,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `acl__roles` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Дамп данных таблицы `acl__roles`
+-- Dumping data for table `acl__roles`
 --
 
 INSERT INTO `acl__roles` (`id`, `parent_id`, `ordering`) VALUES
@@ -49,10 +46,9 @@ INSERT INTO `acl__roles` (`id`, `parent_id`, `ordering`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acl__roles_i18n`
+-- Table structure for table `acl__roles_i18n`
 --
 
-DROP TABLE IF EXISTS `acl__roles_i18n`;
 CREATE TABLE IF NOT EXISTS `acl__roles_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `role_id` int(10) unsigned NOT NULL,
@@ -64,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `acl__roles_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
--- Дамп данных таблицы `acl__roles_i18n`
+-- Dumping data for table `acl__roles_i18n`
 --
 
 INSERT INTO `acl__roles_i18n` (`id`, `role_id`, `language`, `name`) VALUES
@@ -79,10 +75,9 @@ INSERT INTO `acl__roles_i18n` (`id`, `role_id`, `language`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acl__roles_users`
+-- Table structure for table `acl__roles_users`
 --
 
-DROP TABLE IF EXISTS `acl__roles_users`;
 CREATE TABLE IF NOT EXISTS `acl__roles_users` (
   `role_id` int(11) unsigned NOT NULL,
   `user_id` int(11) unsigned NOT NULL,
@@ -91,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `acl__roles_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `acl__roles_users`
+-- Dumping data for table `acl__roles_users`
 --
 
 INSERT INTO `acl__roles_users` (`role_id`, `user_id`) VALUES
@@ -100,10 +95,9 @@ INSERT INTO `acl__roles_users` (`role_id`, `user_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `acl__rules`
+-- Table structure for table `acl__rules`
 --
 
-DROP TABLE IF EXISTS `acl__rules`;
 CREATE TABLE IF NOT EXISTS `acl__rules` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `role` varchar(100) NOT NULL,
@@ -118,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `acl__rules` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Дамп данных таблицы `acl__rules`
+-- Dumping data for table `acl__rules`
 --
 
 INSERT INTO `acl__rules` (`id`, `role`, `resource`, `privilege`, `assert_condition_id`, `allow`, `enabled`, `ordering`) VALUES
@@ -127,17 +121,16 @@ INSERT INTO `acl__rules` (`id`, `role`, `resource`, `privilege`, `assert_conditi
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth__methods`
+-- Table structure for table `auth__methods`
 --
 
-DROP TABLE IF EXISTS `auth__methods`;
 CREATE TABLE IF NOT EXISTS `auth__methods` (
   `id` int(12) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Дамп данных таблицы `auth__methods`
+-- Dumping data for table `auth__methods`
 --
 
 INSERT INTO `auth__methods` (`id`) VALUES
@@ -147,10 +140,9 @@ INSERT INTO `auth__methods` (`id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth__methods_i18n`
+-- Table structure for table `auth__methods_i18n`
 --
 
-DROP TABLE IF EXISTS `auth__methods_i18n`;
 CREATE TABLE IF NOT EXISTS `auth__methods_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `method_id` int(12) unsigned NOT NULL,
@@ -162,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `auth__methods_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Дамп данных таблицы `auth__methods_i18n`
+-- Dumping data for table `auth__methods_i18n`
 --
 
 INSERT INTO `auth__methods_i18n` (`id`, `method_id`, `language`, `name`) VALUES
@@ -174,10 +166,9 @@ INSERT INTO `auth__methods_i18n` (`id`, `method_id`, `language`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth__method_basic_params`
+-- Table structure for table `auth__method_basic_params`
 --
 
-DROP TABLE IF EXISTS `auth__method_basic_params`;
 CREATE TABLE IF NOT EXISTS `auth__method_basic_params` (
   `id` int(12) unsigned NOT NULL auto_increment,
   `user_id` int(12) unsigned NOT NULL,
@@ -190,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `auth__method_basic_params` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Дамп данных таблицы `auth__method_basic_params`
+-- Dumping data for table `auth__method_basic_params`
 --
 
 INSERT INTO `auth__method_basic_params` (`id`, `user_id`, `username`, `password`) VALUES
@@ -199,10 +190,9 @@ INSERT INTO `auth__method_basic_params` (`id`, `user_id`, `username`, `password`
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth__method_openid_params`
+-- Table structure for table `auth__method_openid_params`
 --
 
-DROP TABLE IF EXISTS `auth__method_openid_params`;
 CREATE TABLE IF NOT EXISTS `auth__method_openid_params` (
   `id` int(12) unsigned NOT NULL auto_increment,
   `user_id` int(12) unsigned NOT NULL,
@@ -215,10 +205,9 @@ CREATE TABLE IF NOT EXISTS `auth__method_openid_params` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth__properties_users`
+-- Table structure for table `auth__properties_users`
 --
 
-DROP TABLE IF EXISTS `auth__properties_users`;
 CREATE TABLE IF NOT EXISTS `auth__properties_users` (
   `user_id` int(11) unsigned default NULL,
   `property_id` int(11) unsigned NOT NULL,
@@ -227,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `auth__properties_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `auth__properties_users`
+-- Dumping data for table `auth__properties_users`
 --
 
 INSERT INTO `auth__properties_users` (`user_id`, `property_id`, `ordering`) VALUES
@@ -238,10 +227,9 @@ INSERT INTO `auth__properties_users` (`user_id`, `property_id`, `ordering`) VALU
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth__property_values_users`
+-- Table structure for table `auth__property_values_users`
 --
 
-DROP TABLE IF EXISTS `auth__property_values_users`;
 CREATE TABLE IF NOT EXISTS `auth__property_values_users` (
   `user_id` int(10) unsigned NOT NULL,
   `property_id` int(10) unsigned NOT NULL,
@@ -250,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `auth__property_values_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `auth__property_values_users`
+-- Dumping data for table `auth__property_values_users`
 --
 
 INSERT INTO `auth__property_values_users` (`user_id`, `property_id`, `value_id`) VALUES
@@ -261,10 +249,9 @@ INSERT INTO `auth__property_values_users` (`user_id`, `property_id`, `value_id`)
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth__tokens`
+-- Table structure for table `auth__tokens`
 --
 
-DROP TABLE IF EXISTS `auth__tokens`;
 CREATE TABLE IF NOT EXISTS `auth__tokens` (
   `id` int(12) unsigned NOT NULL auto_increment,
   `user_id` int(12) unsigned NOT NULL,
@@ -277,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `auth__tokens` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
--- Дамп данных таблицы `auth__tokens`
+-- Dumping data for table `auth__tokens`
 --
 
 INSERT INTO `auth__tokens` (`id`, `user_id`, `token`, `created`, `expires`) VALUES
@@ -293,10 +280,9 @@ INSERT INTO `auth__tokens` (`id`, `user_id`, `token`, `created`, `expires`) VALU
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `auth__users`
+-- Table structure for table `auth__users`
 --
 
-DROP TABLE IF EXISTS `auth__users`;
 CREATE TABLE IF NOT EXISTS `auth__users` (
   `id` int(12) unsigned NOT NULL auto_increment,
   `enabled` tinyint(1) unsigned NOT NULL,
@@ -304,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `auth__users` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Дамп данных таблицы `auth__users`
+-- Dumping data for table `auth__users`
 --
 
 INSERT INTO `auth__users` (`id`, `enabled`) VALUES
@@ -313,10 +299,9 @@ INSERT INTO `auth__users` (`id`, `enabled`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `content__items`
+-- Table structure for table `content__items`
 --
 
-DROP TABLE IF EXISTS `content__items`;
 CREATE TABLE IF NOT EXISTS `content__items` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `user_id` int(11) NOT NULL,
@@ -325,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `content__items` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=33 ;
 
 --
--- Дамп данных таблицы `content__items`
+-- Dumping data for table `content__items`
 --
 
 INSERT INTO `content__items` (`id`, `user_id`, `state`) VALUES
@@ -336,10 +321,9 @@ INSERT INTO `content__items` (`id`, `user_id`, `state`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `content__items_i18n`
+-- Table structure for table `content__items_i18n`
 --
 
-DROP TABLE IF EXISTS `content__items_i18n`;
 CREATE TABLE IF NOT EXISTS `content__items_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `item_id` int(11) unsigned NOT NULL,
@@ -352,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `content__items_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
--- Дамп данных таблицы `content__items_i18n`
+-- Dumping data for table `content__items_i18n`
 --
 
 INSERT INTO `content__items_i18n` (`id`, `item_id`, `language`, `title`, `text`) VALUES
@@ -363,41 +347,39 @@ INSERT INTO `content__items_i18n` (`id`, `item_id`, `language`, `title`, `text`)
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__blocks`
+-- Table structure for table `engine__blocks`
 --
 
-DROP TABLE IF EXISTS `engine__blocks`;
 CREATE TABLE IF NOT EXISTS `engine__blocks` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `position` varchar(255) NOT NULL,
-  `component` varchar(255) NOT NULL,
+  `module` varchar(255) NOT NULL,
   `action` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
   `condition_id` int(11) unsigned NOT NULL,
   `params` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
--- Дамп данных таблицы `engine__blocks`
+-- Dumping data for table `engine__blocks`
 --
 
-INSERT INTO `engine__blocks` (`id`, `position`, `component`, `action`, `ordering`, `condition_id`, `params`) VALUES
+INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, `condition_id`, `params`) VALUES
 (1, 'center', 'cms3\\shop', '', 1, 1, '[]'),
 (2, 'center', 'cms3\\shop', 'catalog', 2, 2, '{"count":"10","category_id":"150"}'),
 (3, 'center', 'cms3\\gallery', 'product_images', 2, 3, '[]'),
 (4, 'left', 'cms3\\menu', '', 1, 0, '{"menu_id":"1"}'),
 (5, 'left', 'cms3\\auth', 'login_form', 2, 0, '[]'),
 (6, 'center', 'cms3\\content', '', 1, 4, '[]'),
-(7, 'admin', 'cms3\\admin', '', 0, 5, '[]');
+(8, 'admin', 'cms3\\ui_grid', '', 0, 5, '[]');
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__conditions`
+-- Table structure for table `engine__conditions`
 --
 
-DROP TABLE IF EXISTS `engine__conditions`;
 CREATE TABLE IF NOT EXISTS `engine__conditions` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `condition` varchar(1024) NOT NULL,
@@ -407,7 +389,7 @@ CREATE TABLE IF NOT EXISTS `engine__conditions` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Дамп данных таблицы `engine__conditions`
+-- Dumping data for table `engine__conditions`
 --
 
 INSERT INTO `engine__conditions` (`id`, `condition`, `component`, `user`) VALUES
@@ -420,10 +402,9 @@ INSERT INTO `engine__conditions` (`id`, `condition`, `component`, `user`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__conditions_i18n`
+-- Table structure for table `engine__conditions_i18n`
 --
 
-DROP TABLE IF EXISTS `engine__conditions_i18n`;
 CREATE TABLE IF NOT EXISTS `engine__conditions_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `condition_id` int(11) unsigned NOT NULL,
@@ -435,7 +416,7 @@ CREATE TABLE IF NOT EXISTS `engine__conditions_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
--- Дамп данных таблицы `engine__conditions_i18n`
+-- Dumping data for table `engine__conditions_i18n`
 --
 
 INSERT INTO `engine__conditions_i18n` (`id`, `condition_id`, `language`, `title`) VALUES
@@ -445,10 +426,9 @@ INSERT INTO `engine__conditions_i18n` (`id`, `condition_id`, `language`, `title`
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__languages`
+-- Table structure for table `engine__languages`
 --
 
-DROP TABLE IF EXISTS `engine__languages`;
 CREATE TABLE IF NOT EXISTS `engine__languages` (
   `code` char(5) NOT NULL,
   `short_code` varchar(3) NOT NULL,
@@ -459,7 +439,7 @@ CREATE TABLE IF NOT EXISTS `engine__languages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `engine__languages`
+-- Dumping data for table `engine__languages`
 --
 
 INSERT INTO `engine__languages` (`code`, `short_code`, `title`, `active`) VALUES
@@ -470,60 +450,57 @@ INSERT INTO `engine__languages` (`code`, `short_code`, `title`, `active`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__modules`
+-- Table structure for table `engine__modules`
 --
 
-DROP TABLE IF EXISTS `engine__modules`;
 CREATE TABLE IF NOT EXISTS `engine__modules` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
   `module` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
   `core` tinyint(1) NOT NULL default '0',
-  `component` tinyint(1) NOT NULL,
   `enabled` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 --
--- Дамп данных таблицы `engine__modules`
+-- Dumping data for table `engine__modules`
 --
 
-INSERT INTO `engine__modules` (`id`, `name`, `module`, `ordering`, `core`, `component`, `enabled`) VALUES
-(1, 'database', '', 1, 1, 0, 1),
-(2, 'jelly', '', 2, 1, 0, 1),
-(3, 'cms3\\expression', '', 2, 1, 0, 1),
-(4, 'cms3\\engine', '', 3, 1, 0, 1),
-(5, 'cms3\\shop', '', 50, 0, 1, 1),
-(6, 'cms3\\gallery', '', 50, 0, 1, 1),
-(7, 'cms3\\menu', '', 50, 0, 1, 1),
-(8, 'cms3\\template_phptal', '', 5, 1, 0, 1),
-(9, 'cache', '', 50, 1, 0, 1),
-(11, 'cms3\\auth', '', 7, 1, 0, 1),
-(12, 'cms3\\auth_openid', '', 15, 0, 0, 1),
-(13, 'openid', '', 14, 0, 0, 1),
-(14, 'cms3\\template_native', '', 50, 1, 0, 1),
-(15, 'cms3\\auth_basic', '', 50, 0, 0, 1),
-(16, 'cms3\\content', '', 50, 0, 1, 1),
-(17, 'orm', '', 50, 1, 0, 1),
-(18, 'acl', '', 50, 1, 0, 1),
-(19, 'cms3\\acl', '', 50, 1, 0, 1),
-(20, 'cms3\\ui', '', 50, 0, 0, 1),
-(21, 'cms3\\ui_extjs', '', 50, 0, 0, 1),
-(22, 'cms3\\admin', '', 50, 0, 1, 1),
-(23, 'formo', '', 1, 0, 0, 1),
-(24, 'formo-jelly', '', 2, 0, 0, 0),
-(25, 'kint', '', 0, 1, 0, 1),
-(26, 'cms3\\properties', '', 25, 0, 0, 1);
+INSERT INTO `engine__modules` (`id`, `name`, `module`, `ordering`, `core`, `enabled`) VALUES
+(1, 'database', '', 1, 1, 1),
+(2, 'jelly', '', 2, 1, 1),
+(3, 'cms3\\expression', '', 2, 1, 1),
+(4, 'cms3\\engine', '', 3, 1, 1),
+(5, 'cms3\\shop', '', 50, 0, 1),
+(6, 'cms3\\gallery', '', 50, 0, 1),
+(7, 'cms3\\menu', '', 50, 0, 1),
+(8, 'cms3\\template_phptal', '', 5, 1, 1),
+(9, 'cache', '', 50, 1, 1),
+(11, 'cms3\\auth', '', 7, 1, 1),
+(12, 'cms3\\auth_openid', '', 15, 0, 1),
+(13, 'openid', '', 14, 0, 1),
+(14, 'cms3\\template_native', '', 50, 1, 1),
+(15, 'cms3\\auth_basic', '', 50, 0, 1),
+(16, 'cms3\\content', '', 50, 0, 1),
+(17, 'orm', '', 50, 1, 1),
+(18, 'acl', '', 50, 1, 1),
+(19, 'cms3\\acl', '', 50, 1, 1),
+(20, 'cms3\\ui', '', 50, 0, 1),
+(21, 'cms3\\ui_extjs', '', 50, 0, 1),
+(22, 'cms3\\admin', '', 50, 0, 1),
+(23, 'formo', '', 1, 0, 1),
+(24, 'formo-jelly', '', 2, 0, 0),
+(25, 'kint', '', 0, 1, 1),
+(26, 'cms3\\properties', '', 25, 0, 1);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__modules_i18n`
+-- Table structure for table `engine__modules_i18n`
 --
 
-DROP TABLE IF EXISTS `engine__modules_i18n`;
 CREATE TABLE IF NOT EXISTS `engine__modules_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `module_id` int(11) NOT NULL,
@@ -533,7 +510,7 @@ CREATE TABLE IF NOT EXISTS `engine__modules_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Дамп данных таблицы `engine__modules_i18n`
+-- Dumping data for table `engine__modules_i18n`
 --
 
 INSERT INTO `engine__modules_i18n` (`id`, `module_id`, `language`, `title`) VALUES
@@ -545,10 +522,9 @@ INSERT INTO `engine__modules_i18n` (`id`, `module_id`, `language`, `title`) VALU
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__pageheaders`
+-- Table structure for table `engine__pageheaders`
 --
 
-DROP TABLE IF EXISTS `engine__pageheaders`;
 CREATE TABLE IF NOT EXISTS `engine__pageheaders` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `tag` varchar(32) NOT NULL,
@@ -558,7 +534,7 @@ CREATE TABLE IF NOT EXISTS `engine__pageheaders` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Дамп данных таблицы `engine__pageheaders`
+-- Dumping data for table `engine__pageheaders`
 --
 
 INSERT INTO `engine__pageheaders` (`id`, `tag`, `attribute`, `condition_id`) VALUES
@@ -567,10 +543,9 @@ INSERT INTO `engine__pageheaders` (`id`, `tag`, `attribute`, `condition_id`) VAL
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__pageheaders_i18n`
+-- Table structure for table `engine__pageheaders_i18n`
 --
 
-DROP TABLE IF EXISTS `engine__pageheaders_i18n`;
 CREATE TABLE IF NOT EXISTS `engine__pageheaders_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `pageheader_id` int(11) unsigned NOT NULL,
@@ -582,7 +557,7 @@ CREATE TABLE IF NOT EXISTS `engine__pageheaders_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Дамп данных таблицы `engine__pageheaders_i18n`
+-- Dumping data for table `engine__pageheaders_i18n`
 --
 
 INSERT INTO `engine__pageheaders_i18n` (`id`, `pageheader_id`, `language`, `value`) VALUES
@@ -591,10 +566,9 @@ INSERT INTO `engine__pageheaders_i18n` (`id`, `pageheader_id`, `language`, `valu
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__routes`
+-- Table structure for table `engine__routes`
 --
 
-DROP TABLE IF EXISTS `engine__routes`;
 CREATE TABLE IF NOT EXISTS `engine__routes` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `format` varchar(1024) character set cp1251 NOT NULL,
@@ -602,7 +576,7 @@ CREATE TABLE IF NOT EXISTS `engine__routes` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Дамп данных таблицы `engine__routes`
+-- Dumping data for table `engine__routes`
 --
 
 INSERT INTO `engine__routes` (`id`, `format`) VALUES
@@ -615,10 +589,9 @@ INSERT INTO `engine__routes` (`id`, `format`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__routes_i18n`
+-- Table structure for table `engine__routes_i18n`
 --
 
-DROP TABLE IF EXISTS `engine__routes_i18n`;
 CREATE TABLE IF NOT EXISTS `engine__routes_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `route_id` int(11) unsigned NOT NULL,
@@ -630,7 +603,7 @@ CREATE TABLE IF NOT EXISTS `engine__routes_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
--- Дамп данных таблицы `engine__routes_i18n`
+-- Dumping data for table `engine__routes_i18n`
 --
 
 INSERT INTO `engine__routes_i18n` (`id`, `route_id`, `language`, `title`) VALUES
@@ -643,10 +616,9 @@ INSERT INTO `engine__routes_i18n` (`id`, `route_id`, `language`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `engine__themes`
+-- Table structure for table `engine__themes`
 --
 
-DROP TABLE IF EXISTS `engine__themes`;
 CREATE TABLE IF NOT EXISTS `engine__themes` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
@@ -656,20 +628,19 @@ CREATE TABLE IF NOT EXISTS `engine__themes` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Дамп данных таблицы `engine__themes`
+-- Dumping data for table `engine__themes`
 --
 
 INSERT INTO `engine__themes` (`id`, `name`, `condition_id`) VALUES
 (2, 'default_blue', 4),
-(3, 'admin_extjs', 5);
+(3, 'admin', 5);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu__items`
+-- Table structure for table `menu__items`
 --
 
-DROP TABLE IF EXISTS `menu__items`;
 CREATE TABLE IF NOT EXISTS `menu__items` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `menu_id` int(11) unsigned NOT NULL,
@@ -684,7 +655,7 @@ CREATE TABLE IF NOT EXISTS `menu__items` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
--- Дамп данных таблицы `menu__items`
+-- Dumping data for table `menu__items`
 --
 
 INSERT INTO `menu__items` (`id`, `menu_id`, `uri`, `parent_id`, `ordering`, `active_condition_id`, `route_id`, `params`) VALUES
@@ -699,10 +670,9 @@ INSERT INTO `menu__items` (`id`, `menu_id`, `uri`, `parent_id`, `ordering`, `act
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu__items_i18n`
+-- Table structure for table `menu__items_i18n`
 --
 
-DROP TABLE IF EXISTS `menu__items_i18n`;
 CREATE TABLE IF NOT EXISTS `menu__items_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `item_id` int(11) unsigned NOT NULL,
@@ -714,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `menu__items_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
--- Дамп данных таблицы `menu__items_i18n`
+-- Dumping data for table `menu__items_i18n`
 --
 
 INSERT INTO `menu__items_i18n` (`id`, `item_id`, `language`, `title`) VALUES
@@ -734,29 +704,28 @@ INSERT INTO `menu__items_i18n` (`id`, `item_id`, `language`, `title`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu__menus`
+-- Table structure for table `menu__menus`
 --
 
-DROP TABLE IF EXISTS `menu__menus`;
 CREATE TABLE IF NOT EXISTS `menu__menus` (
   `id` int(11) unsigned NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `menu__menus`
+-- Dumping data for table `menu__menus`
 --
 
 INSERT INTO `menu__menus` (`id`) VALUES
-(1);
+(1),
+(2);
 
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `menu__menus_i18n`
+-- Table structure for table `menu__menus_i18n`
 --
 
-DROP TABLE IF EXISTS `menu__menus_i18n`;
 CREATE TABLE IF NOT EXISTS `menu__menus_i18n` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `menu_id` int(11) unsigned NOT NULL,
@@ -770,10 +739,9 @@ CREATE TABLE IF NOT EXISTS `menu__menus_i18n` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__properties`
+-- Table structure for table `properties__properties`
 --
 
-DROP TABLE IF EXISTS `properties__properties`;
 CREATE TABLE IF NOT EXISTS `properties__properties` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
@@ -782,7 +750,7 @@ CREATE TABLE IF NOT EXISTS `properties__properties` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
--- Дамп данных таблицы `properties__properties`
+-- Dumping data for table `properties__properties`
 --
 
 INSERT INTO `properties__properties` (`id`, `name`) VALUES
@@ -793,10 +761,9 @@ INSERT INTO `properties__properties` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_booleans`
+-- Table structure for table `properties__property_booleans`
 --
 
-DROP TABLE IF EXISTS `properties__property_booleans`;
 CREATE TABLE IF NOT EXISTS `properties__property_booleans` (
   `property_id` int(11) NOT NULL,
   `default` tinyint(1) NOT NULL,
@@ -807,10 +774,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_booleans` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_booleans_i18n`
+-- Table structure for table `properties__property_booleans_i18n`
 --
 
-DROP TABLE IF EXISTS `properties__property_booleans_i18n`;
 CREATE TABLE IF NOT EXISTS `properties__property_booleans_i18n` (
   `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
@@ -824,10 +790,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_booleans_i18n` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_floats`
+-- Table structure for table `properties__property_floats`
 --
 
-DROP TABLE IF EXISTS `properties__property_floats`;
 CREATE TABLE IF NOT EXISTS `properties__property_floats` (
   `property_id` int(11) NOT NULL,
   `default` float NOT NULL,
@@ -838,10 +803,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_floats` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_floats_i18n`
+-- Table structure for table `properties__property_floats_i18n`
 --
 
-DROP TABLE IF EXISTS `properties__property_floats_i18n`;
 CREATE TABLE IF NOT EXISTS `properties__property_floats_i18n` (
   `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
@@ -855,10 +819,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_floats_i18n` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_integers`
+-- Table structure for table `properties__property_integers`
 --
 
-DROP TABLE IF EXISTS `properties__property_integers`;
 CREATE TABLE IF NOT EXISTS `properties__property_integers` (
   `property_id` int(11) NOT NULL,
   `default` int(11) NOT NULL,
@@ -867,7 +830,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_integers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `properties__property_integers`
+-- Dumping data for table `properties__property_integers`
 --
 
 INSERT INTO `properties__property_integers` (`property_id`, `default`, `checker`) VALUES
@@ -877,10 +840,9 @@ INSERT INTO `properties__property_integers` (`property_id`, `default`, `checker`
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_integers_i18n`
+-- Table structure for table `properties__property_integers_i18n`
 --
 
-DROP TABLE IF EXISTS `properties__property_integers_i18n`;
 CREATE TABLE IF NOT EXISTS `properties__property_integers_i18n` (
   `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
@@ -894,10 +856,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_integers_i18n` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_lists`
+-- Table structure for table `properties__property_lists`
 --
 
-DROP TABLE IF EXISTS `properties__property_lists`;
 CREATE TABLE IF NOT EXISTS `properties__property_lists` (
   `property_id` int(11) NOT NULL,
   `default_option_id` int(11) NOT NULL,
@@ -908,10 +869,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_lists_i18n`
+-- Table structure for table `properties__property_lists_i18n`
 --
 
-DROP TABLE IF EXISTS `properties__property_lists_i18n`;
 CREATE TABLE IF NOT EXISTS `properties__property_lists_i18n` (
   `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
@@ -925,10 +885,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_i18n` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_lists_options`
+-- Table structure for table `properties__property_lists_options`
 --
 
-DROP TABLE IF EXISTS `properties__property_lists_options`;
 CREATE TABLE IF NOT EXISTS `properties__property_lists_options` (
   `id` int(11) NOT NULL auto_increment,
   `ordering` int(11) NOT NULL,
@@ -938,10 +897,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_options` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_lists_options_i18n`
+-- Table structure for table `properties__property_lists_options_i18n`
 --
 
-DROP TABLE IF EXISTS `properties__property_lists_options_i18n`;
 CREATE TABLE IF NOT EXISTS `properties__property_lists_options_i18n` (
   `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
@@ -955,10 +913,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_options_i18n` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_strings`
+-- Table structure for table `properties__property_strings`
 --
 
-DROP TABLE IF EXISTS `properties__property_strings`;
 CREATE TABLE IF NOT EXISTS `properties__property_strings` (
   `property_id` int(11) NOT NULL,
   `checker` text NOT NULL,
@@ -966,7 +923,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_strings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `properties__property_strings`
+-- Dumping data for table `properties__property_strings`
 --
 
 INSERT INTO `properties__property_strings` (`property_id`, `checker`) VALUES
@@ -975,10 +932,9 @@ INSERT INTO `properties__property_strings` (`property_id`, `checker`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_strings_i18n`
+-- Table structure for table `properties__property_strings_i18n`
 --
 
-DROP TABLE IF EXISTS `properties__property_strings_i18n`;
 CREATE TABLE IF NOT EXISTS `properties__property_strings_i18n` (
   `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
@@ -991,7 +947,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_strings_i18n` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Дамп данных таблицы `properties__property_strings_i18n`
+-- Dumping data for table `properties__property_strings_i18n`
 --
 
 INSERT INTO `properties__property_strings_i18n` (`id`, `property_id`, `language`, `default`, `name`, `hint`) VALUES
@@ -1000,10 +956,9 @@ INSERT INTO `properties__property_strings_i18n` (`id`, `property_id`, `language`
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_values`
+-- Table structure for table `properties__property_values`
 --
 
-DROP TABLE IF EXISTS `properties__property_values`;
 CREATE TABLE IF NOT EXISTS `properties__property_values` (
   `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
@@ -1011,7 +966,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_values` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
 
 --
--- Дамп данных таблицы `properties__property_values`
+-- Dumping data for table `properties__property_values`
 --
 
 INSERT INTO `properties__property_values` (`id`, `property_id`) VALUES
@@ -1022,10 +977,9 @@ INSERT INTO `properties__property_values` (`id`, `property_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_value_booleans`
+-- Table structure for table `properties__property_value_booleans`
 --
 
-DROP TABLE IF EXISTS `properties__property_value_booleans`;
 CREATE TABLE IF NOT EXISTS `properties__property_value_booleans` (
   `property_value_id` int(11) NOT NULL,
   `value` tinyint(1) NOT NULL,
@@ -1035,10 +989,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_booleans` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_value_floats`
+-- Table structure for table `properties__property_value_floats`
 --
 
-DROP TABLE IF EXISTS `properties__property_value_floats`;
 CREATE TABLE IF NOT EXISTS `properties__property_value_floats` (
   `property_value_id` int(11) NOT NULL,
   `value` float NOT NULL,
@@ -1048,10 +1001,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_floats` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_value_integers`
+-- Table structure for table `properties__property_value_integers`
 --
 
-DROP TABLE IF EXISTS `properties__property_value_integers`;
 CREATE TABLE IF NOT EXISTS `properties__property_value_integers` (
   `property_value_id` int(11) NOT NULL,
   `value` int(11) NOT NULL,
@@ -1059,7 +1011,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_integers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Дамп данных таблицы `properties__property_value_integers`
+-- Dumping data for table `properties__property_value_integers`
 --
 
 INSERT INTO `properties__property_value_integers` (`property_value_id`, `value`) VALUES
@@ -1069,10 +1021,9 @@ INSERT INTO `properties__property_value_integers` (`property_value_id`, `value`)
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_value_lists`
+-- Table structure for table `properties__property_value_lists`
 --
 
-DROP TABLE IF EXISTS `properties__property_value_lists`;
 CREATE TABLE IF NOT EXISTS `properties__property_value_lists` (
   `property_value_id` int(11) NOT NULL,
   `value_option_id` int(11) NOT NULL,
@@ -1082,10 +1033,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_lists` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `properties__property_value_strings`
+-- Table structure for table `properties__property_value_strings`
 --
 
-DROP TABLE IF EXISTS `properties__property_value_strings`;
 CREATE TABLE IF NOT EXISTS `properties__property_value_strings` (
   `id` int(11) NOT NULL auto_increment,
   `property_value_id` int(11) NOT NULL,
@@ -1096,12 +1046,11 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_strings` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Дамп данных таблицы `properties__property_value_strings`
+-- Dumping data for table `properties__property_value_strings`
 --
 
 INSERT INTO `properties__property_value_strings` (`id`, `property_value_id`, `language`, `value`) VALUES
 (1, 2, 'ru_ru', 'Янис');
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
