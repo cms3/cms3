@@ -53,7 +53,7 @@ class Controller extends \Controller {
 			$this->action($call, $params);
 			$data = ob_get_contents();
 			ob_end_clean();
-			\Cache::instance()->set($cache_id, $data);
+			//\Cache::instance()->set($cache_id, $data);
 		}
 		else
 		{

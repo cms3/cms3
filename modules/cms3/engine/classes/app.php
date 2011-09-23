@@ -188,7 +188,7 @@ class App {
 			$connect_modules[$module->name] = MODPATH . $module->name;
 		}
 		Core::modules($connect_modules);
-		Cache::$default = $this->get_cfg('default_caching_driver');
+		//Cache::$default = $this->get_cfg('default_caching_driver');
 
 		$this->_set_default_routes();
 		
@@ -358,6 +358,7 @@ class App {
 		$this->_params = $this->_build_params_tree(Request::current()->param());
 
 		$this->document->current_theme = $this->_detect_theme();
+
 		$this->document->render();
 		
 		if (isset($benchmark))

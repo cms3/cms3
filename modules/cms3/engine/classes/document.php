@@ -3,8 +3,11 @@
 /**
  * Abstract document class
  * 
- * @package		CMS 3.0
+ * @package     CMS 3.0
  * @subpackage	Engine
+ * @author      CMS 3.0 Team
+ * @copyright   (c) 2010-2011 CMS 3.0 Team
+ * @license     http://cms3.org/license
  */
 
 namespace CMS3\Engine;
@@ -27,31 +30,36 @@ abstract class Document {
 	public $headers = array();
 	
 	/**
-	 * @var  array  List of media resources: scripts, stylesheets, etc.
+	 * @var  Document_Media object  Container with list of media resources: scripts, stylesheets, etc.
 	 */
-	public $media = array();
+	public $media = NULL;
 	
 	/**
 	 * Creates a new document object for specified format
 	 *
 	 *     $document = Document::factory('html');
 	 *     $document is instance of Document_HTML
-	 *      
+	 *     
 	 * @param   string	$format
 	 * @return  Document
 	 */
 	public static function factory($format)
 	{
-		$class_name = NS::add_namespace('Document_' . ucfirst($format), 'CMS3\Engine');
+		$class_name = NS::add_namespace('Document_Format_' . ucfirst($format), 'CMS3\Engine');
 
 		if (! class_exists($class_name))
 		{
-			throw new Exception('Unable to load document class for :format format', array(':format' => $format)); 
+			throw new Exception('Unable to load document class for :format format', array(':format' => $format));
 		}
 		$document = new $class_name();
 		$document->format = $format;
 		
 		return $document;
+	}
+	
+	public function __construct()
+	{
+		$this->media = new Document_Media;
 	}
 	
 	/**
@@ -67,28 +75,6 @@ abstract class Document {
 		$this->_set_headers();
 	  
 		echo Template::display($template);
-	}
-	
-	/**
-	 * Add media data to the document
-	 *
-	 *     $document->add_media('script', '/foo/bar/script.js', NULL, array('defer' => true));
-	 *      
-	 * @param   string	$type		Allowed values: 'script', 'stylesheet'
-	 * @param   string	$link		Link to external media resource. Must be null, if $content was set
-	 * @param   string	$content	Content data for media. Must be null, if $link was set
-	 * @param   array   $params		
-	 * @return  void
-	 */
-	public function add_media($type, $link = NULL, $content = NULL, array $params = array())
-	{
-		$this->media[] = array_merge(
-			array(
-				'link' => $link,
-				'content' => $content
-			),
-			$params
-		);
 	}
 
 	/**
@@ -114,5 +100,25 @@ abstract class Document {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Return output for selected media type
+	 *     
+	 * @param   string	$type
+	 * @param   string	$position
+	 * @return  string
+	 */
+	protected function _display_media($type, $position = 'default')
+	{
+		$output = '';
+		$list = $this->media->get($type, $position);
+
+		foreach ($list as $media_obj)
+		{
+			$output .= $media_obj->render($this->format);
+		}
+		
+		return $output;
 	}
 }

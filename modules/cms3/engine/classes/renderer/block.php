@@ -18,7 +18,9 @@ class Renderer_Block extends Renderer implements Renderer_Interface {
 		{
 			if (! empty($block->module) && App::check_page_condition($block->condition->condition))
 			{
-				$content = $this->get_action_output($block->module, $block->params, $block->action);
+				$params = $block->params;
+				$params['block_id'] = $block->id; // TODO: кривовато,  т.к. block_id может перекрыть пользовательский параметр
+				$content = $this->get_action_output($block->module, $params, $block->action);
 				if ($content)
 				{
 					$tpl = strtolower($params['template']);
