@@ -501,11 +501,11 @@ class Formo_ORM_Jelly extends Formo_ORM {
 
 		// Add to relational_fields array
 		$this->relational_fields[$alias] = \CMS3\Engine\Model::factory($model);
-
+		
 		// Also determine the value
 		if ( ! isset($options['value']))
 		{
-			$options['value'] = $this->model->loaded() ? $this->model->$alias : NULL;
+			$options['value'] = $this->relational_fields[$alias]->loaded() ? $this->model->$alias : NULL;
 		}
 
 		return $foreign_key;

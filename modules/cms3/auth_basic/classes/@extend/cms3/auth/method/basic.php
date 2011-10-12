@@ -17,7 +17,7 @@ class Method_Basic extends Auth_Method {
 		}
 		else
 		{
-			$obj = Model_Method_Basic::factory()->query()->by_username($params['username'])->select();
+			$obj = Model_Method_Basic_Params::factory()->query()->by_username($params['username'])->select();
 			
 			if ($obj->loaded() && $obj->user->loaded() && $obj->check_password($params['password']))
 			{

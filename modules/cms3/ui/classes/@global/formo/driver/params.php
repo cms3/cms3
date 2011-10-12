@@ -1,12 +1,15 @@
 <?php
 
-class Params extends Formo_Driver {
+class Formo_Driver_Params extends Formo_Driver {
+	
+	protected $view = 'params';
 
 	public function html()
 	{
-		foreach ($this->field->get('options') => $param)
+		foreach ((array)$this->val() as $name => $value)
 		{
-			$this->field->append(Formo::field(NULL, 'param', $param));
+			$options = array($name => $value);
+			$this->field->append(Formo::field($name, 'param', array('options' => $options)));
 		}
 	}
 }

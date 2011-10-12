@@ -18,6 +18,8 @@ This is exactly the same as `Jelly_Field_HasMany` with the exception that Jelly 
 
 **`empty_value`** — This is the default value that empty values are converted to. The default is `array()`.
 
+**`delete_dependent`** — If this value is `TRUE` the dependent field is automatically deleted upon deletion. The default is `FALSE`.
+
 **Using this relationship**
 
 	$author = Jelly::query('author', 1)->select();

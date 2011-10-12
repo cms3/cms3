@@ -15,7 +15,7 @@ class Model_Item extends Model {
 				'user'			=> ORM::field('belongsto',
 					array(
 						'namespace' => 'cms3\auth',
-						'default' 	=> \Auth::instance()->current_user()->id
+						//'default' 	=> \Auth::instance()->current_user()->id
 					)
 				),
 				'state'			=> ORM::field('integer'),

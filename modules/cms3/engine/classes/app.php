@@ -36,9 +36,9 @@ class App {
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
 
-		Core::$config->attach(new Config_File);
+		Core::$config->attach(new Config_File_Reader);
   
-		$this->_config = Core::config('cms3\core');
+		$this->_config = \CMS3::$config->load('cms3\core');
 		
 		\Cookie::$salt = $this->get_cfg('cookie_salt');
   		
@@ -196,7 +196,6 @@ class App {
 		$get_params = $this->fetch_query_params();
 		
 		$lang_list = $this->_languages->as_array('short_code');
-		//$doc->tpl = $path;
 
 		if (! empty($language) && isset($lang_list[$language]))
 		{
@@ -218,7 +217,7 @@ class App {
 		$routes = Route::all();
 		unset($routes['default']);
 		unset($routes['action']);
-		
+
 		$this->document = Document::factory($format);
 		$this->document->language = $this->language;
 		$this->document->charset = Core::$charset;
@@ -238,12 +237,12 @@ class App {
 				break;
 			}
 		}
-
+		
 		if (! $found && $path != '')
 		{
 			throw new HTTP_Exception_404();
 		}
-		
+
 		$this->document->current_theme = $this->detect_theme();
 		$this->document->render();
 		

@@ -22,7 +22,7 @@ class Request extends \Request {
 		$this->_params = $params;
 	}
 	
-	public function __construct($uri, Cache $cache = NULL, $injected_routes = array())
+	public function __construct($uri, \HTTP_Cache $cache = NULL, $injected_routes = array())
 	{
 		// Initialise the header
 		$this->_header = new \HTTP_Header(array());
@@ -54,11 +54,12 @@ class Request extends \Request {
 
 			$processed_uri = static::process_uri($uri, $this->_injected_routes);
 
+			// Return here rather than throw exception. This will allow
+			// use of Request object even with unmatched route
 			if ($processed_uri === NULL)
 			{
-				throw new HTTP_Exception_404('Unable to find a route to match the URI: :uri', array(
-					':uri' => $uri,
-				));
+				$this->_uri = $uri;
+				return;
 			}
 
 			// Store the URI
@@ -98,7 +99,7 @@ class Request extends \Request {
 			$this->_params = $params;
 
 			// Apply the client
-			$this->_client = new Request_Client(array('cache' => $cache));
+			$this->_client = new Request_Client_Internal(array('cache' => $cache));
 		}
 		else
 		{
@@ -107,6 +108,12 @@ class Request extends \Request {
 
 			// Store the URI
 			$this->_uri = $uri;
+			
+			// Set the security setting if required
+			if (strpos($uri, 'https://') === 0)
+			{
+				$this->secure(TRUE);
+			}
 
 			// Set external state
 			$this->_external = TRUE;
@@ -116,7 +123,7 @@ class Request extends \Request {
 		}
 	}
 	
-	public static function factory($uri = TRUE, \Cache $cache = NULL, $injected_routes = array())
+	public static function factory($uri = TRUE, \HTTP_Cache $cache = NULL, $injected_routes = array())
 	{
 		// If this is the initial request
 		if ( ! \Request::$initial)
@@ -169,6 +176,15 @@ class Request extends \Request {
 			}
 			else
 			{
+				if (isset($_SERVER['SERVER_PROTOCOL']))
+				{
+					$protocol = $_SERVER['SERVER_PROTOCOL'];
+				}
+				else
+				{
+					$protocol = \HTTP::$protocol;
+				}
+
 				if (isset($_SERVER['REQUEST_METHOD']))
 				{
 					// Use the server request method
@@ -190,6 +206,12 @@ class Request extends \Request {
 					$protocol = 'http';
 				}
 
+				if ( ! empty($_SERVER['HTTPS']) AND filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN))
+				{
+					// This request is secure
+					$secure = TRUE;
+				}
+
 				if (isset($_SERVER['HTTP_REFERER']))
 				{
 					// There is a referrer for this request
@@ -208,25 +230,38 @@ class Request extends \Request {
 					$requested_with = $_SERVER['HTTP_X_REQUESTED_WITH'];
 				}
 
-				if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+				if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])
+				    AND isset($_SERVER['REMOTE_ADDR'])
+				    AND in_array($_SERVER['REMOTE_ADDR'], \Request::$trusted_proxies))
 				{
 					// Use the forwarded IP address, typically set when the
 					// client is using a proxy server.
-					\Request::$client_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+					// Format: "X-Forwarded-For: client1, proxy1, proxy2"
+					$client_ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+					
+					\Request::$client_ip = array_shift($client_ips);
+
+					unset($client_ips);
 				}
-				elseif (isset($_SERVER['HTTP_CLIENT_IP']))
+				elseif (isset($_SERVER['HTTP_CLIENT_IP'])
+				        AND isset($_SERVER['REMOTE_ADDR'])
+				        AND in_array($_SERVER['REMOTE_ADDR'], \Request::$trusted_proxies))
 				{
 					// Use the forwarded IP address, typically set when the
 					// client is using a proxy server.
-					\Request::$client_ip = $_SERVER['HTTP_CLIENT_IP'];
+					$client_ips = explode(',', $_SERVER['HTTP_CLIENT_IP']);
+					
+					\Request::$client_ip = array_shift($client_ips);
+
+					unset($client_ips);
 				}
 				elseif (isset($_SERVER['REMOTE_ADDR']))
 				{
 					// The remote IP address
-					\Request::$client_ip = $_SERVER['REMOTE_ADDR'];
+					Request::$client_ip = $_SERVER['REMOTE_ADDR'];
 				}
 
-				if ($method !== 'GET')
+				if ($method !== \HTTP_Request::GET)
 				{
 					// Ensure the raw body is saved for future use
 					$body = file_get_contents('php://input');
@@ -235,7 +270,7 @@ class Request extends \Request {
 				if ($uri === TRUE)
 				{
 					// Attempt to guess the proper URI
-					$uri = static::detect_uri();
+					$uri = Request::detect_uri();
 				}
 			}
 
@@ -243,13 +278,14 @@ class Request extends \Request {
 			\Request::$initial = $request = new static($uri, $cache);
 
 			// Store global GET and POST data in the initial request only
-			$request->query($_GET);
-			$request->post($_POST);
+			$request->protocol($protocol)
+				->query($_GET)
+				->post($_POST);
 
-			if (isset($protocol))
+			if (isset($secure))
 			{
-				// Set the request protocol
-				$request->protocol($protocol);
+				// Set the request security
+				$request->secure($secure);
 			}
 
 			if (isset($method))

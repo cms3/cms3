@@ -5,7 +5,7 @@ namespace CMS3\Engine;
 class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 
 	public $language;
-	
+
 	public function __construct($key = NULL)
 	{
 		$this->language = App::instance()->language;
@@ -62,6 +62,11 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 			{
 				$saveable[$column] = $value;
 			}
+			elseif (($field instanceof Field_Supports_Change) && $field->changed())
+			{
+				echo $column;
+				$saveable[$column] = $value;
+			}
 		}
 
 		// If we have a key, we're updating
@@ -70,7 +75,7 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 			// Do we even have to update anything in the row?
 			if ($values)
 			{
-				Jelly::query($this, $key)
+				ORM::query($this, $key)
 					 ->set($values)
 					 ->update();
 			}
@@ -93,6 +98,12 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 			$this->set($column, $value);
 		}
 
+		// Save the relations
+		foreach ($saveable as $field => $value)
+		{
+			$this->_meta->field($field)->save($this, $value, (bool) $key);
+		}
+		
 		// Set the changed data back as original
 		$this->_original = array_merge($this->_original, $this->_changed);
 
@@ -100,16 +111,21 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		$this->_loaded = $this->_saved = TRUE;
 		$this->_retrieved = $this->_changed = array();
 
-		// Save the relations
-		foreach ($saveable as $field => $value)
-		{
-			$this->_meta->field($field)->save($this, $value, (bool) $key);
-		}
-
 		// Trigger post-save callback
 		$this->_meta->events()->trigger('model.after_save', $this);
 
 		return $this;
+	}
+	
+	public function load_values($values, $partial = FALSE)
+	{
+		$result = parent::load_values($values);
+		if ($partial)
+		{
+			$this->_loaded = FALSE;
+		}
+		
+		return $result;
 	}
 	
 	public static function factory($model = NULL, $key = NULL)
@@ -129,6 +145,47 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		}
 		
 		return ORM::factory($model, $key);
+	}
+	
+	public function as_array(array $fields = NULL, $recursive = FALSE)
+	{
+		$fields = $fields ? $fields : array_keys($this->_meta->fields());
+		$result = array();
+
+		foreach($fields as $field)
+		{
+			$result[$field] = $this->__get($field);
+			if ($recursive && is_object($result[$field]) && method_exists($result[$field], 'as_array'))
+			{
+				$result[$field] = $result[$field]->as_array(NULL, TRUE);
+			}
+		}
+
+		return $result;
+	}
+	
+	public function load($key)
+	{
+		$result = $this->query($key)
+		     ->as_object(FALSE)
+		     ->select();
+
+		if ($result)
+		{
+			$this->load_values($result);
+		}
+		
+		return $this->_loaded;
+	}
+	
+	public function change($field = NULL)
+	{
+		$this->_changed[$field] = $this->$field;	
+	}
+	
+	public static function extend_fields(ORM_Meta $meta, array $fields)
+	{
+		$meta->fields($meta->fields() + $fields);
 	}
 	
 	public function query($key = NULL)

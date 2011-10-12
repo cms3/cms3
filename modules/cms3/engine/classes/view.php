@@ -11,7 +11,7 @@ class View extends \View {
 	
 	protected static function capture($view_filename, array $view_data = array())
 	{
-		return Template::render($view_filename, $view_data);
+		return Template::display($view_filename, $view_data);
 	}	
 	
 	public function set_filename($file)
@@ -41,5 +41,5 @@ class View extends \View {
 		return $this;
 	}
 	
-	protected function prepare_data($data) {}
+	protected function _prepare_data($data) {}
 }

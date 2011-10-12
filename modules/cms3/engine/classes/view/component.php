@@ -2,14 +2,21 @@
 
 namespace CMS3\Engine;
 
+use CMS3\Engine\NS;
+
 class View_Component extends View {
 		
 	protected $_component = NULL;
 	
 	protected static function capture($view_filename, array $view_data = array(), $component = NULL)
 	{
-		$path = \MODPATH . strtolower($component) . DIRECTORY_SEPARATOR . "views" . DIRECTORY_SEPARATOR;
-		return Template::render($view_filename, $view_data, array($path));
+		$template = $view_filename;
+		if (($namespace = NS::extract_namespace($component)) && ! NS::extract_namespace($template))
+		{
+			$template = NS::add_namespace($template, $namespace);
+		}
+		
+		return Template::display($template, $view_data);
 	}	
 	
 	public function set_component($component)

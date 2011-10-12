@@ -3,6 +3,14 @@
 namespace CMS3\Engine;
 
 class Core extends \Kohana {
+
+	public static function run()
+	{
+		echo Request::factory()
+			->execute()
+			->send_headers()
+			->body();
+	}
 	
 	public static function modules(array $modules = NULL)
 	{
@@ -36,7 +44,8 @@ class Core extends \Kohana {
 		// Use the defined extension by default
 		$ext = ($ext !== NULL) ? ('.' . $ext) : \EXT;
 		
-		if ($paths == NULL){
+		if ($paths == NULL)
+		{
 			$paths = static::$_paths;
 		}
 		
@@ -88,7 +97,7 @@ class Core extends \Kohana {
 		
 		return $found;
 	}
-	
+	/*
 	public static function config($group)
 	{
 		static $config;
@@ -114,40 +123,13 @@ class Core extends \Kohana {
 			return $config[$group];
 		}
 	}
-	
+	*/
 	public static function auto_load($class)
 	{
-		$parts = explode('\\', $class);
-		
-		$class_name = array_pop($parts);
-		$namespace = implode('\\', $parts);
-		
+		list($class_name, $namespace) = static::_parse_namespace($class);
 		$file = str_replace('_', DIRECTORY_SEPARATOR, strtolower($class_name));
 		
-		$all_modules = static::get_module_names();
-		$global_modules = static::get_module_names('global');
-		$ns_modules = static::get_module_names('namespace');
-		
-		if ($namespace != '') // Class use some namespace
-		{
-			$native_paths = static::modules_to_paths(array(strtolower($namespace)));
-			$dir = strtolower(implode(DIRECTORY_SEPARATOR, $parts));
-			$override_paths = static::modules_to_paths($all_modules, '@override' . DIRECTORY_SEPARATOR . $dir);
-			$extend_paths = static::modules_to_paths($all_modules, '@extend' . DIRECTORY_SEPARATOR . $dir);
-		}
-		else // Global class
-		{
-			$native_paths = static::modules_to_paths($global_modules);
-			$override_paths = static::modules_to_paths($ns_modules, '@global');
-			$extend_paths = array();
-		}
-
-		$paths[] = \APPPATH . 'classes';
-		$paths = array_merge($paths, $override_paths, $native_paths);
-		$paths[] = \SYSPATH . 'classes';
-		$paths = array_merge($paths, $extend_paths);
-
-		$file_location = static::find_file('', $file, NULL, FALSE, $paths);
+		$file_location = static::find_entity_file($file, $namespace, 'classes');
 
 		if (is_file($file_location))
 		{
@@ -160,6 +142,13 @@ class Core extends \Kohana {
 
 		// Class is not in the filesystem
 		return FALSE;
+	}
+	
+	public static function find_entity_file($name, $namespace, $group, $ext = NULL)
+	{
+		$paths = static::get_possible_paths($namespace, $group);
+
+		return static::find_file('', $name, $ext, FALSE, $paths);
 	}
 	
 	/**
@@ -190,13 +179,43 @@ class Core extends \Kohana {
 		return $modules;
 	}
 	
-	private static function modules_to_paths($modules, $dir = NULL)
+	public static function get_possible_paths($namespace, $group)
+	{	
+		$all_modules = static::get_module_names();
+		$global_modules = static::get_module_names('global');
+		$ns_modules = static::get_module_names('namespace');
+		
+		if ($namespace != '') // Entity use some namespace
+		{
+			$parts = explode('\\', $namespace);
+			$ns_dir = strtolower(implode(DIRECTORY_SEPARATOR, $parts));
+			
+			$native_paths = static::_modules_to_paths(array(strtolower($namespace)), $group);
+			$override_paths = static::_modules_to_paths($all_modules, $group, '@override' . DIRECTORY_SEPARATOR . $ns_dir);
+			$extend_paths = static::_modules_to_paths($all_modules, $group, '@extend' . DIRECTORY_SEPARATOR . $ns_dir);
+		}
+		else // Global entity
+		{
+			$native_paths = static::_modules_to_paths($global_modules, $group);
+			$override_paths = static::_modules_to_paths($ns_modules, $group, '@global');
+			$extend_paths = array();
+		}
+
+		$paths[] = \APPPATH . $group;
+		$paths = array_merge($paths, $override_paths, $native_paths);
+		$paths[] = \SYSPATH . $group;
+		$paths = array_merge($paths, $extend_paths);
+		
+		return $paths;
+	}
+	
+	protected static function _modules_to_paths($modules, $group, $dir = NULL)
 	{
 			
 		$paths = array();
 		foreach ($modules as $module)
 		{
-			$path = \MODPATH . str_replace('\\', DIRECTORY_SEPARATOR, $module) . DIRECTORY_SEPARATOR . 'classes';
+			$path = \MODPATH . str_replace('\\', DIRECTORY_SEPARATOR, $module) . DIRECTORY_SEPARATOR . $group;
 			if ($dir != NULL)
 			{
 				$path .=  DIRECTORY_SEPARATOR . $dir;
@@ -206,4 +225,13 @@ class Core extends \Kohana {
 		return $paths;
 	}
 	
+	protected static function _parse_namespace($entity)
+	{
+		$parts = explode('\\', $entity);
+		
+		return array(
+			array_pop($parts),
+			implode('\\', $parts)
+		);
+	}
 }

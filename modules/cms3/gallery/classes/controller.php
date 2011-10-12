@@ -9,7 +9,7 @@ class Controller extends Controller_Component {
   
   public function action_display($params = array())
   {
-    echo "Фотогалерея";
+		
   }
   
   public function action_test($params = array())

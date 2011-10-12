@@ -66,7 +66,7 @@ abstract class Document {
 	{
 		$this->_set_headers();
 	  
-		echo Template::render($template);
+		echo Template::display($template);
 	}
 	
 	/**

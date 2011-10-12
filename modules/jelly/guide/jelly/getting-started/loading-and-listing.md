@@ -74,7 +74,7 @@ through the results in a foreach loop even if there's only one result. In this c
 which will always return `Jelly_Collection`.
 
 	// Get post limit from url
-	$limit = (int) $this->request->get('limit');
+	$limit = (int) $this->request->query('limit');
 
 	// Get all posts
 	$posts =  Jelly::query('post')->limit($limit)->select_all();

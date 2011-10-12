@@ -50,6 +50,7 @@ class Controller extends Controller_Component {
 			//$model->load_values(array('id' => $params['form']['id']));
 			$model = $model->query($params['form']['id'])->select(); // TODO: Не загружать модель при сохранении
 		}
+		unset($params['form']['model']);
 		$model->set($params['form']);
 		$model->save();
 		
@@ -122,7 +123,7 @@ class Controller extends Controller_Component {
 				$user_info = '';
 			}
 
-			echo Template::render('admin', array_merge($params, array(
+			echo Template::display('admin', array_merge($params, array(
 				'ui' => $this->ui,
 				'menu' => $menu,
 				'user_info' => $user_info

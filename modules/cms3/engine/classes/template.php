@@ -1,99 +1,214 @@
 <?php
 
+/**
+ * Class for displaying templates
+ * 
+ * @package		CMS 3.0
+ * @category	Engine
+ */
+
 namespace CMS3\Engine;
- 
-abstract class Template {
 
-	protected static $_ext = '';
-
-	public $engine;
+class Template {
 	
-	public $theme;
+	/**
+	 * @var  string 
+	 */
+	public $name = '';
 	
-	public $template;
+	/**
+	 * @var  string 
+	 */
+	public $theme = '';
 	
-	public $real_path;
+	/**
+	 * @var  string 
+	 */
+	public $format = '';
 	
-	public $url_path;
+	/**
+	 * @var  object 
+	 */
+	public $engine = NULL;
 	
-	protected $_theme_paths = array();
+	/**
+	 * @var  object 
+	 */
+	protected $_filename = NULL;
 	
-	protected $_tpl_paths = array();
+	/**
+	 * @var  string 
+	 */
+	protected $_buffer = '';
 	
-	protected $_buffer = NULL;
+	
+	public static function display($name, array $vars = array(), $format = NULL, $theme = NULL)
+	{
+		$template = new static();
+		if ($format !== NULL)
+		{
+			$template->format = $format;
+		}
+		if ($theme !== NULL)
+		{
+			$template->theme = $theme;
+		}
+	 	$template->load($name);
+	 	
+	 	return $template->render($vars);
+	}
 	
 	public function __construct()
 	{
-		$this->_theme_paths = self::_get_theme_paths();
-		$this->engine = NS::extract_class_name(get_class($this));
+		$this->format = App::instance()->document->format;
+		$this->theme = App::instance()->document->current_theme;
 	}
 	
-	public abstract function render_content($content, array $data = array());
-	
-	public static function factory($engine)
+	public function load($name)
 	{
-		$class = NS::add_namespace(ucfirst($engine), 'CMS3\Template');
-		$obj = new $class();
-
-		return $obj;
+		$this->name = $name;
+		$this->_load_engine();
+		if ($this->_filename == NULL)
+		{
+			$this->_filename = $this->_find_filename();
+		}
+		if (! is_file($this->_filename))
+		{
+			throw new Exception('Can not load template :template: file :filename does not exists',
+				array(
+					':template' => $this->name,
+					':filename' => $this->_filename
+				)
+			); 
+		}
+		$this->_buffer = file_get_contents($this->_filename);
 	}
 	
-	public static function render($template, array $vars = array(), array $paths = array())
+	public function load_from($filename)
 	{
-		$theme = App::instance()->document->current_theme;
-		$format = App::instance()->document->format;
-		
-		$engine = static::detect_engine($theme, $template, $format, $paths, $filename);
-		if ($engine == NULL)
+		if ($this->engine == NULL)
 		{
-			throw new Exception('Invalid theme :theme', array(':theme' => $theme)); 
+			throw new Exception('Must set the template engine first for render template file :filename',
+				array(':filename' => $filename)
+			); 
 		}
-		
-		$inst = static::factory($engine);
-		$inst->theme = $theme;
-		$inst->_tpl_paths = $paths;
-		
-		return $inst->display($template, $format, $vars, $filename);
+		$this->_filename = $filename;
+		$name = pathinfo($filename, PATHINFO_FILENAME);
+		$this->load($name);
 	}
 	
-	public function display($name, $format = NULL, array $vars = array(), $filename = NULL)
+	public function render(array $vars = array())
 	{
-		if ($format === NULL)
-		{
-			$format = App::instance()->document->format;
-		}
+		$this->_buffer = $this->_execute_renderers($this->_buffer);
 		
-		if ($filename === NULL)
-		{
-			$filename = $this->_get_filename($name, $format);
-		}
-		if ($filename === FALSE)
-		{
-			throw new View_Exception('The requested template :file could not be found', array(':file' => $name));
-		}
-
-		$this->template = $name;
-		$this->real_path = pathinfo($filename, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR;
-		$this->filename = pathinfo($filename, PATHINFO_BASENAME);
-		$this->url_path = URL::real_to_site($this->real_path);
-		
-		$tpl = file_get_contents($filename);
-
-		$content = $this->_parse_renderers($tpl);
-		$content = $this->render_content($content, $vars);
+		$real_path = pathinfo($this->_filename, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR;
+		$settings = array(
+			'engine'		=> $this->engine->name(),
+			'theme'			=> $this->theme,
+			'template'		=> $this->name,
+			'filename'		=> pathinfo($this->_filename, PATHINFO_BASENAME),
+			'real_path'		=> $real_path,
+			'url_path'		=> URL::real_to_site($real_path)
+		);
+		$this->engine->settings($settings);
+		$content = $this->engine->render($this->_buffer, $vars);
 		
 		return $content;
 	}
-
-	protected static function _get_theme_paths()
+	
+	protected function _load_engine()
 	{
-		return array(
-			APPPATH . 'themes' . DIRECTORY_SEPARATOR,
-			THEMESPATH
-		);
+		if ($this->engine == NULL)
+		{
+			$engine_name = $this->_detect_engine();
+			if (! $engine_name)
+			{
+				throw new Exception('Unable to detect template engine for template :template',
+					array(':template' => $this->name)
+				); 
+			}
+			$this->engine = Template_Engine::factory($engine_name);
+		}
+		return $this->engine;
 	}
+	
+	protected function _detect_engine()
+	{
+		$paths = $this->_get_possible_paths();
+		
+		foreach ($paths as $path)
+		{
+			$list = scandir($path);
+			
+			foreach ($list as $engine)
+			{
+				if ($engine != '.' && $engine != '..' && is_dir($path . DIRECTORY_SEPARATOR . $engine))
+				{
+					$class = NS::add_class_prefix(ucfirst($engine), Template_Engine::CLASS_PREFIX); 				
+					$class = NS::add_namespace($class, Template_Engine::NAME_SPACE);
+					
+					if (class_exists($class))
+					{
+						$filename = $this->_make_filename($path, $engine, $class::EXT);
+						
+						if (is_file($filename))
+						{
+							$this->_filename = $filename;
+							
+							return $engine;
+						}
+					}
+				}
+			}
+		}
 
-	protected function _parse_renderers($data)
+		return FALSE;
+	}
+	
+	protected function _find_filename()
+	{
+		$paths = $this->_get_possible_paths();
+
+		foreach ($paths as $path)
+		{
+			$filename = $this->_make_filename($path, $this->engine->name(), $this->engine->ext());
+			if (is_file($filename))
+			{
+				return $filename;
+			}
+		}
+		return FALSE;
+	}
+	
+	protected function _make_filename($dir, $engine_name, $ext)
+	{
+		$file = NS::extract_class_name($this->name); 
+		
+		return $dir . DIRECTORY_SEPARATOR . $engine_name . DIRECTORY_SEPARATOR . $this->format . DIRECTORY_SEPARATOR . $file . '.' . $ext;
+	}
+	
+	protected function _get_possible_paths()
+	{
+		$list = array();
+		$namespace = NS::extract_namespace($this->name);
+		$paths = \CMS3::get_possible_paths($namespace, 'views');
+
+		//TODO: найти более красивое решение, это похоже на костыль
+		$theme_dir = \DOCROOT . 'themes' . DIRECTORY_SEPARATOR . $this->theme . DIRECTORY_SEPARATOR . 'views';
+		array_splice($paths, 1, 0, $theme_dir);
+		
+		foreach ($paths as $path)
+		{
+			if (is_dir($path))
+			{
+				$list[] = $path;
+			}
+		}
+		
+		return $list;
+	}
+	
+	protected function _execute_renderers($data)
 	{
 		$replace = array();
 		$matches = array();
@@ -108,11 +223,10 @@ abstract class Template {
 
 			for($i = 0; $i < $count; $i++)
 			{
-				$attribs = $this->_parse_attributes( $matches[2][$i]);
+				$params = $this->_parse_attributes( $matches[2][$i]);
 				$renderer  = $matches[1][$i];
-
-				$name  = isset($attribs['name']) ? $attribs['name'] : NULL;
-				$replace[$i] = $this->_get_buffer($renderer, $name, $attribs);
+				
+				$replace[$i] = Renderer::display($renderer, $params);
 			}
 
 			$data = str_replace($matches[0], $replace, $data);
@@ -138,137 +252,5 @@ abstract class Template {
 		}
 		return $result;
 	}
-	
-	protected function _get_buffer($renderer = NULL, $name = NULL, $params = array())
-	{
-		$result = NULL;
 
-		if ($renderer === NULL)
-		{
-			return $this->_buffer;
-		}
-		
-		if (isset($this->_buffer[$renderer][$name]))
-		{
-			$result = $this->_buffer[$renderer][$name];
-			if ($result === FALSE)
-			{
-				return NULL;
-			}
-		}
-		
-		$renderer = $this->_load_renderer($renderer);
-		if (is_object($renderer) && $renderer instanceof Renderer)
-		{
-			$result = $renderer->render($name, $params);
-		}	
-
-		return $result;
-	}
-
-	protected function _load_renderer($type)
-	{
-		if (NS::extract_namespace($type) === NULL)
-		{
-			$class = NS::add_namespace('Renderer_' . ucfirst($type), 'CMS3\Engine');
-		}
-		else
-		{
-			$class = $type;
-		}
-
-		if (! class_exists($class))
-		{
-			throw new Exception('Unable to load renderer class :class', array(':class' => $class));
-		}
-
-		$instance = new $class($this);
-		
-		return $instance;
-	}
-	
-	public static function detect_engine($theme, $template, $format, $tpl_paths, &$filename_out)
-	{
-			
-		$engines = array();
-		$search_paths = array();
-		$paths = static::_get_theme_paths();
-		
-		foreach ($paths as &$path)
-		{
-			$path .= strtolower($theme) . DIRECTORY_SEPARATOR;
-		}
-		$theme_paths = array_merge($paths, $tpl_paths);
-		
-		foreach ($theme_paths as $theme_path)
-		{
-			$tpl_path = $theme_path  . "templates";
-			
-			if (! is_dir($tpl_path)) continue;
-
-			$list = scandir($tpl_path);
-						
-			foreach ($list as $dir)
-			{
-				if ($dir != '.' && $dir != '..')
-				{
-					$search_path = $tpl_path . DIRECTORY_SEPARATOR . $dir;
-					
-					if (is_dir($search_path))
-					{
-						$class = NS::add_namespace(ucfirst($dir), 'CMS3\Template');
-						if (! class_exists($class)){
-							continue;
-						}
-						
-						$tpl_ext = $class::get_ext();
-						$filename = $search_path . DIRECTORY_SEPARATOR . $format . DIRECTORY_SEPARATOR . $template . $tpl_ext;
-		
-						if (is_file($filename))
-						{
-							$filename_out = $filename;
-							return $dir;
-						}
-					}
-				}
-			}
-		}
-		
-		/*
-		$infofile = \CMS3::find_file(strtolower($theme), "theme", "txt", FALSE, self::_get_paths());
-		
-		if (! is_file($infofile))
-		{
-			return NULL;
-		}
-		else 
-		{
-			return file_get_contents($infofile);
-		}
-		*/
-		return NULL;
-	}
-	
-	public static function get_ext()
-	{
-		return static::$_ext;
-	}
-	
-	private function _get_paths()
-	{
-		$paths = $this->_theme_paths;
-		foreach ($paths as &$path)
-		{
-			$path .= strtolower($this->theme) . DIRECTORY_SEPARATOR;
-		}
-		return array_merge($paths, $this->_tpl_paths);
-	}
-	
-	protected function _get_filename($tpl_name, $format = 'html')
-	{
-		$dir = 'templates' . DIRECTORY_SEPARATOR . strtolower($this->engine) .  DIRECTORY_SEPARATOR . strtolower($format);
-		$paths = $this->_get_paths();
-
-		return \CMS3::find_file($dir, strtolower($tpl_name), static::$_ext, FALSE, $paths);
-	}
 }

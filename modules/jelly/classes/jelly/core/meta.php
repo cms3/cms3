@@ -129,6 +129,22 @@ abstract class Jelly_Core_Meta
 		// Set up event system
 		$this->_events = new Jelly_Event($model);
 
+		// Set the name of a possible behavior class
+		$behavior_class = Jelly::behavior_prefix().$model;
+
+		// See if we have a special behavior class to use
+		if (class_exists($behavior_class))
+		{
+			// Load behavior
+			$behavior = new $behavior_class;
+
+			if ( ! in_array($behavior, $this->_behaviors))
+			{
+				// Add to behaviors
+				$this->_behaviors[] = $behavior;
+			}
+		}
+
 		// Initialize behaviors
 		foreach ($this->_behaviors as $name => $behavior)
 		{
@@ -148,7 +164,7 @@ abstract class Jelly_Core_Meta
 		// Table should be a sensible default
 		if (empty($this->_table))
 		{
-			$this->_table = inflector::plural($model);
+			$this->_table = Inflector::plural($model);
 		}
 
 		// See if we have a special builder class to use

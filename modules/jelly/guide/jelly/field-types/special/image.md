@@ -46,6 +46,7 @@ Here is an example where you resize the original image and create a thumbnail.
  * **`quality`** — desired quality of the saved image between 0 and 100, defaults to 100.
  * **`driver`** — image driver to use, default is `NULL` which will result in using [Image::$default_driver](../api/Image#property:default_driver)
  * **`delete_old_file`** — Whether or not to delete the old files when a new image is successfully uploaded. Defaults to `FALSE`.
+ * **`delete_file`** — If this value is `TRUE` image and thumbnails are automatically deleted upon deletion. The default is `FALSE`.
  * **`types`** — Valid file extensions that the file may have. Defaults to allowing JPEGs, GIFs, and PNGs.
 
  [API documentation](../api/Jelly_Field_Image)

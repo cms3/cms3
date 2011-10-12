@@ -4,23 +4,37 @@ namespace CMS3\Engine;
 
 class Field_String_Multilang extends Field_String implements \Jelly_Field_Supports_Save
 {
-	public $i18n_suffix = '_i18n';
+	const SUFFIX = '_i18n';
+	
+	public $in_db = FALSE;
 	
 	public $language_column = 'language';
 	
-	public $in_db = FALSE;
+	public $table = NULL;
+	
+	public $foreign_column = NULL; 
+	
+	public function initialize($model, $column)
+	{
+		if (empty($this->table))
+		{
+			$this->table = ORM::meta($model)->table() . static::SUFFIX;
+		}
+		if (empty($this->foreign_column))
+		{
+			$this->foreign_column = ORM::meta($model)->foreign_key();
+		}
+		
+		parent::initialize($model, $column);
+	}
 	
 	public function get($model, $value)
 	{
 		if (App::instance()->get_cfg('multilingual'))
 		{
-			$language = strtolower($model->language);
-			$table = ORM::meta($model)->table() . $this->i18n_suffix;
-			$column = ORM::meta($model)->foreign_key();
-
-			$obj = ORM::query($table)
-				->where($column, '=', $model->id())
-				->where($this->language_column, '=', $language)
+			$obj = ORM::query($this->table)
+				->where($this->foreign_column, '=', $model->id())
+				->where($this->language_column, '=', strtolower($model->language))
 				->limit(1)
 				->select();
 			

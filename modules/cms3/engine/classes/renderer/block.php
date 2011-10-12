@@ -2,7 +2,7 @@
 
 namespace CMS3\Engine;
  
-class Renderer_Block extends Renderer {
+class Renderer_Block extends Renderer implements Renderer_Interface {
 
 	public function render($name, array $params = array())
 	{
@@ -28,7 +28,7 @@ class Renderer_Block extends Renderer {
 					}
 					else
 					{
-						$data .= Template::render('block/' . $tpl, array('content' => $content));
+						$data .= Template::display('block/' . $tpl, array('content' => $content));
 					}
 				}
 			}

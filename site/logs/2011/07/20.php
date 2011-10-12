@@ -1,0 +1,15 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2011-07-20 13:06:22 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-20 13:59:38 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-20 13:59:41 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-20 14:09:22 --- ERROR: ErrorException [ 8 ]: Undefined variable: key ~ MODPATH\cms3\properties\classes\model\property.php [ 42 ]
+2011-07-20 14:09:22 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-20 14:09:34 --- ERROR: ErrorException [ 8 ]: Undefined index: unloaded ~ MODPATH\cms3\properties\classes\model\property.php [ 37 ]
+2011-07-20 14:09:34 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-20 14:09:35 --- ERROR: ErrorException [ 8 ]: Undefined index: unloaded ~ MODPATH\cms3\properties\classes\model\property.php [ 37 ]
+2011-07-20 14:09:35 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-20 14:09:36 --- ERROR: ErrorException [ 8 ]: Undefined index: unloaded ~ MODPATH\cms3\properties\classes\model\property.php [ 37 ]
+2011-07-20 14:09:36 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-07-20 14:10:00 --- ERROR: Database_Exception [ 0 ]: [1054] Unknown column 'properties__property_value_integers.id' in 'field list' ( SELECT `properties__property_value_integers`.`id` AS `id`, `properties__property_value_integers`.`ordering` AS `ordering`, `properties__property_value_integers`.`name` AS `name`, `properties__property_value_integers`.`value` AS `value` FROM `properties__property_value_integers` AS `properties__property_value_integers` WHERE `properties__property_value_integers`.`id` = 1 ORDER BY `properties__property_value_integers`.`ordering` ASC LIMIT 1 ) ~ MODPATH\database\classes\kohana\database\mysql.php [ 181 ]
+2011-07-20 14:10:00 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]

@@ -46,6 +46,11 @@ abstract class Jelly_Core_Field_HasOne extends Jelly_Field implements Jelly_Fiel
 	public $empty_value = 0;
 
 	/**
+	 * @var  boolean  dependent fields are automatically deleted if set to TRUE.
+	 */
+	public $delete_dependent = FALSE;
+
+	/**
 	 * Determines the actual foreign model and field that the
 	 * relationship is tied to.
 	 *
@@ -148,6 +153,31 @@ abstract class Jelly_Core_Field_HasOne extends Jelly_Field implements Jelly_Fiel
 			     ->set(array($this->foreign['field'] => $model->id()))
 			     ->update();
 		}
+	}
+
+	/**
+	 * Deletes the dependent field if automatic relationship deletion
+	 * is enabled.
+	 *
+	 * @param   Jelly_Model  $model
+	 * @param   mixed        $key
+	 * @return  void
+	 */
+	public function delete($model, $key)
+	{
+		// Set the field name
+		$field = $this->name;
+
+		// Set dependent
+		$dependent = $model->$field;
+
+		if ($this->delete_dependent AND $dependent->loaded())
+		{
+			// Delete the field
+			$dependent->delete();
+		}
+
+		return;
 	}
 
 	/**

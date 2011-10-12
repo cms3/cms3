@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Handles integer data-types
+ * Handles integer data-types.
  *
  * @package    Jelly
  * @author     Jonathan Geiger
@@ -25,7 +25,7 @@ abstract class Jelly_Core_Field_Integer extends Jelly_Field {
 	{
 		list($value, $return) = $this->_default($value);
 
-		if ( ! $return)
+		if ( ! $return AND ! $value instanceof Database_Expression)
 		{
 			$value = (int) $value;
 		}

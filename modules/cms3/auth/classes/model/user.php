@@ -14,21 +14,8 @@ class Model_User extends Model implements \Acl_Role_Interface {
 		$meta->fields(array(
 			'id'		=> ORM::field('primary'),
 			'enabled'	=> ORM::field('boolean'),
-			'params'	=> ORM::field('hasmany', array(
-				'foreign' 	=> 'cms3\auth\user_param_value.user_id',
-				'model'		=> 'cms3\auth\user_param_value',
-			)),
+			'properties' => ORM::field('properties')
 		));
-	}
-
-	public function get_params_array()
-	{
-		$result = array();
-		foreach ($this->params as $param)
-		{
-			$result[$param->info->name] = $param->value;
-		}
-		return $result;
 	}
 	
 	public function get_role_id()

@@ -51,20 +51,20 @@ class Controller extends Controller_Component {
 		{
 			echo '<a href="/shop/3/17"><b></b><br /><br />Lenovo ThinkPad SL500 614D426<img src="/media/img/shop/17.jpg" /></a><br /><br /><br />';
 		}
-    echo "category_id = $category_id";
-    if ($count)
-    {
-		echo ";  numer of products = $count";
-    }
+		echo "category_id = $category_id";
+		if ($count)
+		{
+			echo ";  numer of products = $count";
+		}
   }
   
-  public function action_display_product($params = array())
-  {
-    if (! empty($params["title"])){
-			echo "<h4>" . $params["title"] . "</h4>";
-		}
+	public function action_display_product($params = array())
+	{
 		$product_id = empty($params["product_id"]) ? 0 : intval($params["product_id"]);
-		echo '<div><img src="/media/img/shop/' . $product_id  . '-big.jpg" /></div>';
-		echo "product_id = $product_id";
-  }
+		echo $this->component->get_view('product', array(
+			'title' => $params["title"],
+			'product_id' => $product_id
+		));
+	}
+
 }

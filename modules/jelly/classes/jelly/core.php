@@ -13,7 +13,7 @@ abstract class Jelly_Core
 	 *               This can be overridden to allow you to place
 	 *               models and builders in a different location.
 	 */
-	protected static $_model_prefix = 'model_';
+	protected static $_model_prefix = 'Model_';
 
 	/**
 	 * @var  string  This prefix to use for all model's field classes
