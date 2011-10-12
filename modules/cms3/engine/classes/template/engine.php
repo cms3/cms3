@@ -79,4 +79,29 @@ abstract class Template_Engine implements Template_Engine_Interface  {
 			return NULL;
 		}
 	}
+	
+	public function add_script($url, array $params = NULL, $unique = FALSE, $position = 'default')
+	{
+		return App::instance()->document->media->link('script', $url, $params, $unique, $position);
+	}
+
+	public function add_script_file($filename, $namespace, array $params = NULL, $unique = FALSE, $position = 'default')
+	{
+		return App::instance()->document->media->link('script', $filename, $namespace, $params, $unique, $position);
+	}
+
+	public function add_css($url, array $params = NULL, $unique = FALSE, $position = 'default')
+	{
+		return App::instance()->document->media->link('style', $url, $params, $unique, $position);
+	}
+
+	public function add_css_file($filename, $namespace, array $params = NULL, $unique = FALSE, $position = 'default')
+	{
+		return App::instance()->document->media->link('style', $filename, $namespace, $params, $unique, $position);
+	}
+	
+	public function add_image($filename, $namespace, array $params = NULL)
+	{
+		return App::instance()->document->media->file('image', $filename, $namespace, $params);
+	}
 }

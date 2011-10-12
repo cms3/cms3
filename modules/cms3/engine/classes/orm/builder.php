@@ -33,19 +33,19 @@ class ORM_Builder extends \Jelly_Builder {
 
 		if ($params === NULL && $module !== NULL && $model !== NULL)
 		{
-			$params = (array)(App::instance()->param($module, $model));
+			$params = (array)(App::instance()->filter($module, $model));
 		}
-		
 		$alias = $this->make_alias($module, $model);
+
+		$filtered = FALSE;
 		foreach ($params as $name => $value)
 		{
-			if (! empty($name))
-			{
-				$this->_add_param_filter($this->_model, $name, $value, $alias);
-			}
+			$filtered = $filtered OR $this->_add_param_filter($this->_model, $name, $value, $alias);
 		}
-		$this->group_by(ORM::meta($this->_model)->primary_key());
-		//$this->_add_ordering($module . '.' . $model); TODO
+		if ($filtered)
+		{
+			$this->group_by(ORM::meta($this->_model)->primary_key());
+		}
 		
 		return $this;
 	}
@@ -53,7 +53,8 @@ class ORM_Builder extends \Jelly_Builder {
 	protected function _add_ordering($model_path)
 	{
 		$ordering = App::instance()->ordering($model_path);
-		if (! empty($ordering))
+
+		if (! empty($ordering['column']))
 		{
 			$this->order_by($ordering['column'], $ordering['dir']);
 		}
@@ -61,6 +62,8 @@ class ORM_Builder extends \Jelly_Builder {
 
 	protected function _add_param_filter($model, $name, $value, $basic_alias, $rel_alias = NULL)
 	{
+		$result = FALSE;
+		
 		$meta = ORM::meta($model);
 		
 		$parts = explode('.', $name);
@@ -69,7 +72,6 @@ class ORM_Builder extends \Jelly_Builder {
 		if ($field = $meta->field($field_name))
 		{
 			$filter_rules = $field->get_filtration_rules();
-
 			if (! $filter_rules->enabled)
 			{
 				return;
@@ -81,8 +83,8 @@ class ORM_Builder extends \Jelly_Builder {
 				{
 					$rel_alias = $this->make_alias($rel_alias, $field_name);
 					$alias = $this->make_alias($basic_alias, $rel_alias);
-
-					$sub_model = $field->add_filter($model, $value, $this, $alias);
+					
+					$sub_model = $field->join($this, $alias);
 					$sub_name = implode('.', $parts);
 					
 					$this->_add_param_filter($sub_model, $sub_name, $value, $basic_alias, $rel_alias);
@@ -91,23 +93,43 @@ class ORM_Builder extends \Jelly_Builder {
 			else
 			{
 				$alias = ($rel_alias === NULL) ? NULL : $this->make_alias($basic_alias, $rel_alias);
-				$field->add_filter($model, $value, $this, $alias);
+				if (isset($value['filter']))
+				{
+					$field->add_filter($value['filter'], $this, $alias);
+					$result = TRUE;
+				}
+				if (isset($value['ordering']))
+				{
+					if (! $result)
+					{
+						$join_alias = $field->join($this, $alias);
+						if ($join_alias)
+						{
+							$alias = $join_alias;
+						}
+					}
+					$extra_alias = $alias ? ($alias . '.') : '';
+					$this->order_by($extra_alias . $field->column,  $value['ordering']);
+					$result = TRUE;
+				}
 			}
 		}
-	}
 
+		return $result;
+	}
+	
 	protected function _get_value()
 	{
 		return $this->_protection_data[$this->_current_value];
 	}
-
+	
 	protected function _get_model_default_filters($model)
 	{
 		$meta = ORM::meta($model);
 
 		foreach ($meta->fields() as $field)
 		{
-
+			
 		}
 	}
 }

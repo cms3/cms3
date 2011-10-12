@@ -12,7 +12,7 @@ class Model_Property_Value_Boolean extends Model_Property_Value {
 		parent::initialize($meta);
 
 		static::extend_fields($meta, array(
-			'_value' 	=> ORM::field('boolean')
+			'value' 	=> ORM::field('boolean')
 		));
 	}
 }

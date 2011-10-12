@@ -6,6 +6,8 @@ abstract class Renderer implements Renderer_Interface {
 
 	const CLASS_PREFIX = 'Renderer_';
 
+	public $default_priority = 1; // TODO реализовать использование этого поля
+
 	public static function display($name, array $params = array())
 	{
 		if (NS::extract_namespace($name) === NULL)

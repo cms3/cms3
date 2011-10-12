@@ -1,3 +1,2 @@
-<?php echo $this->template('header', array('header' => $this->title)) ?>
-
+<?php echo $this->template('caption', array('title' => $this->title)) ?>
 <p><?php echo $this->text ?></p>

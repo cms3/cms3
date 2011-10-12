@@ -13,8 +13,10 @@ class Controller_App extends Controller {
 		App::instance()->dispatch($path, $language, $format);
 	}
 	
-	public function action_call($call_path)
+	public function action_call($call_path = NULL)
 	{
+		$call_path = Request::current()->param('call_path'); // TODO
+
 		$parts = explode('/', $call_path);
 		$action = array_pop($parts);
 		$controller = implode(NS::DELIMITER, $parts); 

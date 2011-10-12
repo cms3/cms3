@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<cms3:include renderer="document" name="header" />
 	<link rel="stylesheet" href="/themes/default/css/main.css" type="text/css" />
+	<!-- top -->
+	<cms3:include renderer="document" name="header" priority="-100" />
 </head>
 <body>
 
@@ -16,6 +17,5 @@
 </div>
 
 <div id="footer">&copy; 2010 CMS 3.0 [phptal]</div>
-
 </body>
 </html>

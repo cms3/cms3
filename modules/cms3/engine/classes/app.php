@@ -12,6 +12,8 @@ class App {
 	
 	protected $_params;
 
+	protected $_filters;
+
 	private $_languages = array();
 
 	private $_config;
@@ -27,7 +29,7 @@ class App {
 		
 		return static::$_instance;
 	}
-/*
+
 	public function filter($module = NULL, $model = NULL)
 	{
 		if ($module !== NULL)
@@ -44,7 +46,7 @@ class App {
 
 		return $this->_filters;
 	}
-
+/*
 	protected function _build_filter_tree($params)
 	{
 		$result = array();
@@ -114,7 +116,48 @@ class App {
 				$result['@global'][$param] = $value;
 		 	}
 		}
+		
+		return $result;
+	}
 
+	protected function _build_filter_tree($params)
+	{
+		$result = array();
+
+		foreach ($params as $param => $value)
+		{
+			$parts = explode('.', $param);
+		 	if (count($parts) >= 3 && strpos($param, '[') === FALSE ) // TODO
+		 	{
+				$module = array_shift($parts);
+				$model = array_shift($parts);
+				$field = implode('.', $parts);
+				$result[$module][$model][$field]['filter'] = $value;
+		 	}
+		}
+		
+		$ordering = (array)@$_REQUEST['ordering']; // TODO
+		foreach ($ordering as $path => $order)
+		{
+			$parts = explode('.', $path);
+			if (count($parts) >= 2)
+			{
+				$module = $parts[0];
+				$model = $parts[1];
+
+				@list($field, $dir) = explode(',', $order);
+				if (! empty($field))
+				{
+					if (! in_array(strtolower($dir), array('asc', 'desc')))
+					{
+						$dir = 'asc';
+					}
+
+					$result[$module][$model][$field]['ordering'] = $dir;
+				}
+			}
+		}
+		
 		return $result;
 	}
 
@@ -355,7 +398,9 @@ class App {
 			throw new HTTP_Exception_404();
 		}
 
+		// TODO: единый интерфейс вызова
 		$this->_params = $this->_build_params_tree(Request::current()->param());
+		$this->_filters = $this->_build_filter_tree(Request::current()->param());
 
 		$this->document->current_theme = $this->_detect_theme();
 
@@ -424,6 +469,15 @@ class App {
 		
 		$params = Request::current()->param();
 		$expression = new Expression();
+
+		//TODO: ужасный костыль
+		$parsed_params = array();
+		foreach ($params as $name => $value)
+		{
+			$name = str_replace('.', '_', $name);
+			$parsed_params[$name] = $value;
+		}
+		$params = $parsed_params;
 		
 		return $expression->evaluate($condition, $params) != '';
 	}

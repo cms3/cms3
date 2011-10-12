@@ -36,6 +36,6 @@ class Model_Item extends Model {
 
 	public static function get_text_filter_enabled()
 	{
-		return FALSE;
+		return TRUE;
 	}
 }

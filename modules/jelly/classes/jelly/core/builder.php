@@ -54,7 +54,7 @@ abstract class Jelly_Core_Builder extends Database_Query_Builder_Select
 	protected $_type = NULL;
 
 	/**
-	 * @var  array  Alias cache
+	 * @var  array  Alias cache 
 	 */
 	protected $_model_cache = array();
 

@@ -33,6 +33,8 @@ class Controller extends Abstract_Controller {
 
   public function action_display_catalog($params = array())
   {
+		echo View::factory('cms3\shop\catalog'); return;
+  
 		if (! empty($params["title"]))
 		{
 			echo "<h4>" . $params["title"] . "</h4>";

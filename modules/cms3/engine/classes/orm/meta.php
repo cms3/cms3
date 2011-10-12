@@ -124,17 +124,29 @@ class ORM_Meta extends \Jelly_Core_Meta {
 		{
 			$this->_table = $value;
 		}
-
+	
 		return $this->_table;
 	}
-
+	
 	public function language($value = NULL)
 	{
 		if (func_num_args() !== 0)
 		{
 			$this->_language = $value;
 		}
-
+		
 		return $this->_language;
+	}
+	
+	public function fields_data()
+	{
+		$data = array();
+
+		foreach ($this->fields() as $field)
+		{
+			$data[$field->name] = $field->meta_data();
+		}
+		
+		return $data;
 	}
 }

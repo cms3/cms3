@@ -14,7 +14,7 @@ class Controller extends Abstract_Controller {
 	
 	public function action_display($params = array())
 	{
-		$item_id = (int) Request::$initial->param('content_item_id');  // TODO: автоматически
+		$item_id = (int) Request::$initial->param('content.item.id');  // TODO: автоматически
 		if ($item_id)
 		{
 			$this->display('item', array('item_id' => $item_id));

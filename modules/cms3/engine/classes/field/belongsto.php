@@ -30,12 +30,12 @@ class Field_BelongsTo extends \Jelly_Field_BelongsTo implements Field_Relationsh
 		}
 	}
 	
-	public function add_filter($model, $value, $builder, $alias = NULL)
+	public function join($builder, $alias = NULL)
 	{
 		$table = ORM::meta($this->model)->table();
 
 		$foreign_meta = ORM::meta($this->foreign['model']);
-		$foreign_field = $alias . '.' . $this->foreign['field'];
+		$foreign_field = ($alias ?: $foreign_meta->table()) . '.' . $this->foreign['field'];
 		
 		$builder->join(array($foreign_meta->table(), $alias))
 				->on($foreign_field, '=', $table . '.' . $this->column);

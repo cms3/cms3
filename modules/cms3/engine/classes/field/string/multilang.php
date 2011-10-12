@@ -95,23 +95,31 @@ class Field_String_Multilang extends Field_String implements \Jelly_Field_Suppor
 		}
 	}
 
-	public function add_filter($model, $value, $builder, $alias = NULL)
+	public function join($builder, $alias = NULL)
 	{
+		if (! empty($alias))
+		{
+			$join_alias = $builder->make_alias($alias, static::SUFFIX);
+		}
+		else
+		{
+			$join_alias = $this->table;
+		}
 		if (App::instance()->get_cfg('multilingual'))
 		{
 			$lang = strtolower($this->language);
-			if (! empty($alias))
-			{
-				$join_alias = $builder->make_alias($alias, static::SUFFIX);
-			}
-			else
-			{
-				$join_alias = $this->table;
-			}
+
 			$builder->join(array($this->table, $join_alias))
-				->on($join_alias . '.' . $this->foreign_column, '=', ORM::meta($model)->primary_key())
+				->on($join_alias . '.' . $this->foreign_column, '=', ORM::meta($this->model)->primary_key())
 				->on($join_alias . '.' . $this->language_column, '=', DB::expr(\Database::instance()->quote($lang)));
 		}
+		return $join_alias;
+	}
+
+	public function add_filter($value, $builder, $alias = NULL)
+	{
+		$join_alias = $this->join($builder, $alias);
+		$table = $join_alias ? ($join_alias . '.') : '';
 		$builder->where($join_alias . '.' . $this->column, '=', $value);
 	}
 }

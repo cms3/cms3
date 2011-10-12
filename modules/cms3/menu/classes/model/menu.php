@@ -24,6 +24,7 @@ class Model_Menu extends Model {
 	{
 		$items = Model_Item::factory()->query()
 			->filter() // TODO
+			->where('menu_id', '=', $this->id)
 			->where('parent_id', '=', $parent)
 			->order_by('ordering', 'asc')
 			->select();

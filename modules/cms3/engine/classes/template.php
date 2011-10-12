@@ -212,24 +212,54 @@ class Template {
 	
 	protected function _execute_renderers($data)
 	{
-		$replace = array();
-		$matches = array();
-		
-		if (preg_match_all('#<cms3:include\ renderer="([^"]+)" (.*)\/>#iU', $data, $matches))
+		if (preg_match_all('#<cms3:include\ (.*)\/>#iU', $data, $matches))
 		{
 			$matches[0] = array_reverse($matches[0]);
 			$matches[1] = array_reverse($matches[1]);
-			$matches[2] = array_reverse($matches[2]);
 
-			$count = count($matches[1]);
+			$count = count($matches[0]);
 
+			$replace = array();
+			$renderers = array();
 			for($i = 0; $i < $count; $i++)
 			{
-				$params = $this->_parse_attributes( $matches[2][$i]);
-				$renderer  = $matches[1][$i];
-				
-				$replace[$i] = Renderer::display($renderer, $params);
+				$params = $this->_parse_attributes( $matches[1][$i]);
+				if (isset($params['renderer']))
+				{
+					$renderer = $params['renderer'];
+					$priority = @$params['priority'] ?: 0;
+
+					unset($params['renderer']);
+					unset($params['priority']);
+
+					$renderers[$i] = array(
+						'index' => $i,
+						'renderer' => $renderer,
+						'priority' => $priority,
+						'params' => $params,
+					);
+				}
+				else
+				{
+					$replace[$i] = $matches[0][$i];
+				}
 			}
+
+			usort($renderers, function($a, $b)
+			{
+				$result = (int)$b['priority'] - (int)$a['priority'];
+				if ($result == 0)
+				{
+					$result = $b['index'] - $a['index'];
+				}
+				return $result;
+			});
+
+			foreach ($renderers as $render_data)
+			{
+				$replace[$render_data['index']] = Renderer::display($render_data['renderer'], $render_data['params']);
+			}
+			ksort($replace);
 
 			$data = str_replace($matches[0], $replace, $data);
 		}

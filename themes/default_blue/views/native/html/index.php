@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<cms3:include renderer="document" name="header" />
+	<cms3:include renderer="document" name="header" priority="-100" />
 	<link rel="stylesheet" href="/themes/default_blue/css/main.css" type="text/css" />
 </head>
 <body>

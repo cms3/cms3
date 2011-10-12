@@ -59,7 +59,7 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 				$saveable[$column] = $value;
 			}
 		}
-
+		
 		// If we have a key, we're updating
 		if ($key)
 		{
@@ -82,7 +82,7 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 			$this->_changed[$this->_meta->primary_key()] = $id;
 			$values[$this->_meta->primary_key()] = $id;
 		}
-
+		
 		// Re-set any saved values; they may have changed
 		foreach ($values as $column => $value)
 		{
@@ -101,10 +101,10 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		// We're good!
 		$this->_loaded = $this->_saved = TRUE;
 		$this->_retrieved = $this->_changed = array();
-
+		
 		// Trigger post-save callback
 		$this->_meta->events()->trigger('model.after_save', $this);
-
+		
 		return $this;
 	}
 	
@@ -145,13 +145,34 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 
 		foreach($fields as $field)
 		{
-			$result[$field] = $this->__get($field);
+			$result[$field] = $this->{$field};
 			if ($recursive && is_object($result[$field]) && method_exists($result[$field], 'as_array'))
 			{
 				$result[$field] = $result[$field]->as_array(NULL, TRUE);
 			}
 		}
 
+		return $result;
+	}
+	
+	public function load_linked($key = NULL)
+	{
+		$result = array();
+		
+		$this->rows = $this->load($key);
+		foreach ($this->rows as $row)
+		{
+			if ($row instanceof Field_Relationship_Interface)
+			{
+				$result[$row->name()] = $row->load_linked();
+				//$result[$data] = ;
+			}
+			else
+			{
+				$result[$row] = create_function('parse_row', $row);
+			}
+		}
+	
 		return $result;
 	}
 	
@@ -169,6 +190,46 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		return $this->_loaded;
 	}
 	
+	public function all_values($key = NULL)
+	{
+		$values = array();
+		$meta = $this->meta();
+
+		if ($key != NULL)
+		{
+			$this->load($key);
+		}
+		if (! $this->loaded())
+		{
+			return $values;
+		}
+		
+		foreach ($meta->fields() as $name => $field)
+		{
+			$value = $this->{$name};
+			if ($value instanceof Model)
+			{
+				$value = $value->all_values();
+			}
+			$values[$name] = $value;
+		}
+		
+		return $values;
+	}
+	
+	public function load_filters() // TODO
+	{
+		$meta = $this->meta();
+		if ($meta)
+		{
+			foreach ($meta->fields() as $field)
+			{
+				 $field->load_filtration_rules();
+			}
+		}
+		return $this;
+	}
+	
 	public function change($field = NULL)
 	{
 		$this->_changed[$field] = $this->$field;	
@@ -178,12 +239,12 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 	{
 		$meta->fields($meta->fields() + $fields);
 	}
-
+	
 	public function query($key = NULL)
 	{
 		return ORM::query($this, $key);
 	}
-
+	
 	// Implementation of Acl_Resource_Interface
 	public function get_resource_id()
 	{
@@ -201,9 +262,9 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		
 		return $param;
 	}
-
+	
 	public static function method($method_name)
 	{
-		return new Wrapper_Method(get_called_class(), $method_name);
+		return new \ReflectionMethod(get_called_class(), $method_name);
 	}
 }

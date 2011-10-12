@@ -140,7 +140,7 @@ class Core extends \Kohana {
 			// Class has been found
 			return TRUE;
 		}
-
+		
 		// Class is not in the filesystem
 		return FALSE;
 	}
@@ -169,7 +169,7 @@ class Core extends \Kohana {
 			foreach (static::$_modules as $name => $path)
 			{
 				$global = strpos($name, '\\') === FALSE; 
-
+				
 				if (($global == TRUE && $area == 'global') || ($global == FALSE && $area == 'namespace'))
 				{
 					$modules[] = $name;
