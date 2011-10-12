@@ -1,0 +1,12 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2010-10-15 11:43:05 --- ERROR: Validate_Exception [ 0 ]: Failed to validate array ~ MODPATH\jelly\classes\jelly\model\core.php [ 666 ]
+2010-10-15 11:45:09 --- ERROR: Validate_Exception [ 0 ]: Failed to validate array ~ MODPATH\jelly\classes\jelly\model\core.php [ 666 ]
+2010-10-15 11:56:06 --- ERROR: Database_Exception [ 1048 ]: Column 'tmp' cannot be null [ INSERT INTO `auth_users` (`tmp`) VALUES (NULL) ] ~ MODPATH\database\classes\kohana\database\mysql.php [ 179 ]
+2010-10-15 12:01:27 --- ERROR: Database_Exception [ 1064 ]: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 [ INSERT INTO `auth_users` () VALUES  ] ~ MODPATH\database\classes\kohana\database\mysql.php [ 179 ]
+2010-10-15 12:01:50 --- ERROR: Database_Exception [ 1064 ]: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 [ INSERT INTO `auth_users` () VALUES  ] ~ MODPATH\database\classes\kohana\database\mysql.php [ 179 ]
+2010-10-15 12:02:07 --- ERROR: Database_Exception [ 1064 ]: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 [ INSERT INTO `auth_users` () VALUES  ] ~ MODPATH\database\classes\kohana\database\mysql.php [ 179 ]
+2010-10-15 12:05:00 --- ERROR: Database_Exception [ 1064 ]: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 [ INSERT INTO `auth_users` () VALUES  ] ~ MODPATH\database\classes\kohana\database\mysql.php [ 179 ]
+2010-10-15 12:11:01 --- ERROR: Database_Exception [ 1064 ]: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 [ INSERT INTO `auth_users` () VALUES  ] ~ MODPATH\database\classes\kohana\database\mysql.php [ 179 ]
+2010-10-15 12:21:52 --- ERROR: Database_Exception [ 1064 ]: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1 [ INSERT INTO `auth_users` () VALUES  ] ~ MODPATH\database\classes\kohana\database\mysql.php [ 179 ]
+2010-10-15 12:30:24 --- ERROR: Validate_Exception [ 0 ]: Failed to validate array ~ MODPATH\jelly\classes\jelly\model\core.php [ 666 ]

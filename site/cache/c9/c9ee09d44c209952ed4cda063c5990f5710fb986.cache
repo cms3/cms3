@@ -1,0 +1,21 @@
+3600
+s:931:"<form action="/action/cms3/auth/controller/login" method="post">
+<table>
+<tr><td>Логин:&nbsp;&nbsp;</td><td><input type="text" name="username" size="20"/></td></tr>
+<tr><td>Пароль:&nbsp;&nbsp;</td><td><input type="password" size="20" name="password"/></td></tr>
+<tr><td></td><td><label><input type="checkbox" name="remember"/>&nbsp;Запомнить меня</label></td></tr>
+<tr><td></td><td><input type="submit" value="Войти"/></td></tr>
+</table>
+<input type="hidden" name="return" value="Z2FsbGVyeS8xLzI="/>
+</form>
+
+<hr/>
+
+<form action="/action/cms3/auth/controller/login" method="post">
+<table>
+<tr><td>OpenID:&nbsp;&nbsp;</td><td><input type="text" name="openid_identifier" size="20"/></td></tr>
+<tr><td></td><td><input type="submit" value="Войти по OpenID"/></td></tr>
+</table>
+<input type="hidden" name="method" value="openid"/>
+<input type="hidden" name="return" value="Z2FsbGVyeS8xLzI="/>
+</form>";

@@ -1,0 +1,17 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2010-10-12 18:27:00 --- ERROR: ErrorException [ 2 ]: The magic method __get() must have public visibility and cannot be static ~ MODPATH\openid\classes\openid.php [ 490 ]
+2010-10-12 18:28:25 --- ERROR: ErrorException [ 1 ]: Class 'Openid' not found ~ MODPATH\openid\classes\openid\request.php [ 18 ]
+2010-10-12 18:29:12 --- ERROR: ErrorException [ 1 ]: Class 'Openid' not found ~ MODPATH\openid\classes\openid\request.php [ 18 ]
+2010-10-12 18:29:19 --- ERROR: ErrorException [ 1 ]: Class 'Openid' not found ~ MODPATH\openid\classes\openid\request.php [ 18 ]
+2010-10-12 18:29:20 --- ERROR: ErrorException [ 1 ]: Class 'Openid' not found ~ MODPATH\openid\classes\openid\request.php [ 18 ]
+2010-10-12 18:29:21 --- ERROR: ErrorException [ 1 ]: Class 'Openid' not found ~ MODPATH\openid\classes\openid\request.php [ 18 ]
+2010-10-12 18:30:18 --- ERROR: ErrorException [ 1 ]: Class 'Openid_Request' not found ~ MODPATH\openid\classes\openid\discovery.php [ 16 ]
+2010-10-12 18:41:58 --- ERROR: ErrorException [ 1 ]: Class 'Openid_Request' not found ~ MODPATH\openid\classes\openid\discovery.php [ 16 ]
+2010-10-12 18:41:59 --- ERROR: ErrorException [ 1 ]: Class 'Openid_Request' not found ~ MODPATH\openid\classes\openid\discovery.php [ 16 ]
+2010-10-12 18:42:00 --- ERROR: ErrorException [ 1 ]: Class 'Openid_Request' not found ~ MODPATH\openid\classes\openid\discovery.php [ 16 ]
+2010-10-12 18:42:00 --- ERROR: ErrorException [ 1 ]: Class 'Openid_Request' not found ~ MODPATH\openid\classes\openid\discovery.php [ 16 ]
+2010-10-12 18:42:01 --- ERROR: ErrorException [ 1 ]: Class 'Openid_Request' not found ~ MODPATH\openid\classes\openid\discovery.php [ 16 ]
+2010-10-12 18:44:49 --- ERROR: ErrorException [ 8 ]: Use of undefined constant CURLOPT_NOSIGNAL - assumed 'CURLOPT_NOSIGNAL' ~ MODPATH\openid\config\openid.php [ 105 ]
+2010-10-12 18:44:50 --- ERROR: ErrorException [ 8 ]: Use of undefined constant CURLOPT_NOSIGNAL - assumed 'CURLOPT_NOSIGNAL' ~ MODPATH\openid\config\openid.php [ 105 ]
+2010-10-12 18:57:21 --- ERROR: ErrorException [ 4096 ]: Argument 2 passed to Kohana_Arr::merge() must be an array, integer given, called in G:\Data\Sites\home\cms3\www\system\classes\kohana\config\file.php on line 49 and defined ~ SYSPATH\classes\kohana\arr.php [ 296 ]

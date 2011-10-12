@@ -1,0 +1,8 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2011-03-18 14:40:27 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Request, instance of CMS3\Engine\Request given ~ SYSPATH\classes\kohana\controller.php [ 43 ]
+2011-03-18 14:40:28 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Request, instance of CMS3\Engine\Request given ~ SYSPATH\classes\kohana\controller.php [ 43 ]
+2011-03-18 17:02:14 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Request, instance of CMS3\Engine\Request given ~ SYSPATH\classes\kohana\controller.php [ 43 ]
+2011-03-18 17:02:15 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Request, instance of CMS3\Engine\Request given ~ SYSPATH\classes\kohana\controller.php [ 43 ]
+2011-03-18 17:53:19 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Request, instance of CMS3\Engine\Request given ~ SYSPATH\classes\kohana\controller.php [ 43 ]
+2011-03-18 17:53:20 --- ERROR: ErrorException [ 4096 ]: Argument 1 passed to Kohana_Controller::__construct() must be an instance of Request, instance of CMS3\Engine\Request given ~ SYSPATH\classes\kohana\controller.php [ 43 ]

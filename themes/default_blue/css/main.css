@@ -1,0 +1,91 @@
+body {
+	font-family: sans-serif;
+	font-size: 81%;
+	padding-top: 2em;
+	background-color: #FFFFAA;
+}
+input, textarea, select {
+	font-family: sans-serif;
+	font-size: 100%;
+}
+.clean {
+	clear: both;
+}
+a {
+	color: navy;
+}
+#form-login fieldset {
+	border: none;
+}
+
+.cat-tree, .files-stat, .breadcrumbs {
+	border: dashed 1px lightgrey;
+	padding: 1em;
+}
+
+#col-left {
+	width: 24%;
+	float: left;
+}
+#col-right {
+	width: 15%;
+	float: right;
+}
+#col-center {
+	width: 60%;
+	overflow: hidden;
+}
+#form-login {
+	border: dashed 1px lightgrey;
+}
+
+.breadcrumbs {
+
+}
+#menu {
+	float: left;
+}
+#content {
+	float: left;
+}
+
+.component {
+	padding: 1em;
+	clear: left;
+	margin: 1em;
+	border: dotted 1px gray;
+	overflow: hidden;
+}
+#footer {
+	padding-top: 3em;
+	clear: both;
+}
+.menu {
+	list-style-type: none;
+}
+.selected {
+	font-weight: bold;
+}
+.menu li {
+	margin-bottom: 0.2em;
+}
+
+.block {
+	padding: 10px;
+	border-style: dashed;
+	border-width: 2px;
+	border-color: orange;
+	margin: 10px;
+}
+.tpl-block {
+	border-color: purple !important;
+}
+.menu-block {
+	border-color: lime !important;
+}
+.message-block {
+	border-color: lightgrey !important;
+	text-align: center;
+	font-weight: bold;
+	color: red;
+}

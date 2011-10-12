@@ -1,0 +1,7 @@
+<?php defined('SYSPATH') or die('No direct script access.'); ?>
+
+2011-06-25 14:20:39 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-06-25 15:20:21 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-06-25 15:24:20 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-06-25 15:24:34 --- ERROR: CMS3\Engine\Exception [ 0 ]: Unable to load document class for ico format ~ MODPATH\cms3\engine\classes\document.php [ 49 ]
+2011-06-25 15:27:02 --- ERROR: Database_Exception [ 0 ]: [1054] Unknown column 'engine_modules.title' in 'field list' ( SELECT `engine_modules`.`id` AS `id`, `engine_modules`.`name` AS `name`, `engine_modules`.`module` AS `module`, `engine_modules`.`title` AS `title`, `engine_modules`.`core` AS `core`, `engine_modules`.`component` AS `component`, `engine_modules`.`ordering` AS `ordering` FROM `engine_modules` AS `engine_modules` WHERE `enabled` = 1 ORDER BY `engine_modules`.`ordering` ASC ) ~ MODPATH\database\classes\kohana\database\mysql.php [ 181 ]
