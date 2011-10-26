@@ -193,7 +193,7 @@ class Template {
 	{
 		$list = array();
 		$namespace = NS::extract_namespace($this->name);
-		$paths = \CMS3::get_possible_paths($namespace, 'views');
+		$paths = Autoloader::get_possible_paths($namespace, 'views');
 
 		//TODO: найти более красивое решение, это похоже на костыль
 		$theme_dir = \DOCROOT . 'themes' . DIRECTORY_SEPARATOR . $this->theme . DIRECTORY_SEPARATOR . 'views';

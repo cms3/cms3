@@ -15,5 +15,6 @@ return array
 	
 	'route_action'				=>	'action/<call_path>(/)(?<params>)',
 	'route_default'				=>	'((<language>)(/)(<path>)(.<format>)(/)(?<params>))',
-
+	
+	//'route_shop' => extend ('route_default','path' => 'shop/<id>')
 );

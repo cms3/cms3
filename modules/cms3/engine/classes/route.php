@@ -11,4 +11,15 @@ class Route extends \Kohana_Route {
 			unset(static::$_routes[$name]);
 		}
 	}
+
+	public static function compile($uri, array $regex = NULL)
+	{
+		if ( ! is_string($uri))
+			return;
+
+		$uri = str_replace('.', ',', $uri); // TODO: хак
+
+		return parent::compile($uri, $regex);
+	}
+
 }

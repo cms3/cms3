@@ -15,6 +15,7 @@ class Model_Block extends Model {
 			'action' 	=> ORM::field('string'),
 			'condition'	=> ORM::field('belongsto'),
 			'ordering'	=> ORM::field('integer'),
+			'template'	=> ORM::field('string'),
 			'params'	=> ORM::field('params'),
 		));
 	}

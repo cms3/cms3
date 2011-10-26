@@ -2,29 +2,15 @@
 
 //-- Environment setup --------------------------------------------------------
 
-// Load the core Kohana class
-require SYSPATH.'classes/kohana/core'.EXT;
+require MODPATH.'cms3/engine/classes/autoloader/core'.EXT;
 
-if (is_file(APPPATH.'classes/kohana'.EXT))
+if (is_file(APPPATH.'classes/@override/cms3/engine/autoloader'.EXT))
 {
-	// App extends the core
-	require APPPATH.'classes/kohana'.EXT;
+	require APPPATH.'classes/@override/cms3/engine/autoloader'.EXT;
 }
 else
 {
-	// Load empty core extension
-	require SYSPATH.'classes/kohana'.EXT;
-}
-
-require MODPATH.'cms3/engine/classes/core'.EXT;
-
-if (is_file(APPPATH.'classes/cms3'.EXT))
-{
-	require APPPATH.'classes/cms3'.EXT;
-}
-else
-{
-	require MODPATH.'cms3/engine/classes/@global/cms3'.EXT;
+	require MODPATH.'cms3/engine/classes/autoloader'.EXT;
 }
 
 /**
@@ -33,9 +19,7 @@ else
  * @see  http://kohanaframework.org/guide/using.autoloading
  * @see  http://php.net/spl_autoload_register
  */
-//spl_autoload_register(array('Kohana', 'auto_load'));
-
-spl_autoload_register(array('CMS3', 'auto_load'));
+spl_autoload_register(array('CMS3\Engine\Autoloader', 'load_class'));
 
 /**
  * Enable the Kohana auto-loader for unserialization.
@@ -79,7 +63,7 @@ Kohana::init();
 /**
  * Attach the file write to logging. Multiple writers are supported.
  */
-Kohana::$log->attach(new Kohana_Log_File(APPPATH.'logs'));
+//Kohana::$log->attach(new Kohana_Log_File(APPPATH.'logs'));
 
 /**
  * Attach a file reader to config. Multiple readers are supported.
@@ -97,5 +81,6 @@ CMS3::modules(array(
 	'jelly',
 	'acl',
 ));
-	
+
 CMS3\Engine\App::instance()->initialize();
+

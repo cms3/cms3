@@ -33,6 +33,8 @@ abstract class Jelly_Core_Validation extends Validation
 	 */
 	public function check()
 	{
+		return TRUE;
+	
 		if (Kohana::$profiling === TRUE)
 		{
 			// Start a new benchmark

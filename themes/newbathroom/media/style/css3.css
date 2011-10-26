@@ -1,0 +1,69 @@
+.bg_button .button-t span,
+.bg_button.act:hover .button-t span,
+.bg_button:hover .button-t span,
+
+.bg_button .button-t,
+.bg_button.act:hover .button-t,
+.bg_button:hover .button-t,
+
+.hover:hover .wrapper_pic_t,
+.hover:hover .wrapper_pic_r,
+.hover:hover .wrapper_pic_b,
+.hover:hover .wrapper_pic_l					{
+	-webkit-transition: all 1s ease 0s;
+	-moz-transition: all 1s ease 0s;
+	-o-transition: all 1s ease 0s;
+}
+.infoBoxWrapper.box2,
+.cart_products_options	{
+  	border-radius: 11px 11px 11px 11px;
+	-moz-border-radius: 11px 11px 11px 11px;
+ 	-webkit-border-radius: 11px 11px 11px 11px;
+	position:relative;
+}
+.bg_button .button-t {
+	-moz-border-radius: 9px; /* Firefox */
+  	-webkit-border-radius: 9px; /* Safari, Chrome */
+ 	-khtml-border-radius: 9px; /* KHTML */
+  	border-radius: 9px;
+	position:relative;
+}
+
+.list,
+.cart_box,
+.box3,
+.contentPadd.txtPage,
+.ui-dialog,
+.ui-dialog-titlebar,
+.cart,
+.ui-progressbar,
+.ui-datepicker	{
+	-moz-border-radius: 11px; /* Firefox */
+  	-webkit-border-radius: 11px; /* Safari, Chrome */
+ 	-khtml-border-radius: 11px; /* KHTML */
+  	border-radius: 11px;
+	position:relative;
+}
+.cart_products_options,
+.row_7 CHECKBOX, .row_7 INPUT, .row_7 RADIO, .row_7 select, .row_7 textarea,
+.fieldValue  input, .go, .input	{
+	-moz-border-radius: 5px; /* Firefox */
+  	-webkit-border-radius: 5px; /* Safari, Chrome */
+ 	-khtml-border-radius: 5px; /* KHTML */
+  	border-radius: 5px;
+	position:relative;
+}
+.contentInfoText	{
+	 -moz-border-radius-bottomleft: 9px; -webkit-border-bottom-left-radius: 9px; border-bottom-left-radius: 9px; -moz-border-radius-bottomright: 9px; -webkit-border-bottom-right-radius: 9px; border-bottom-right-radius: 9px;
+	 position:relative;
+}
+.contentPadd h3,
+.cart th.th1	{
+	-moz-border-radius-topleft: 9px; -webkit-border-top-left-radius: 9px; border-top-left-radius: 9px;
+	position:relative;
+}
+.contentPadd h3,
+.cart th.th3	{
+	-moz-border-radius-topright: 9px; -webkit-border-top-right-radius: 9px; border-top-right-radius: 9px;
+	position:relative;
+}

@@ -20,7 +20,7 @@ class Renderer_Block extends Renderer implements Renderer_Interface {
 			{
 				$block_params = (array)$block->params;
 				$block_params['block_id'] = $block->id; // TODO: кривовато,  т.к. block_id может перекрыть пользовательский параметр
-				$content = $this->get_action_output($block->module, $block_params, $block->action);
+				$content = $this->get_action_output($block->module, $block_params, $block->action, $block->template);
 				if ($content)
 				{
 					$tpl = isset($params['template']) ? strtolower($params['template']) : 'raw';
@@ -39,7 +39,7 @@ class Renderer_Block extends Renderer implements Renderer_Interface {
 		return $data;
 	}
 
-	protected function get_action_output($module, $params, $action)
+	protected function get_action_output($module, $params, $action, $template)
 	{
 		$data = '';
 
@@ -48,7 +48,7 @@ class Renderer_Block extends Renderer implements Renderer_Interface {
 		if ($controller instanceof Controller)
 		{
 			ob_start();
-				$controller->display($action, (array)$params);
+				$controller->display($action, (array)$params, $template);
 				$data = ob_get_contents();
 			ob_end_clean();
 		}

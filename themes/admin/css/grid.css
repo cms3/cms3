@@ -1,0 +1,198 @@
+/*@charset "utf-8";*/
+/* CSS Document */
+
+/* Table menu*/
+
+div.cms3-rich-grid div.controls
+{
+	overflow:hidden;
+	margin-bottom:0.3em;
+}
+
+div.cms3-rich-grid div.controls div
+{
+	float:left;
+	margin-right:1em;
+	padding-top:0.15em;
+	padding-bottom:0.15em;
+}
+
+div.cms3-rich-grid div.controls div input,
+div.cms3-rich-grid div.controls div button
+{
+	margin:0;
+}
+
+/* table */
+div.cms3-rich-grid div.grid
+{
+	float:left;
+	margin-right:1.1em;
+}
+
+div.cms3-rich-grid div.grid table
+{
+	border:#999 solid 1px;
+	width:100%;
+}
+
+div.cms3-rich-grid div.grid table th
+{
+	background-color:#EBEBEB;
+}
+
+div.cms3-rich-grid div.grid table tr.highlight td
+{
+	background-color:#FFC;
+}
+
+div.cms3-rich-grid div.grid table td.center,
+div.cms3-rich-grid div.grid table th.center
+{
+	text-align:center;
+}
+
+div.cms3-rich-grid div.grid table th,
+div.cms3-rich-grid div.grid table td
+{
+	border-right:#999 solid 1px;
+	border-bottom:#999 solid 1px;
+	padding:3px;
+}
+
+div.cms3-rich-grid div.grid table tr:last-child td
+{
+	border-bottom:none;
+}
+
+div.cms3-rich-grid div.grid tr.load td.item-selector {
+    background-image: url('/themes/admin/img/load.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+div.cms3-rich-grid div.grid tr.load td {
+    background-color: #D9D9D9;
+}
+
+div.cms3-rich-grid div.grid tr.load td.item-selector input {
+    display: none;
+}
+
+
+/* Sortable */
+
+div.cms3-rich-grid div.grid table th:last-child,
+div.cms3-rich-grid div.grid table td:last-child
+{
+	border-right:none;
+}
+
+div.cms3-rich-grid div.grid table tr.ui-sortable-helper td:last-child
+{
+	border-right:#999 solid 1px;
+}
+
+div.cms3-rich-grid div.grid table tr.ui-sortable-helper td:first-child
+{
+	border-left:#999 solid 1px;
+}
+
+div.cms3-rich-grid div.grid table tr.ui-sortable-helper td,
+div.cms3-rich-grid div.grid table tr.ui-sortable-placeholder + tr td
+{
+	border-top:#999 solid 1px;
+}
+
+div.cms3-rich-grid div.grid table tr.ui-sortable-helper td
+{
+	background-color: white;
+}
+
+/* Edit field list*/
+div.cms3-rich-grid div.edit-field-list
+{
+	float:left;
+	width: 1em;
+	margin-left:-1.1em;
+	
+	text-align:center;
+	vertical-align:middle;
+	
+	background:#EBEBEB;
+	
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	
+	border-right:#999 solid 0.1em;
+	border-bottom:#999 solid 0.1em;
+	border-top:#999 solid 0.1em;
+	
+	cursor:pointer;
+	
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	user-select:none;
+}
+
+div.cms3-rich-grid div.edit-field-list div
+{
+	position:absolute; 
+	right:0; 
+	top:100%; 
+	margin-right:-1px;
+	white-space: nowrap;
+	text-align:left;
+	cursor:auto;
+}
+
+/* cells */
+
+div.cms3-rich-grid div.grid table a.publish
+{
+	color:#063;
+	text-decoration:none;
+}
+
+div.cms3-rich-grid div.grid table a:hover.publish
+{
+	color: #ff5233;
+	text-decoration:underline;
+}
+
+div.ui-datepicker{
+	font-size:0.8em;
+}
+
+div.cms3-rich-grid div.grid table div.date {
+	position:relative;
+	display:block;
+	font-size:0.8em;
+}
+
+div.cms3-rich-grid div.grid table div.date input {
+	width:9em;
+}
+
+/* Edit form */
+div.cms3-rich-grid-edit-item div.cell {
+    padding: 0.3em;
+    margin-top: 1em;
+/*    border-bottom: dashed 1px #999;
+    border-top: dashed 1px #999;*/
+    background-color:#EBEBEB;
+}
+
+div.cms3-rich-grid-edit-item div.cell input {
+    /*width: 96%;*/
+}
+
+div.cms3-rich-grid-edit-item div.override label {
+    font-size: 0.7em;
+}
+
+div.cms3-rich-grid-edit-item div.override input {
+ /*   width: 0.7em;
+    height: 0.7em;*/
+    transparent: 50%;
+}

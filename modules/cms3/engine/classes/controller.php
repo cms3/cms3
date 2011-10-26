@@ -17,14 +17,21 @@ class Controller extends \Controller {
 	
 		parent::__construct($request, $response);
 	}
+
+	public function view($template, $default_template, $data)
+	{
+		return View::factory($template ?: $default_template, $data);
+	}
 	
 	public function action_display() {}
 	
-	public function action($function, array $params = array())
+	public function action($function)
 	{
 		$call = "action_" . $function;
-		
-		return $this->$call($params);
+		$args = func_get_args();
+		array_shift($args);
+
+		return call_user_func_array(array($this, $call), $args);
 	}
 	
 	public function action_safe($function, array $params = array())
@@ -38,7 +45,7 @@ class Controller extends \Controller {
 		$this->action($function, $params);
 	}
 	
-	public function display($function = NULL, array $params = array())
+	public function display($function = NULL, array $params = array(), $template = NULL)
 	{
 		$param_string = serialize(Request::current()->param() + $params);
 		$cache_id = sha1("controller_output_" . $function . "_" . $param_string);
@@ -50,7 +57,7 @@ class Controller extends \Controller {
 				$call .= '_' . $function;
 			}
 			ob_start();
-			$this->action($call, $params);
+			$this->action($call, $params, $template);
 			$data = ob_get_contents();
 			ob_end_clean();
 			//\Cache::instance()->set($cache_id, $data);

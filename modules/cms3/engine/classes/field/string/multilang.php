@@ -120,6 +120,8 @@ class Field_String_Multilang extends Field_String implements \Jelly_Field_Suppor
 	{
 		$join_alias = $this->join($builder, $alias);
 		$table = $join_alias ? ($join_alias . '.') : '';
-		$builder->where($join_alias . '.' . $this->column, '=', $value);
+
+		$elements = explode(',', $value);
+		$builder->where($join_alias . '.' . $this->column, 'IN', $elements);
 	}
 }

@@ -5,17 +5,17 @@ namespace CMS3\Engine;
 class App {
 
 	public $document = NULL;
-
+	
 	public $modules = array();
-
+	
 	public $language;
 	
 	protected $_params;
-
+	
 	protected $_filters;
-
+	
 	private $_languages = array();
-
+	
 	private $_config;
 	
 	protected static $_instance;
@@ -24,7 +24,7 @@ class App {
 	{
 		if (static::$_instance == NULL)
 		{
-			static::$_instance = new App();
+			static::$_instance = new static();
 		}
 		
 		return static::$_instance;
@@ -188,7 +188,7 @@ class App {
 				$ordering[$what] = $parse($order);
 			}
 		}
-
+		
 		return $ordering;
 	}
 
@@ -199,9 +199,9 @@ class App {
 		{
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
-
+		
 		Core::$config->attach(new Config_File_Reader);
-  
+		
 		$this->_config = \CMS3::$config->load('cms3\core');
 		
 		\Cookie::$salt = $this->get_cfg('cookie_salt');
@@ -310,7 +310,7 @@ class App {
 		{
 			throw new \HTTP_Exception_404('Controller :controller not found.', array(
 				':controller' => $controller,
-			)); 
+			));
 		}
 	}
 
@@ -318,7 +318,7 @@ class App {
 	{
 		$regex = array();
 		
-		// Find inline regex and remove it  
+		// Find inline regex and remove it
 		if (preg_match_all('/<(.+?):(.+?)>/', $uri, $matches, PREG_SET_ORDER))
 		{
 			$replace = array();
@@ -368,11 +368,10 @@ class App {
 			$parse = $this->_replace_inline_route($route->format);
 			Route::set($route->id, $parse[0], $parse[1]);
 		}
-		
 		$routes = Route::all();
 		unset($routes['default']);
 		unset($routes['action']);
-
+		
 		$this->document = Document::factory($format);
 		$this->document->language = $this->language;
 		$this->document->charset = Core::$charset;
@@ -401,9 +400,9 @@ class App {
 		// TODO: единый интерфейс вызова
 		$this->_params = $this->_build_params_tree(Request::current()->param());
 		$this->_filters = $this->_build_filter_tree(Request::current()->param());
-
+		
 		$this->document->current_theme = $this->_detect_theme();
-
+		
 		$this->document->render();
 		
 		if (isset($benchmark))
@@ -423,12 +422,15 @@ class App {
 		
 		foreach ($themes as $theme)
 		{
+			if (empty($theme->condition->id))
+			{
+				continue;
+			}
 			if (App::check_page_condition($theme->condition->condition))
 			{
 				return $theme->name;
 			}
 		}
-		
 		return $this->get_cfg('default_theme');
 	}
 	
@@ -468,6 +470,8 @@ class App {
 		}
 		
 		$params = Request::current()->param();
+		$expression = new Expression_Calc_PHP();
+		/*
 		$expression = new Expression();
 
 		//TODO: ужасный костыль
@@ -478,7 +482,7 @@ class App {
 			$parsed_params[$name] = $value;
 		}
 		$params = $parsed_params;
-		
+		*/
 		return $expression->evaluate($condition, $params) != '';
 	}
 

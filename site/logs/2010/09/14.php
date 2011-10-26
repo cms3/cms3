@@ -1,4 +1,0 @@
-<?php defined('SYSPATH') or die('No direct script access.'); ?>
-
-2010-09-14 11:42:37 --- ERROR: Database_Exception [ 1146 ]: Table 'cms3_new.auth_auth_tokens' doesn't exist [ SELECT COUNT(*) AS `total` FROM `auth_auth_tokens` WHERE `auth_auth_tokens`.`token` = '0FwFwEcZO5vfj55wDz3Lxhxqi3r1NpNx' ] ~ MODPATH/database\classes\kohana\database\mysql.php [ 178 ]
-2010-09-14 11:42:38 --- ERROR: Database_Exception [ 1146 ]: Table 'cms3_new.auth_auth_tokens' doesn't exist [ SELECT COUNT(*) AS `total` FROM `auth_auth_tokens` WHERE `auth_auth_tokens`.`token` = 'YKFPuarZF3VBj8itlulMx8Pq10aXZWVy' ] ~ MODPATH/database\classes\kohana\database\mysql.php [ 178 ]

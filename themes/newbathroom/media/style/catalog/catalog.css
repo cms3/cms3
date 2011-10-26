@@ -1,0 +1,299 @@
+.catalog {
+	margin: -3em -0.5em 0 0;
+	top: -36px;
+	margin-bottom: -36px;
+	position: relative;
+}
+.catalog.sections {
+	top: 0;
+	margin-bottom: 0;
+}
+.catalog .item {
+	display: inline-block;
+	vertical-align: top;
+	margin: 3em 0.7em 0 0;
+	text-decoration: none;
+}
+.catalog .brace {
+	width: 15.5em;
+	float: left;
+	text-align: center;
+	clear: left;
+	position: relative;
+	padding-top: 36px;
+}
+.catalog .caption {
+	clear: left;
+	margin-top: 0.5em;
+}
+/*
+.catalog .hot .caption {
+	margin: 0.5em 0.3em 0;
+}
+.catalog .hot .title, .catalog .hot .author {
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	display: inline-block;
+}
+*/
+.catalog .author {
+	font-size: 0.91em;
+	margin-bottom: 0.2em;
+}
+.catalog .title {
+	font-weight: bold;
+	line-height: 1.27em;
+	text-align: center;
+	margin: 0;
+}
+.catalog .title a {
+	color: black;
+}
+.catalog .title a:hover {
+	color: #ff3067;
+}
+.catalog .price {
+	margin-top: 0.4em;
+	color: #ff3067;
+	font-size: 1.2em;
+	position: relative;
+}
+.catalog .price .whole {
+	font-weight: bold;
+}
+.catalog .price .copeck {
+	font-size: 0.91em;
+}
+.catalog .price del {
+	color: #4D4D4D;
+	font-size: 0.91em;
+}
+.catalog .price del .whole {
+	font-weight: normal;
+}
+.catalog .price del .copeck {
+	font-size: 1em;
+}
+/*
+.catalog .hot .price {
+	background-color: #45A400;
+	color: white;
+	padding: 0.1em 0;
+}
+.catalog .hot .price ins {
+	height: 73px;
+	width: 1px;
+	position: absolute;
+	top: -73px;
+	NObackground: url(../img/stuff.png) -162px 0;
+}
+*/
+.catalog .price .left {
+	left: 0;
+}
+.catalog .price .right {
+	right: 0;
+}
+.catalog .img-block {
+	display: inline-block;
+	position: relative;
+	text-decoration: none;
+	margin: 0 0.5em;
+}
+.catalog .img-block a.drag-obj {
+	display: inline-block;
+}
+.catalog .item .label {
+	position: absolute;
+	height: 20px;
+	top: 35%;
+	right: -20px;
+	/*background: url(../img/stuff.png);*/
+}
+.catalog .item .label.superprice {
+	width: 78px;
+	background-position: 0 -198px;
+}
+.catalog .item .label.discount {
+	width: 59px;
+	background-position: 0 -218px;
+}
+.catalog .item .label.new {
+	width: 67px;
+	background-position: -78px -198px;
+}
+
+.catalog .section {
+	height: 25px;
+	position: absolute;
+	z-index: 2;
+	left: 0;
+	margin-top: -36px;
+	margin-left: -12px;
+	max-width: 15.5em\9 /* for IE8 */
+}
+.catalog .section .cont {
+	position: relative;
+	margin-top: -0.1em;
+	margin-left: 12px;
+	float: left;
+	overflow: hidden;
+	max-width: 14.7em;
+}
+.catalog .section .cont span {
+	display: block;
+	text-align: left;
+	padding-left: 9px;
+	padding-right: 5px;
+	background-color: #F1F1F1;
+	height: 25px;
+	line-height: 23px;
+	white-space: nowrap;
+	position: relative;
+}
+.catalog .section a {
+	color: black;
+}
+.catalog .section ins {
+	height: 25px;
+	width: 17px;
+	float: left;
+	position: absolute;
+	z-index: 3;
+	right: -12px;
+	top: -0.1em;
+	/*background: url(../img/stuff-a.png) -14px 0;*/
+}
+/*
+.css3borders .section ins {
+	background: #F1F1F1;
+	-moz-border-radius-topright: 12.5px;
+	-moz-border-radius-bottomright: 12.5px;
+	-webkit-border-top-right-radius: 12.5px;
+	-webkit-border-bottom-right-radius: 12.5px;
+	border-top-right-radius: 13px;
+	border-bottom-right-radius: 13px;
+}
+*/
+.catalog .format {
+	position: relative;
+	float: left;
+	font-size: 10px;
+	margin-top: 6px;
+	margin-bottom: -1px;
+}
+.catalog .format .frame {
+	height: 14px;
+	background: #eaeaea;
+	float: left;
+	padding-left: 4px;
+	cursor: default;
+}
+.catalog .format .button {
+	overflow: hidden;
+}
+.catalog .format .button .frame {
+	padding-right: 4px;
+	border-right: solid 1px white;
+}
+.js .catalog .format .button:hover .frame {
+	background: #eaeaea url(../img/stuff-x.png) repeat-x;
+}
+.js .catalog .format .button.down .frame, .nojs .catalog .format:hover .button .frame {
+	background: #eaeaea url(../img/stuff-x.png) repeat-x 0 -14px !important;
+	color: #686868;
+}
+.catalog .format .frame span {
+	height: 14px;
+	display: table-cell;
+	vertical-align: middle;
+	font-weight: bold;
+}
+.catalog .format .corner {
+	display: block;
+	float: left;
+	height: 14px;
+	width: 7px;
+	background: #eaeaea url(../img/stuff-bw.png) 0 -14px;
+}
+.catalog .format .button .corner {
+	width: 14px;
+	background: url(../img/stuff-bw.png) -7px -14px;
+}
+.css3borders .catalog .format .corner {
+	background: #eaeaea;
+	-moz-border-radius-topright: 7px;
+	-moz-border-radius-bottomright: 7px;
+	-webkit-border-top-right-radius: 7px;
+	-webkit-border-bottom-right-radius: 7px;
+	border-top-right-radius: 7px;
+	border-bottom-right-radius: 7px;
+}
+.js .catalog .format .button:hover .corner {
+	background: url(../img/stuff-bw.png) -21px -14px !important;
+}
+.js .catalog .format .button.down .corner, .nojs .catalog .format:hover .button .corner {
+	background: url(../img/stuff-bw.png) -35px -14px !important;
+}
+.catalog .format .list {
+	position: absolute;
+	border-top: solid 1px white;
+	display: none;
+	text-align: left;
+}
+.nojs .catalog .format:hover .list {
+	display: block;
+}
+.catalog .format .list .data {
+	text-align: left;
+	background: #eaeaea;
+}
+.catalog .format .list a {
+	color: black;
+	display: block;
+	padding: 0.15em 4px;
+	float: none;
+	margin: 0;
+}
+.js .catalog .format .list a {
+	text-decoration: none;
+}
+.js .catalog .format .list a:focus {
+	outline: none;
+}
+.catalog .format .list a.selected {
+	font-weight: bold;
+}
+.catalog .format .list a:hover {
+	background-color: #d2d2d2;
+}
+.catalog .format .list li {
+	white-space: nowrap;
+}
+
+.catalog .format .list .top, .catalog .format .list .bottom {
+	background: #eaeaea;
+	margin: 0 4px;
+	position: relative;
+	height: 4px;
+}
+.catalog .format .list .top {
+	margin-left: 0;
+}
+.catalog .format .list ins {
+	width: 4px;
+	height: 4px;
+	position: absolute;
+}
+.catalog .format .list .c-2 {
+	background-position: -4px -14px;
+	margin-left: 100%;
+}
+.catalog .format .list .c-3 {
+	background-position: 0 -18px;
+	margin-left: -4px;
+}
+.catalog .format .list .c-4 {
+	background-position: -4px -18px;
+	margin-left: 100%;
+}

@@ -7,4 +7,9 @@ class Kohana extends Kohana_Core {
 	{
 		return \Kohana::$config->load($group);
 	}
+	
+	public static function cache($name, $data = NULL, $lifetime = NULL)
+	{
+		return NULL;
+	}
 }

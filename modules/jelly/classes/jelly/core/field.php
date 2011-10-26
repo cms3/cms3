@@ -151,7 +151,7 @@ abstract class Jelly_Core_Field {
 		{
 			$this->label = Inflector::humanize($column);
 		}
-
+		
 		// Check as to whether we need to add
 		// some callbacks for shortcut properties
 		if ($this->unique === TRUE)

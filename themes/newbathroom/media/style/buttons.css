@@ -1,0 +1,147 @@
+/* ************************************************************************************* */
+.button_header											{display:inline-block; margin-left:6px;}
+
+.button_header .button,
+.button_header .button:hover,
+.button_header .button.act,
+.button_header .button:hover div,
+.button_header .button div								{display:inline-block; cursor:pointer; overflow:hidden;}
+
+.button_header .button,
+.button_header .button:hover,
+.button_header .button.act
+.button_header .button,
+.button_header .button:hover,
+.button_header .button.act								{padding:0; overflow:hidden; font-size:1em;text-transform:uppercase;}
+/* ************************************************************************************* */
+
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_header4 .button .button-t,
+.button_header4 .button:hover .button-t,
+.button_header4 .button.act .button-t					{background:url('../image/bg_button4_header_rep.png') repeat-x transparent;}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_header4 .button .button-t,
+.button_header4 .button.act:hover .button-t				{background-position:0 0;}
+
+.button_header4 .button:hover .button-t,
+.button_header4 .button.act .button-t					{background-position:0 100%;}
+/* ************************************************************************************* */
+.button_header4 .bg_button .button-t,
+.button_header4 .bg_button:hover .button-t,
+.button_header4 .bg_button.act .button-t				{margin: 0px 0px 0px 0px; height:24px;}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_header4 .bg_button  a span.ui-button-text,
+.button_header4 .bg_button  span.ui-button-text,
+.button_header4 .bg_button:hover a span.ui-button-text,
+.button_header4 .bg_button.act a span.ui-button-text,
+.button_header4 .bg_button:hover span.ui-button-text,
+.button_header4 .bg_button.act span.ui-button-text						{font-weight:bold;text-decoration:none; white-space:nowrap;text-transform:none;}											 
+/* ************************************************************************************* */	
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_header4 .bg_button:hover a span.ui-button-text,
+.button_header4 .bg_button.act a span.ui-button-text,
+.button_header4 .bg_button:hover span.ui-button-text,
+.button_header4 .bg_button.act span.ui-button-text					{color:#a1a0a0;}
+
+.button_header4 .bg_button  a span.ui-button-text,
+.button_header4 .bg_button  span.ui-button-text						{color:#fff;font-size:1em; line-height:1em;padding: 3px 8px 2px 8px; display:inline-block;}
+/* ************************************************************************************* */	
+/* ************************************************************************************* */
+/* ************************************************************************************* */	
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content  button										{height:23px; font-size:100%;font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;}	
+/* ************************************************************************************* */	
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content											{display:inline-block; overflow:hidden; line-height:0em;}
+.button_content .button,
+.button_content .button.act,
+.button_content .button div								{display:inline-block; cursor:pointer; overflow:hidden;}
+
+.button_content .button,
+.button_content .button.act								{padding:0; overflow:hidden; }
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content22 .bg_button .button-t,
+.button_content22 .bg_button:hover .button-t,
+.button_content22 .bg_button.act .button-t					{}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content22 .bg_button .button-t						{background:none;}
+.button_content22 .bg_button.act:hover .button-t			{background:none;}
+
+.button_content22 .bg_button:hover .button-t				{background:none;}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content2 .bg_button .button-t,
+.button_content2 .bg_button:hover .button-t,
+.button_content2 .bg_button.act .button-t					{}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content2 .bg_button .button-t						{background:#ff3067;}
+.button_content2 .bg_button.act:hover .button-t				{background:#fb678f;}
+
+.button_content2 .bg_button:hover .button-t					{background:#fb678f;}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content .bg_button .button-t,
+.button_content .bg_button:hover .button-t,
+.button_content .bg_button.act .button-t				{margin: 0px 0px 0px 0px; height:23px;}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content .bg_button  a span.ui-button-text,
+.button_content .bg_button  span.ui-button-text,
+.button_content .bg_button:hover a span.ui-button-text,
+.button_content .bg_button.act a span.ui-button-text,
+.button_content .bg_button:hover span.ui-button-text,
+.button_content .bg_button.act span.ui-button-text						{font-size:.9em; line-height:1em;font-weight:normal;white-space:nowrap;text-decoration:none; display:inline-block;} 											 
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content2 .bg_button  a span.ui-button-text,
+.button_content2 .bg_button  span.ui-button-text						{color:#fff;text-decoration:none;}
+
+.button_content2 .bg_button:hover a span.ui-button-text,
+.button_content2 .bg_button.act a span.ui-button-text,
+.button_content2 .bg_button:hover span.ui-button-text,
+.button_content2 .bg_button.act span.ui-button-text						{color:#fff;text-decoration:none;}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.button_content22 .bg_button  a span.ui-button-text,
+.button_content22 .bg_button  span.ui-button-text						{color:#4a4a4a;text-decoration:underline;}
+
+.button_content22 .bg_button:hover a span.ui-button-text,
+.button_content22 .bg_button.act a span.ui-button-text,
+.button_content22 .bg_button:hover span.ui-button-text,
+.button_content22 .bg_button.act span.ui-button-text					{color:#4a4a4a;text-decoration:none;}
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text { padding: 6px 13px 6px 20px; }
+.ui-button-text-icon-secondary .ui-button-text, .ui-button-text-icons .ui-button-text {padding: 6px 13px 6px 20px; }
+
+.button__padd .ui-button-text-icon-primary .ui-button-text, .button__padd .ui-button-text-icons .ui-button-text { padding: 6px 13px 6px 13px; }
+.button__padd .ui-button-text-icon-secondary .ui-button-text, .button__padd .ui-button-text-icons .ui-button-text {padding: 6px 13px 6px 13px; }
+
+.button__padd span.ui-button-icon-primary		{display:none;} /**/
+
+.button_content .ui-state-default .ui-icon		 		{ background-image: url('../ext/jquery/ui/redmond/images/ui-icons_ffffff_256x240.png');}
+.button_content:hover .ui-state-default .ui-icon		 		{ background-image: url('../ext/jquery/ui/redmond/images/ui-icons_ffffff_256x240.png');}
+.button_content.button_content22 .ui-state-default .ui-icon		 		{ background-image: url('../ext/jquery/ui/redmond/images/ui-icons_000000_256x240.png');}
+.button_content.button_content22 .ui-state-hover .ui-icon		 		{ background-image: url('../ext/jquery/ui/redmond/images/ui-icons_000000_256x240.png');}
+
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+/* ************************************************************************************* */
+

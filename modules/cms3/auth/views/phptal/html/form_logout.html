@@ -1,0 +1,5 @@
+<form action="/action/cms3/auth/controller/logout" method="post">
+<p>Вы вошли как <b><span tal:content="user/properties/nickname"></span></b></p>
+<input type="submit" value="Выйти" />
+<input type="hidden" name="return" tal:attributes="value return" />
+</form>
