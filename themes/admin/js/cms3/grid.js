@@ -308,7 +308,7 @@ cms3.extend(cms3.richGrid, cms3.object, {
         data.ids = ids;
         data.model = this.model;
 
-        $.getJSON("/action/cms3/ui_grid/delete",
+        $.getJSON("/action/cms3/dataview/delete",
             data,
             function(items){
                 
@@ -485,18 +485,18 @@ cms3.extend(cms3.richGrid, cms3.object, {
         //this.holdItems(ids);
         this.setOrdering();
 
-        // http://cms3/action/cms3/ui_grid/save?model=cms3-content-item&form[id]=1&form[title]=change
+        // http://cms3/action/cms3/dataview/save?model=cms3-content-item&form[id]=1&form[title]=change
 
         /*$.ajax({
             type: "POST",
-            url: "/action/cms3/ui_grid/save",
+            url: "/action/cms3/dataview/save",
             data: $.param(data),
             success: function(msg){
                 alert( "Data Saved: " + msg );
             }
         });*/
 
-        $.getJSON("/action/cms3/ui_grid/save",
+        $.getJSON("/action/cms3/dataview/save",
             data,
             function(items){
                 cms3.each(items, function(i, savedItem) {
