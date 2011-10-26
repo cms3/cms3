@@ -17,9 +17,9 @@ return array
 			 *
 			 * Ports and sockets may be appended to the hostname.
 			 */
-			'hostname'   => 'localhost',
-			'username'   => 'root',
-			'password'   => '',
+			'hostname'   => '192.168.1.10',
+			'username'   => 'cms3',
+			'password'   => '007',
 			'persistent' => FALSE,
 			'database'   => 'cms3',
 		),
