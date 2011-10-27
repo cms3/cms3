@@ -13,7 +13,9 @@ class Model_User_Param extends Model {
 		$meta->fields(array(
 			'id' 		=> ORM::field('primary'),
 			'name'		=> ORM::field('string'),
-			'label'		=> ORM::field('string_multilang'),
+			'label'		=> ORM::field('string', array(
+				'multilang' => TRUE
+			)),
 		));
    }
 }

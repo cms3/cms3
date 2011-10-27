@@ -9,7 +9,9 @@ class Model_Condition extends Model {
 		$meta->fields(array(
 			'id' 			=> ORM::field('primary'),
 			'condition'		=> ORM::field('string'),
-			'title'			=> ORM::field('string_multilang'),
+			'title'			=> ORM::field('string', array(
+				'multilang' => TRUE
+			)),
 		));
    }
 }

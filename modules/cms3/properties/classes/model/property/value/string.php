@@ -13,10 +13,12 @@ class Model_Property_Value_String extends Model_Property_Value {
 		parent::initialize($meta);
 
 		static::extend_fields($meta, array(
-			'value' => ORM::field('string_multilang',
+			'value' => ORM::field('string',
 				array(
+					'multilang' => TRUE,
 					'table' => 'properties__property_value_strings',
 					'foreign_column' => 'property_value_id'
+
 				)
 			)
 		));

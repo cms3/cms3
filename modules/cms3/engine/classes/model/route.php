@@ -9,7 +9,9 @@ class Model_Route extends Model {
 		$meta->fields(array(
 			'id' 		=> ORM::field('primary'),
 			'format'	=> ORM::field('string'),
-			'title'		=> ORM::field('string_multilang')
+			'title'		=> ORM::field('string', array(
+				'multilang' => TRUE
+			))
 		));
    }
 }

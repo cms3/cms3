@@ -21,7 +21,9 @@ class Model_Item extends Model {
 			),
 			'route_id'				=> ORM::field('integer'),
 			'uri'					=> ORM::field('string'),
-			'title'					=> ORM::field('string_multilang'),
+			'title'					=> ORM::field('string', array(
+				'multilang' => TRUE
+			)),
 			'active_condition_id'	=> ORM::field('integer'), // TODO
 			'ordering'				=> ORM::field('integer'),
 			'params'				=> ORM::field('params'),

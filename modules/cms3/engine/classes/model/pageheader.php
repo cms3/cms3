@@ -11,7 +11,9 @@ class Model_PageHeader extends Model {
 			'condition'		=> ORM::field('belongsto'),
 			'tag'			=> ORM::field('string'),
 			'attribute'		=> ORM::field('string'),
-			'value'			=> ORM::field('string_multilang'),
+			'value'			=> ORM::field('string', array(
+				'multilang' => TRUE
+			)),
 		));
    }
 }

@@ -12,7 +12,9 @@ class Model_Menu extends Model {
 	{
 		$meta->fields(array(
 			'id'	=> ORM::field('primary'),
-			'title'	=> ORM::field('string_multilang'),
+			'title'	=> ORM::field('string', array(
+				'multilang' => TRUE
+			)),
 			'items'	=> ORM::field('hasmany',
 				array('foreign' => 'item.menu_id')
 			),
