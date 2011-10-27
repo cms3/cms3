@@ -12,20 +12,16 @@ class Model_Menu extends Model {
 	{
 		$meta->fields(array(
 			'id'	=> ORM::field('primary'),
-<<<<<<< HEAD
 			'title'	=> ORM::field('string', array(
 				'multilang' => TRUE
 			)),
-			'items'	=> ORM::field('hasmany',
-				array('foreign' => 'item.menu_id')
-=======
+			'items'	=> ORM::field('hasmany', array(
+			    'foreign' => 'item.menu_id'
+			)),
 			'title'	=> ORM::field('string_multilang'),
 			'items'	=> ORM::field('hasmany', array(
-					'foreign' => 'item.menu_id',
-					'tree'    => TRUE
-				)
->>>>>>> 2451d4fe2404ab5a8a2c00da0ca95a2fa2896aac
-			),
+				'foreign' => 'item.menu_id',
+			)),
 		));
    }
 
