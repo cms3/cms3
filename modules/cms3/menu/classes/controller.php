@@ -16,6 +16,7 @@ class Controller extends Abstract_Controller {
 			throw new Exception('Menu ID doesn\'t set');
 		}
 		$menu = ORM::query('cms3\menu\menu', $params['menu_id'])->select();
+
 		$items = $menu->get_items_array();
 
 		$view_data = array(

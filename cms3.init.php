@@ -58,7 +58,7 @@ if (isset($_SERVER['KOHANA_ENV']))
  * - boolean  profile     enable or disable internal profiling               TRUE
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
-Kohana::init();
+Kohana::init(array('cache_dir' => APPPATH . DIRECTORY_SEPARATOR . 'cache'));
 
 /**
  * Attach the file write to logging. Multiple writers are supported.
