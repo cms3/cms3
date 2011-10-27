@@ -19,8 +19,11 @@ class Model_Item extends Model {
 				)
 			),
 			'state'			=> ORM::field('integer'),
-			'title'			=> ORM::field('string_multilang'),
-			'text'			=> ORM::field('text_multilang', array(
+			'title'			=> ORM::field('string', array(
+				'multilang' => TRUE
+			)),
+			'text'			=> ORM::field('text', array(
+				'multilang' => TRUE,
 				'filtration' => array(
 					'enabled' => static::method('get_text_filter_enabled'),
 					'default' => static::method('get_text_default')

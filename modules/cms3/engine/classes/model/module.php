@@ -11,7 +11,9 @@ class Model_Module extends Model {
 			'id' 			=> ORM::field('primary'),
 			'name'			=> ORM::field('string'),
 			'module'		=> ORM::field('string'),
-			'title'			=> ORM::field('string_multilang'),
+			'title'			=> ORM::field('string', array(
+				'multilang' => TRUE
+			)),
 			'core' 			=> ORM::field('boolean'),
 			'ordering'		=> ORM::field('integer')
 		));
