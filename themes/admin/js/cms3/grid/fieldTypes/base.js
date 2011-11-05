@@ -5,6 +5,8 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
     cellContainerTemplate: 'Default',
     headTemplate: 'Default',
     filterTemplate: 'Default',
+    titleGenerator: 'Default',
+    showInList: false,
     ordering: true,
     defaultValue: '',
     filtration: {

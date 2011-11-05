@@ -2,6 +2,20 @@ cms3.richGrid = new Object();
 cms3.extend(cms3.richGrid, cms3.object, {
     fieldTypes: {},
 
+    //Создание объектов колонок
+    createFieldsObjects: function(fields){
+        var grid = this;
+        cms3.each(fields, function(fieldId, field){
+            field.id = fieldId;
+            field.selectors = grid.selectors;
+            field.grid = grid;
+            fields[fieldId] = grid.fieldTypes[field.type].create(field);
+            if (field.model != undefined){
+                grid.createFieldsObjects(field.model.fields);
+            }
+        });
+    },
+
     init: function(){
         var $ = jQuery;
         var grid = this;
@@ -11,12 +25,7 @@ cms3.extend(cms3.richGrid, cms3.object, {
         //alert(this.selectors.editFieldList.Button);
 
         //Создание объектов колонок
-        cms3.each(this.fields, function(fieldId, field){
-            field.id = fieldId;
-            field.selectors = grid.selectors;
-            field.grid = grid;
-            grid.fields[fieldId] = grid.fieldTypes[field.type].create(field);
-        });
+        this.createFieldsObjects(this.fields);
 
         //Build tablet items
         $(this.container).prepend($("#gridTemplate").tmpl({fields: this.fields, items: this.items, id: this.id}));

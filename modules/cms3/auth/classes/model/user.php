@@ -14,7 +14,11 @@ class Model_User extends Model implements \Acl_Role_Interface {
 		$meta->fields(array(
 			'id'		=> ORM::field('primary'),
 			'enabled'	=> ORM::field('boolean'),
-			'properties' => ORM::field('properties')
+			'display_name'		=> ORM::field('string', array(
+				'column' => 'display_name',
+				'show_in_list' => true
+			))
+			//'properties' => ORM::field('properties')
 		));
 	}
 	

@@ -10,7 +10,7 @@ class Model_Grid extends Model {
 	protected $_source_model = NULL;
 	
 	protected $_source_data = NULL;
-	
+
 	public function source($model = NULL)
 	{
 		if ($model !== NULL)
@@ -41,7 +41,8 @@ class Model_Grid extends Model {
 			$this->_source_data = $this->_source_model
 				->query()
 				->filter()
-				->select();
+				->select()
+				->as_array();
 		}
 		
 		return $this->_source_data;
