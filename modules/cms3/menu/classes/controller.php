@@ -17,10 +17,8 @@ class Controller extends Abstract_Controller {
 		}
 		$menu = ORM::query('cms3\menu\menu', $params['menu_id'])->select();
 
-		$items = $menu->get_items_array();
-
 		$view_data = array(
-			'items' => $items
+			'items' => $menu->items->build_tree()
 		);
 
 		echo $this->view($template, 'cms3\menu\menu', $view_data);

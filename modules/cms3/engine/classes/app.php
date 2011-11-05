@@ -208,7 +208,7 @@ class App {
   		
 		date_default_timezone_set($this->get_cfg('timezone'));
 		$this->set_language($this->get_cfg('default_language'));
-		
+
 		Core::$base_url = $this->get_cfg('base_url');
 		Core::$index_file = $this->get_cfg('index_file');
 

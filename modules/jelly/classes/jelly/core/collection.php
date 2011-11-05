@@ -32,7 +32,7 @@ abstract class Jelly_Core_Collection implements Iterator, Countable, SeekableIte
 	 * @var  Jelly_Collection|array|mixed  The current result set
 	 */
 	protected $_result = NULL;
-
+	
 	/**
 	 * Tracks a database result
 	 *
@@ -42,7 +42,7 @@ abstract class Jelly_Core_Collection implements Iterator, Countable, SeekableIte
 	public function __construct($result, $model = NULL)
 	{
 		$this->_result = $result;
-
+		
 		// Load our default model
 		if ($model AND Jelly::meta($model))
 		{
@@ -50,7 +50,7 @@ abstract class Jelly_Core_Collection implements Iterator, Countable, SeekableIte
 			$this->_meta  = $this->_model->meta();
 		}
 	}
-
+	
 	/**
 	 * Converts MySQL Results to Cached Results, since MySQL resources are not serializable.
 	 *
@@ -62,7 +62,7 @@ abstract class Jelly_Core_Collection implements Iterator, Countable, SeekableIte
 		{
 			$this->_result = new Database_Result_Cached($this->_result->as_array(), '');
 		}
-
+		
 		return array_keys(get_object_vars($this));
 	}
 

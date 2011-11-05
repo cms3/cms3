@@ -12,10 +12,14 @@ class Model_Item extends Model {
 	
 	public static function initialize(ORM_Meta $meta)
 	{
+		$meta->sorting(array('ordering' => 'ASC'));
+		
 		$meta->fields(array(
 			'id'					=> ORM::field('primary'),
 			'menu'					=> ORM::field('belongsto'),
-			'parent_id'				=> ORM::field('integer'),
+			'parent'				=> ORM::field('belongsto',
+				array('foreign' => 'item')
+			),
 			'route'					=> ORM::field('belongsto',
 				array('namespace' => 'cms3\engine')
 			),
@@ -24,12 +28,15 @@ class Model_Item extends Model {
 			'title'					=> ORM::field('string', array(
 				'multilang' => TRUE
 			)),
-			'active_condition_id'	=> ORM::field('integer'), // TODO
+			'active_condition'  	=> ORM::field('belongsto',
+				array('foreign' => 'cms3\engine\condition')
+			),
 			'ordering'				=> ORM::field('integer'),
 			'params'				=> ORM::field('params'),
-			'children'				=> ORM::field('hasmany',
-				array('foreign' => 'item.parent_id')
-			),
+			'children'				=> ORM::field('hasmany', array(
+				'foreign' => 'item.parent',
+				'tree' => TRUE
+			)),
 		));
 	}
 	
@@ -51,14 +58,13 @@ class Model_Item extends Model {
 	
 	public function is_active()
 	{
-		if (! empty($this->active_condition))
+		if (! empty($this->active_condition->condition))
 		{
 			return App::instance()->check_page_condition($this->active_condition);
 		}
 		else
 		{
 			$params = (array) $this->params;
-			$params = App::instance()->implode_request_params($params); // TODO: Непонятно, нужно ли делать здесь implode
 
 			if (! count($params))
 			{
@@ -91,5 +97,16 @@ class Model_Item extends Model {
 			}
 		}
 		return false;
+	}
+	
+	public function virtual_fields()
+	{
+		$fields = array(
+			'uri'		=> $this->get_uri(),
+			'selected'	=> $this->is_selected(),
+			'active'	=> $this->is_active()
+		);
+
+		return $fields;
 	}
 }
