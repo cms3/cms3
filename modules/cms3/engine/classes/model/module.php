@@ -10,7 +10,6 @@ class Model_Module extends Model {
 		$meta->fields(array(
 			'id' 			=> ORM::field('primary'),
 			'name'			=> ORM::field('string'),
-			'module'		=> ORM::field('string'),
 			'title'			=> ORM::field('string', array(
 				'multilang' => TRUE
 			)),
