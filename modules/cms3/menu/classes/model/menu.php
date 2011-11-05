@@ -16,42 +16,9 @@ class Model_Menu extends Model {
 				'multilang' => TRUE
 			)),
 			'items'	=> ORM::field('hasmany', array(
-			    'foreign' => 'item.menu_id'
+			    'foreign' => 'item.menu_id',
+				'tree' => TRUE
 			)),
 		));
-   }
-
-	// TODO: получать дерево автоматически
-	public function get_child_items($parent = 0)
-	{
-		$items = Model_Item::factory()->query()
-			->filter() // TODO
-			->where('menu_id', '=', $this->id)
-			->where('parent_id', '=', $parent)
-			->order_by('ordering', 'asc')
-			->select();
-
-		return $items;
-	}
-   
-   public function get_items_array($items = NULL)
-   {
-		if ($items === NULL)
-		{
-			$items = $this->get_child_items();
-		}
-
-		$array = array();
-		foreach ($items as $item)
-		{
-			$array[] = array(
-				'uri'		=> $item->get_uri(),
-				'title'		=> $item->title,
-				'selected'	=> $item->is_selected(),
-				'active'	=> $item->is_active(),
-				'children'	=> $this->get_items_array($item->children),
-			);
-		}
-		return $array;
    }
 }

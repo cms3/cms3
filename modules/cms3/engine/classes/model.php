@@ -123,7 +123,7 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 	{
 		if ($model === NULL)
 		{
-			$model = get_called_class(); 
+			$model = get_called_class();
 		}
 		elseif (strpos($model, '-') !== FALSE) // param-encoded model names with namespace
 		{
@@ -137,22 +137,61 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		
 		return ORM::factory($model, $key);
 	}
-	
-	public function as_array(array $fields = NULL, $recursive = FALSE)
+
+	public function as_array(array $fields = NULL, $recursive = FALSE, $add_virtual = TRUE)
 	{
+		$orig_fields = $fields;
+
 		$fields = $fields ? $fields : array_keys($this->_meta->fields());
 		$result = array();
 
 		foreach($fields as $field)
 		{
-			$result[$field] = $this->{$field};
-			if ($recursive && is_object($result[$field]) && method_exists($result[$field], 'as_array'))
+			$item = $this->{$field};
+
+			if ($item instanceof \Jelly_Collection)
 			{
-				$result[$field] = $result[$field]->as_array(NULL, TRUE);
+				$item = $item->as_tree_array($orig_fields, $recursive, $add_virtual);
 			}
+			elseif (is_object($item) && $recursive && method_exists($item, 'as_array'))
+			{
+				$item = $item->as_array($orig_fields, TRUE, $add_virtual);
+			}
+			else
+			{
+				$item = $this->field_value($field);
+			}
+			$result[$field] = $item;
+		}
+		if ($add_virtual)
+		{
+			$result = array_merge($result, $this->virtual_fields());
 		}
 
+		//print_r($result); exit;
+
 		return $result;
+	}
+
+	public function field_value($field)
+	{
+		$value = $this->{$field};
+		
+		if ($value instanceof Model)
+		{
+			$value = $value->id(); // TODO: криво?
+		}
+		elseif (is_object($value))
+		{
+			$value = get_class($value);
+		}
+
+		return $value;
+	}
+
+	public function virtual_fields()
+	{
+		return array();
 	}
 	
 	public function load_linked($key = NULL)

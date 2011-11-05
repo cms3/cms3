@@ -4,13 +4,13 @@ $render = function($items, $itself)
 {
 ?>
 	<?php foreach($items as $i => $item): ?>
-		<li<?php 
+		<li<?php
 			$class = '';
 			if ($i == 0):
 				$class = 'first';
 			endif;
 			if ($i == count($items) - 1):
-				$class .= ' last';
+				$class .= ($i == 0) ? ' ' : '' . 'last';
 			endif;
 			if (! empty($class)):
 				echo ' class="' . $class . '"';

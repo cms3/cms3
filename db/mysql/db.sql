@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 26, 2011 at 04:12 PM
+-- Generation Time: Oct 29, 2011 at 04:16 PM
 -- Server version: 5.0.45
 -- PHP Version: 5.3.3
 
@@ -28,6 +28,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `acl__roles` (
   `id` int(11) unsigned NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `parent_id` int(11) unsigned NOT NULL,
   `ordering` int(11) NOT NULL,
   PRIMARY KEY  (`id`),
@@ -38,39 +40,10 @@ CREATE TABLE IF NOT EXISTS `acl__roles` (
 -- Dumping data for table `acl__roles`
 --
 
-INSERT INTO `acl__roles` (`id`, `parent_id`, `ordering`) VALUES
-(1, 0, 1),
-(2, 1, 2),
-(3, 1, 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `acl__roles_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `acl__roles_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `role_id` int(10) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `role_id` (`role_id`,`language`),
-  KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
-
---
--- Dumping data for table `acl__roles_i18n`
---
-
-INSERT INTO `acl__roles_i18n` (`id`, `role_id`, `language`, `name`) VALUES
-(1, 1, 'en_us', 'ROOT'),
-(2, 1, 'ru_ru', 'Для перемещения между полями значения, используйте клавишу TAB, либо CTRL+клавиши со стрелками - для свободного перемещения Для перемещения между полями значения, используйте клавишу TAB, либо CTRL+клавиши со стрелками - для свободного перемещения Для пер'),
-(3, 2, 'en_us', 'Administrators'),
-(4, 2, 'ru_ru', 'Администраторы'),
-(5, 3, 'en_us', 'Users'),
-(6, 3, 'ru_ru', 'Пользователи'),
-(7, 3, 'uk_uk', '44');
+INSERT INTO `acl__roles` (`id`, `language`, `name`, `parent_id`, `ordering`) VALUES
+(1, 'ru_ru', 'ROOT', 0, 1),
+(2, 'ru_ru', 'Администраторы', 1, 2),
+(3, 'ru_ru', 'Пользователи', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -126,6 +99,8 @@ INSERT INTO `acl__rules` (`id`, `role`, `resource`, `privilege`, `assert_conditi
 
 CREATE TABLE IF NOT EXISTS `auth__methods` (
   `id` int(12) unsigned NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
@@ -133,35 +108,9 @@ CREATE TABLE IF NOT EXISTS `auth__methods` (
 -- Dumping data for table `auth__methods`
 --
 
-INSERT INTO `auth__methods` (`id`) VALUES
-(1),
-(2);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `auth__methods_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `auth__methods_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `method_id` int(12) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `method_id` (`method_id`,`language`),
-  KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `auth__methods_i18n`
---
-
-INSERT INTO `auth__methods_i18n` (`id`, `method_id`, `language`, `name`) VALUES
-(1, 1, 'en_us', 'Basic'),
-(2, 1, 'ru_ru', 'Стандартный'),
-(3, 2, 'en_us', 'OpenID'),
-(4, 2, 'ru_ru', 'OpenID');
+INSERT INTO `auth__methods` (`id`, `language`, `name`) VALUES
+(1, 'ru_ru', 'Стандартный'),
+(2, 'ru_ru', 'OpenID');
 
 -- --------------------------------------------------------
 
@@ -286,6 +235,7 @@ INSERT INTO `auth__tokens` (`id`, `user_id`, `token`, `created`, `expires`) VALU
 CREATE TABLE IF NOT EXISTS `auth__users` (
   `id` int(12) unsigned NOT NULL auto_increment,
   `enabled` tinyint(1) unsigned NOT NULL,
+  `display_name` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -293,8 +243,8 @@ CREATE TABLE IF NOT EXISTS `auth__users` (
 -- Dumping data for table `auth__users`
 --
 
-INSERT INTO `auth__users` (`id`, `enabled`) VALUES
-(1, 1);
+INSERT INTO `auth__users` (`id`, `enabled`, `display_name`) VALUES
+(1, 1, 'Admin');
 
 -- --------------------------------------------------------
 
@@ -304,56 +254,27 @@ INSERT INTO `auth__users` (`id`, `enabled`) VALUES
 
 CREATE TABLE IF NOT EXISTS `content__items` (
   `id` int(11) unsigned NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `title` varchar(1024) NOT NULL,
+  `text` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `state` tinyint(4) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 --
 -- Dumping data for table `content__items`
 --
 
-INSERT INTO `content__items` (`id`, `user_id`, `state`) VALUES
-(1, 1, 1),
-(31, 0, 4),
-(32, 0, 1),
-(33, 1, 0),
-(34, 1, 0),
-(35, 1, 0),
-(36, 1, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `content__items_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `content__items_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `item_id` int(11) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `title` varchar(1024) NOT NULL,
-  `text` text NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `item_id` (`item_id`,`language`),
-  KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
-
---
--- Dumping data for table `content__items_i18n`
---
-
-INSERT INTO `content__items_i18n` (`id`, `item_id`, `language`, `title`, `text`) VALUES
-(1, 1, 'ru_ru', 'kl22', '8888y'),
-(8, 31, 'ru_ru', 'Some', 'Русский текст'),
-(9, 32, 'ru_ru', 'ddd', '555'),
-(10, 33, 'ru_ru', 'Оплата и доставка', 'Оплата и доставка - 111'),
-(11, 34, 'ru_ru', 'О нас', 'О нас - 22222'),
-(12, 35, 'ru_ru', 'Контакты', 'Контакты - 333333'),
-(13, 36, 'ru_ru', 'TITLE', 'TEXT BLYUA'),
-(14, 37, 'ru_ru', '4', '4'),
-(15, 38, 'ru_ru', '4', '4'),
-(16, 39, 'ru_ru', '4', '4');
+INSERT INTO `content__items` (`id`, `language`, `title`, `text`, `user_id`, `state`) VALUES
+(1, 'ru_ru', '8888y', 'kl22', 1, 1),
+(31, 'ru_ru', 'Русский текст', 'Some', 0, 5),
+(32, 'ru_ru', '555', 'ddd', 0, 1),
+(33, 'ru_ru', 'Оплата и доставка - 111', 'Оплата и доставка', 1, 0),
+(34, 'ru_ru', 'О нас - 22222', 'О нас', 1, 0),
+(35, 'ru_ru', 'Контакты - 333333', 'Контакты', 2, 0),
+(36, 'ru_ru', 'TEXT BLYUA', 'TITLE1', 1, 1),
+(44, '', 'df', 'dfg5t5', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -384,7 +305,7 @@ INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, 
 (4, 'left', 'cms3\\menu', '', 1, 0, '', '{"menu_id":"2"}'),
 (5, 'left', 'cms3\\auth', 'login_form', 2, 0, '', '[]'),
 (6, 'center', 'cms3\\content', '', 1, 4, '', '[]'),
-(8, 'admin', 'cms3\\ui_grid', '', 0, 6, '', '[]'),
+(8, 'admin', 'cms3\\dataview', '', 0, 6, '', '[]'),
 (9, 'admin', 'cms3\\ui_form', '', 0, 7, '', ''),
 (10, 'nb_topmenu', 'cms3\\menu', '', 0, 0, '', '{"menu_id":"5"}'),
 (11, 'nb_content', 'cms3\\content', '', 0, 4, '', ''),
@@ -400,6 +321,8 @@ INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, 
 
 CREATE TABLE IF NOT EXISTS `engine__conditions` (
   `id` int(11) unsigned NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `condition` varchar(1024) NOT NULL,
   `engine` varchar(255) NOT NULL,
   `user` tinyint(1) unsigned NOT NULL default '0',
@@ -410,35 +333,11 @@ CREATE TABLE IF NOT EXISTS `engine__conditions` (
 -- Dumping data for table `engine__conditions`
 --
 
-INSERT INTO `engine__conditions` (`id`, `condition`, `engine`, `user`) VALUES
-(4, 'content.item.id <> ''''', '', 0),
-(5, 'grid <> "" or (form <> "")', '', 0),
-(10, '1', '', 0),
-(11, 'content.item.id = ''''', '', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `engine__conditions_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `engine__conditions_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `condition_id` int(11) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `condition_id` (`condition_id`,`language`),
-  KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `engine__conditions_i18n`
---
-
-INSERT INTO `engine__conditions_i18n` (`id`, `condition_id`, `language`, `title`) VALUES
-(1, 5, 'ru_ru', 'Админка'),
-(2, 1, 'ru_ru', 'Главная');
+INSERT INTO `engine__conditions` (`id`, `language`, `title`, `condition`, `engine`, `user`) VALUES
+(4, 'ru_ru', '', 'content.item.id <> ''''', '', 0),
+(5, 'ru_ru', 'Админка', 'grid <> "" or (form <> "")', '', 0),
+(10, 'ru_ru', '', '1', '', 0),
+(11, 'ru_ru', '', 'content.item.id = ''''', '', 0);
 
 -- --------------------------------------------------------
 
@@ -472,6 +371,8 @@ INSERT INTO `engine__languages` (`code`, `short_code`, `title`, `active`) VALUES
 
 CREATE TABLE IF NOT EXISTS `engine__modules` (
   `id` int(11) unsigned NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `module` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
@@ -479,61 +380,37 @@ CREATE TABLE IF NOT EXISTS `engine__modules` (
   `enabled` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `engine__modules`
 --
 
-INSERT INTO `engine__modules` (`id`, `name`, `module`, `ordering`, `core`, `enabled`) VALUES
-(1, 'database', '', 1, 1, 1),
-(2, 'jelly', '', 2, 1, 1),
-(3, 'cms3\\expression', '', 2, 1, 1),
-(4, 'cms3\\engine', '', 3, 1, 1),
-(5, 'cms3\\shop', '', 50, 0, 1),
-(6, 'cms3\\gallery', '', 50, 0, 1),
-(7, 'cms3\\menu', '', 50, 0, 1),
-(8, 'cms3\\template_phptal', '', 5, 1, 1),
-(11, 'cms3\\auth', '', 7, 1, 1),
-(12, 'cms3\\auth_openid', '', 15, 0, 1),
-(13, 'openid', '', 14, 0, 1),
-(14, 'cms3\\template_native', '', 50, 1, 1),
-(15, 'cms3\\auth_basic', '', 50, 0, 1),
-(16, 'cms3\\content', '', 50, 0, 1),
-(17, 'orm', '', 50, 1, 1),
-(18, 'acl', '', 50, 1, 1),
-(19, 'cms3\\acl', '', 50, 1, 1),
-(20, 'cms3\\ui', '', 50, 0, 1),
-(21, 'cms3\\ui_extjs', '', 50, 0, 1),
-(22, 'cms3\\admin', '', 50, 0, 1),
-(23, 'formo', '', 1, 0, 1),
-(24, 'formo-jelly', '', 2, 0, 0),
-(25, 'kint', '', 0, 1, 1),
-(26, 'cms3\\properties', '', 25, 0, 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `engine__modules_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `engine__modules_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `module_id` int(11) NOT NULL,
-  `language` char(5) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `engine__modules_i18n`
---
-
-INSERT INTO `engine__modules_i18n` (`id`, `module_id`, `language`, `title`) VALUES
-(1, 5, 'ru_ru', 'Интернет-магазин'),
-(2, 6, 'ru_ru', 'Галерея'),
-(3, 16, 'ru_ru', 'Контент'),
-(4, 27, 'ru_ru', 'Test');
+INSERT INTO `engine__modules` (`id`, `language`, `title`, `name`, `module`, `ordering`, `core`, `enabled`) VALUES
+(1, 'ru_ru', '', 'database', '', 1, 1, 1),
+(2, 'ru_ru', '', 'jelly', '', 2, 1, 1),
+(3, 'ru_ru', '', 'cms3\\expression', '', 2, 1, 1),
+(4, 'ru_ru', '', 'cms3\\engine', '', 3, 1, 1),
+(5, 'ru_ru', 'Интернет-магазин', 'cms3\\shop', '', 50, 0, 1),
+(6, 'ru_ru', 'Галерея', 'cms3\\gallery', '', 50, 0, 1),
+(7, 'ru_ru', '', 'cms3\\menu', '', 50, 0, 1),
+(8, 'ru_ru', '', 'cms3\\template_phptal', '', 5, 1, 1),
+(11, 'ru_ru', '', 'cms3\\auth', '', 7, 1, 1),
+(12, 'ru_ru', '', 'cms3\\auth_openid', '', 15, 0, 1),
+(13, 'ru_ru', '', 'openid', '', 14, 0, 1),
+(14, 'ru_ru', '', 'cms3\\template_native', '', 50, 1, 1),
+(15, 'ru_ru', '', 'cms3\\auth_basic', '', 50, 0, 1),
+(16, 'ru_ru', 'Контент', 'cms3\\content', '', 50, 0, 1),
+(17, 'ru_ru', '', 'orm', '', 50, 1, 1),
+(18, 'ru_ru', '', 'acl', '', 50, 1, 1),
+(19, 'ru_ru', '', 'cms3\\acl', '', 50, 1, 1),
+(20, 'ru_ru', '', 'cms3\\ui', '', 50, 0, 0),
+(21, 'ru_ru', '', 'cms3\\ui_extjs', '', 50, 0, 0),
+(22, 'ru_ru', '', 'cms3\\admin', '', 50, 0, 1),
+(23, 'ru_ru', '', 'formo', '', 1, 0, 1),
+(24, 'ru_ru', '', 'formo-jelly', '', 2, 0, 0),
+(25, 'ru_ru', '', 'kint', '', 0, 1, 1),
+(26, 'ru_ru', '', 'cms3\\properties', '', 25, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -544,6 +421,8 @@ INSERT INTO `engine__modules_i18n` (`id`, `module_id`, `language`, `title`) VALU
 CREATE TABLE IF NOT EXISTS `engine__pageheaders` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `tag` varchar(32) NOT NULL,
+  `language` char(5) NOT NULL,
+  `value` varchar(1024) NOT NULL,
   `attribute` varchar(32) NOT NULL,
   `condition_id` int(11) unsigned NOT NULL,
   PRIMARY KEY  (`id`)
@@ -553,35 +432,10 @@ CREATE TABLE IF NOT EXISTS `engine__pageheaders` (
 -- Dumping data for table `engine__pageheaders`
 --
 
-INSERT INTO `engine__pageheaders` (`id`, `tag`, `attribute`, `condition_id`) VALUES
-(1, 'title', '', 1),
-(2, 'title', '', 5),
-(3, 'title', '', 10);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `engine__pageheaders_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `engine__pageheaders_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `pageheader_id` int(11) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `value` varchar(1024) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `pageheader_id` (`pageheader_id`,`language`),
-  KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `engine__pageheaders_i18n`
---
-
-INSERT INTO `engine__pageheaders_i18n` (`id`, `pageheader_id`, `language`, `value`) VALUES
-(1, 1, 'ru_ru', 'Магазин'),
-(2, 2, 'ru_ru', 'CMS 3.0 AdminPanel'),
-(3, 3, 'ru_ru', 'New Bathroom&nbsp;&#8212; все для ванной комнаты');
+INSERT INTO `engine__pageheaders` (`id`, `tag`, `language`, `value`, `attribute`, `condition_id`) VALUES
+(1, 'title', 'ru_ru', 'Магазин', '', 1),
+(2, 'title', 'ru_ru', 'CMS 3.0 AdminPanel', '', 5),
+(3, 'title', 'ru_ru', 'New Bathroom&nbsp;&#8212; все для ванной комнаты', '', 10);
 
 -- --------------------------------------------------------
 
@@ -591,6 +445,8 @@ INSERT INTO `engine__pageheaders_i18n` (`id`, `pageheader_id`, `language`, `valu
 
 CREATE TABLE IF NOT EXISTS `engine__routes` (
   `id` int(11) unsigned NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `format` varchar(1024) character set cp1251 NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
@@ -599,40 +455,13 @@ CREATE TABLE IF NOT EXISTS `engine__routes` (
 -- Dumping data for table `engine__routes`
 --
 
-INSERT INTO `engine__routes` (`id`, `format`) VALUES
-(1, 'shop(/<shop_path:.*>)'),
-(2, 'gallery(/<gallery_album_id>(/<gallery_photo_id>))'),
-(3, '<profile:profile>'),
-(4, 'content(/?content.item.id=<content_item_id>)'),
-(5, '<grid:admin>(/<model>)'),
-(6, '<form:admin>((/<model>)(/<id>))');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `engine__routes_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `engine__routes_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `route_id` int(11) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `route_id` (`route_id`,`language`),
-  KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
-
---
--- Dumping data for table `engine__routes_i18n`
---
-
-INSERT INTO `engine__routes_i18n` (`id`, `route_id`, `language`, `title`) VALUES
-(1, 1, 'ru_ru', 'Магазин'),
-(2, 2, 'ru_ru', 'Галерея'),
-(3, 3, 'ru_ru', 'Профайлер'),
-(4, 4, 'ru_ru', 'Контент'),
-(5, 5, 'ru_ru', 'Админка');
+INSERT INTO `engine__routes` (`id`, `language`, `title`, `format`) VALUES
+(1, 'ru_ru', 'Магазин', 'shop(/<shop_path:.*>)'),
+(2, 'ru_ru', 'Галерея', 'gallery(/<gallery_album_id>(/<gallery_photo_id>))'),
+(3, 'ru_ru', 'Профайлер', '<profile:profile>'),
+(4, 'ru_ru', 'Контент', 'content(/?content.item.id=<content_item_id>)'),
+(5, 'ru_ru', 'Админка', '<grid:admin>(/<model>)'),
+(6, 'ru_ru', '', '<form:admin>((/<model>)(/<id>))');
 
 -- --------------------------------------------------------
 
@@ -665,25 +494,12 @@ INSERT INTO `engine__themes` (`id`, `name`, `condition_id`) VALUES
 
 CREATE TABLE IF NOT EXISTS `files__files` (
   `id` int(11) NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `file_name` varchar(255) NOT NULL,
   `mime_type` varchar(255) NOT NULL,
   `protected` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `files__files_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `files__files_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `file_id` int(11) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `file_id` (`file_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -694,6 +510,9 @@ CREATE TABLE IF NOT EXISTS `files__files_i18n` (
 
 CREATE TABLE IF NOT EXISTS `files__images` (
   `id` int(11) NOT NULL,
+  `language` char(5) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
   `file_id` int(11) default NULL,
   `url` text,
   `width` int(11) NOT NULL,
@@ -703,27 +522,13 @@ CREATE TABLE IF NOT EXISTS `files__images` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files__images_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `files__images_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `image_id` int(11) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `image_id` (`image_id`,`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `menu__items`
 --
 
 CREATE TABLE IF NOT EXISTS `menu__items` (
   `id` int(11) unsigned NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `title` varchar(255) NOT NULL,
   `menu_id` int(11) unsigned NOT NULL,
   `uri` varchar(1024) character set cp1251 NOT NULL,
   `parent_id` int(11) NOT NULL,
@@ -739,59 +544,20 @@ CREATE TABLE IF NOT EXISTS `menu__items` (
 -- Dumping data for table `menu__items`
 --
 
-INSERT INTO `menu__items` (`id`, `menu_id`, `uri`, `parent_id`, `ordering`, `active_condition_id`, `route_id`, `params`) VALUES
-(1, 2, '', 0, 1, 0, 1, '[]'),
-(2, 2, '', 1, 2, 0, 1, '{"shop_category_id":"1"}'),
-(3, 2, '', 2, 3, 0, 1, '{"shop_category_id":"1","shop_product_id":"1"}'),
-(4, 2, '', 0, 4, 0, 2, '{"gallery_album_id":"1","gallery_photo_id":"2"}'),
-(5, 2, '/action/cms3/gallery/gallery/clear_cache', 0, 50, 0, 0, '[]'),
-(6, 2, '', 0, 5, 0, 4, '{"content_item_id":"1"}'),
-(7, 2, '/admin', 0, 0, 0, 0, '[]'),
-(8, 1, '', 0, 1, 0, 5, '{"grid":"admin","model":"cms3-content-item"}'),
-(9, 5, '#', 0, 2, 0, 0, ''),
-(10, 5, '', 0, 3, 0, 4, '{"content_item_id":33}'),
-(11, 5, '', 0, 4, 0, 4, '{"content_item_id":34}'),
-(12, 5, '', 0, 5, 0, 4, '{"content_item_id":35}'),
-(13, 5, '/', 0, 1, 0, 0, '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `menu__items_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `menu__items_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `item_id` int(11) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `title` varchar(1024) character set cp1251 NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `item_id` (`item_id`,`language`),
-  KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
-
---
--- Dumping data for table `menu__items_i18n`
---
-
-INSERT INTO `menu__items_i18n` (`id`, `item_id`, `language`, `title`) VALUES
-(1, 1, 'en_us', 'Main'),
-(2, 1, 'ru_ru', 'Главная'),
-(3, 2, 'en_us', 'Category'),
-(4, 2, 'ru_ru', 'Категория'),
-(5, 3, 'en_us', 'Product'),
-(6, 3, 'ru_ru', 'Товар'),
-(7, 4, 'en_us', 'Gallery'),
-(8, 4, 'ru_ru', 'Галерея'),
-(9, 5, 'en_us', 'Clear cache'),
-(10, 5, 'ru_ru', 'Очистить кэш'),
-(11, 6, 'ru_ru', 'О магазине'),
-(12, 7, 'ru_ru', 'Админпанель'),
-(13, 8, 'ru_ru', 'Главная'),
-(14, 9, 'ru_ru', 'Каталог'),
-(15, 10, 'ru_ru', 'Оплата и доставка'),
-(16, 11, 'ru_ru', 'О нас'),
-(17, 12, 'ru_ru', 'Контакты');
+INSERT INTO `menu__items` (`id`, `language`, `title`, `menu_id`, `uri`, `parent_id`, `ordering`, `active_condition_id`, `route_id`, `params`) VALUES
+(1, 'ru_ru', 'Главная', 2, '', 0, 1, 0, 1, '[]'),
+(2, 'ru_ru', 'Категория', 2, '', 1, 2, 0, 1, '{"shop_category_id":"1"}'),
+(3, 'ru_ru', 'Товар', 2, '', 2, 3, 0, 1, '{"shop_category_id":"1","shop_product_id":"1"}'),
+(4, 'ru_ru', 'Галерея', 2, '', 0, 4, 0, 2, '{"gallery_album_id":"1","gallery_photo_id":"2"}'),
+(5, 'ru_ru', 'Очистить кэш', 2, '/action/cms3/gallery/gallery/clear_cache', 0, 50, 0, 0, '[]'),
+(6, 'ru_ru', 'О магазине', 2, '', 0, 5, 0, 4, '{"content_item_id":"1"}'),
+(7, 'ru_ru', 'Админпанель', 2, '/admin', 0, 0, 0, 0, '[]'),
+(8, 'ru_ru', 'Главная', 1, '', 0, 1, 0, 5, '{"grid":"admin","model":"cms3-content-item"}'),
+(9, 'ru_ru', 'Каталог', 5, '#', 0, 2, 0, 0, ''),
+(10, 'ru_ru', 'Оплата и доставка', 5, '', 0, 3, 0, 4, '{"content_item_id":33}'),
+(11, 'ru_ru', 'О нас', 5, '', 0, 4, 0, 4, '{"content_item_id":34}'),
+(12, 'ru_ru', 'Контакты', 5, '', 0, 5, 0, 4, '{"content_item_id":35}'),
+(13, 'ru_ru', '', 5, '/', 0, 1, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -801,6 +567,8 @@ INSERT INTO `menu__items_i18n` (`id`, `item_id`, `language`, `title`) VALUES
 
 CREATE TABLE IF NOT EXISTS `menu__menus` (
   `id` int(11) unsigned NOT NULL auto_increment,
+  `language` char(5) NOT NULL,
+  `title` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
@@ -808,35 +576,11 @@ CREATE TABLE IF NOT EXISTS `menu__menus` (
 -- Dumping data for table `menu__menus`
 --
 
-INSERT INTO `menu__menus` (`id`) VALUES
-(1),
-(2),
-(5),
-(6);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `menu__menus_i18n`
---
-
-CREATE TABLE IF NOT EXISTS `menu__menus_i18n` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `menu_id` int(11) unsigned NOT NULL,
-  `language` char(5) NOT NULL,
-  `title` varchar(1024) NOT NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `menu_id` (`menu_id`,`language`),
-  KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `menu__menus_i18n`
---
-
-INSERT INTO `menu__menus_i18n` (`id`, `menu_id`, `language`, `title`) VALUES
-(1, 5, 'ru_ru', 'Верхнее меню'),
-(2, 6, 'ru_ru', 'Меню категорий');
+INSERT INTO `menu__menus` (`id`, `language`, `title`) VALUES
+(1, 'ru_ru', ''),
+(2, 'ru_ru', ''),
+(5, 'ru_ru', 'Верхнее меню'),
+(6, 'ru_ru', 'Меню категорий');
 
 -- --------------------------------------------------------
 
