@@ -13,28 +13,27 @@ class URL extends \URL {
 	{
 		//$path = realpath($path);
 
-		if (DIRECTORY_SEPARATOR != '/')
+		$separator = DIRECTORY_SEPARATOR;
+		
+		if ($separator != '/')
 		{
-			$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+			$path = str_replace('/', $separator, $path);
 		}
-		if (DIRECTORY_SEPARATOR != '\\')
+		if ($separator != '\\')
 		{
-			$path = str_replace('\\', DIRECTORY_SEPARATOR, $path);
+			$path = str_replace('\\', $separator, $path);
 		}
 
-		$test_path = rtrim(substr($path, 0, strlen(DOCROOT)), DIRECTORY_SEPARATOR);
-		if ($test_path . DIRECTORY_SEPARATOR == DOCROOT)
-		{
-			$path = substr($path, strlen(DOCROOT) - 1);
-		}
-		else
+		$test_path = rtrim(substr($path, 0, strlen(DOCROOT)), $separator);
+		if ($test_path . $separator != DOCROOT)
 		{
 			return FALSE;
 		}
+		$path = substr($path, strlen(DOCROOT) - 1);
 		
-		$url = str_replace(DIRECTORY_SEPARATOR, '/', $path);
+		$url = str_replace($separator, '/', $path);
 		$url = static::site($url, TRUE);
-		if (($len = strlen($path)) && $path{$len - 1} == DIRECTORY_SEPARATOR)
+		if (($len = strlen($path)) && $path{$len - 1} == $separator)
 		{
 			$url .= '/';
 		}

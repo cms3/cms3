@@ -23,7 +23,7 @@ abstract class Document_Media_Renderer_HTML extends Document_Media_Renderer {
 				$non_empty[$name] = $name;
 			}
 		}
-	
+		
 		return $non_empty;
 	}
 	
