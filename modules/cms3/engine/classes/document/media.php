@@ -77,7 +77,8 @@ class Document_Media  {
 		{
 			return isset($this->_list[$type]) ? $this->_list[$type] : array();
 		}
-		else {
+		else
+		{
 			return isset($this->_list[$type][$position]) ? $this->_list[$type][$position] : array();
 		}
 	}

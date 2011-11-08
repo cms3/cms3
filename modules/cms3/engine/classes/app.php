@@ -402,7 +402,13 @@ class App {
 		$this->_filters = $this->_build_filter_tree(Request::current()->param());
 		
 		$this->document->current_theme = $this->_detect_theme();
-		
+/*
+		$img = \CMS3\Files\Model_Image::factory()->query(1)
+				->select();
+		$filename = $img->thumbnail(90, 90, \Image::INVERSE);
+		echo  '<img src="' . URL::real_to_site($filename)  . '" />';
+		exit;
+		*/
 		$this->document->render();
 		
 		if (isset($benchmark))
