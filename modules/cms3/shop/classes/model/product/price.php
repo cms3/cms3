@@ -16,9 +16,9 @@ class Model_Product_Price extends Model {
 			'product'          	=> ORM::field('belongsto', array(
 					'select_type' => 'list'
 			)),
-			'role'			    => ORM::field('belongsto', array(
+			/*'role'			    => ORM::field('belongsto', array(
 					'namespace' => 'cms3\acl'
-			)),
+			)),*/
 			'price'             => ORM::field('float'),
 			'auto_complete'     => ORM::field('boolean')
 		));

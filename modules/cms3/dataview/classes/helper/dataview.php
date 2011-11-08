@@ -7,6 +7,13 @@ use \CMS3\Engine\Field_Relationship_Interface as Relationship;
 
 class Helper_Dataview
 {
+	protected $_models = NULL;
+
+	public function __construct()
+	{
+		$this->_models = new \StdClass;
+	}
+
 	static public function clear_field($field)
 	{
 		$field->type = get_class($field);
@@ -47,56 +54,87 @@ class Helper_Dataview
 		return $items;
 	}
 
-	static public function buildFields($model, $type='normal')
+	static public function decode_namespace($model_name)
 	{
-		$fields = new \StdClass;
-		foreach ($model->meta()->fields() as $id => $field)
+		if (strpos($model_name, '\\') !== FALSE) // param-decoded model names with namespace
 		{
-			$save_field = clone $field;
-			$save_field = Helper_Dataview::clear_field($save_field);
-			//TODO: костыль, потому, что show_in_list может быть не задан
-			if (!isset($field->show_in_list))
+			$model_name = str_replace('\\', '-', $model_name);
+		}
+
+		return $model_name;
+	}
+	
+	public function build_models($model_name = FALSE, $type='normal')
+	{
+		$model_name = $this::decode_namespace($model_name);
+
+		if ($model_name && !isset($this->_models->{$model_name}))
+		{
+			$model = Model::factory($model_name);
+			$child_models = array();
+			$fields = new \StdClass;
+			foreach ($model->meta()->fields() as $id => $field)
 			{
-				$field->show_in_list = false;
+				$save_field = clone $field;
+				$save_field = Helper_Dataview::clear_field($save_field);
+				//TODO: костыль, потому, что show_in_list может быть не задан
+				if (!isset($field->show_in_list))
+				{
+					$field->show_in_list = false;
+				}
+
+				//TODO: баг, загружается с оригинальными названиями полей. Раскомментировать, если будет исправлено.
+				//if ($type == 'normal' or $field->show_in_list or $save_field->type == 'primary') {
+					// TODO: Вынести это отдельно и сделать для каждого типа поля
+					if ($field instanceof Relationship) {
+						//TODO: костыль, потому, что show_in_list может быть не задан
+						if (!isset($field->select_type))
+						{
+							$save_field->select_type = 'normal';
+						}
+						$save_field->model_name = $this::decode_namespace($field->foreign['model']);
+						//TODO: костыль, придумать как сделать на будущее camelize системных значений
+						$save_field->model_name = \inflector::camelize($save_field->model_name);
+
+						$child_models[] = array('name'    => $field->foreign['model'],
+						                        'select_type'	=> $save_field->select_type);
+					}
+					$fields->{$id} = $save_field;
+					$field_list[] = $id;
+				//}
 			}
 
-			//TODO: баг, загружается с оригинальными названиями полей. Раскомментировать, если будет исправлено.
-			//if ($type == 'normal' or $field->show_in_list or $save_field->type == 'primary') {
-				// TODO: Вынести это отдельно и сделать для каждого типа поля
-				if ($field instanceof Relationship) {
-					//TODO: костыль, потому, что show_in_list может быть не задан
-					$field->select_type = $field->select_type <> 'list' ? 'normal' : $field->select_type;
+			if ($type == 'list') {
+				$items = $model ->query()
+								->filter()
+								//TODO: баг, загружается с оригинальными названиями полей
+								//->select_column($field_list)
+								->select()
+								->as_array();
+			} else {
+				$items = $model ->query()
+								->filter()
+								->select()
+								->as_array();
+			}
 
-					$child_model = Model::factory($field->foreign['model']);
-					$save_field->model = Helper_Dataview::buildFields($child_model, $save_field->select_type);
-				}
-				$fields->{$id} = $save_field;
-				$field_list[] = $id;
-			//}
+			Helper_Dataview::clear_items(&$items);
+
+			$model_class = $model->class_param();
+			$model = new \StdClass;
+			$model->fields = $fields;
+			$model->items = $items;
+			$model->model = $model_class;
+
+			$this->_models->{$model_name} = $model;
+
+			foreach ($child_models as $child_model)
+			{
+				$this->build_models($child_model['name'], $child_model['select_type']);
+			}
 		}
 
-		if ($type == 'list') {
-			$items = $model ->query()
-							->filter()
-							//TODO: баг, загружается с оригинальными названиями полей
-							//->select_column($field_list)
-							->select()
-							->as_array();
-		} else {
-			$items = $model ->query()
-							->filter()
-							->select()
-							->as_array();
-		}
-
-		Helper_Dataview::clear_items(&$items);
-
-		$model_class = $model->class_param();
-		$model = new \StdClass;
-		$model->fields = $fields;
-		$model->items = $items;
-		$model->model = $model_class;
-		return $model;
+		return $this->_models;
 	}
 
 	/*

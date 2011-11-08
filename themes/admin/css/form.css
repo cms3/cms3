@@ -1,0 +1,109 @@
+/*@charset "utf-8";*/
+/* CSS Document */
+
+table.cms3-form {
+    /*margin: 1em;*/
+    width: 100%;
+}
+
+table.cms3-form td {
+    padding: 0;
+    width: 100%;
+}
+
+table.cms3-form td.caption {
+    padding-right: 0.5em;
+    text-align: right;
+    width: 1%;
+    white-space:nowrap;
+}
+
+table.cms3-form td.input {
+    width: 100%;
+}
+
+table.cms3-form td.input div.input {
+    position: relative;
+    background-color: white;
+    border: #999 solid 1px;
+}
+
+table.cms3-form td.input div.autocomplete {
+    background-color: white;
+    border: #999 solid 1px;
+}
+
+table.cms3-form td.input div.wrapper {
+    padding-left: 0.6em;
+}
+
+table.cms3-form td.input input {
+    width: 100%;
+    height: 1.5em;
+    padding: 0;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    margin: 0;
+    margin-left: -0.6em;
+    display: block;
+    border: none;
+}
+
+table.cms3-form td.input input.hint {
+    color: #999;
+}
+
+table.cms3-form td.input div.autocomplete {
+    position: absolute;
+    width: 100%;
+    margin-left: -1px;
+}
+
+table.cms3-form td.input input,
+table.cms3-form td.input div.autocomplete ul {
+    font-size: 0.9em;
+}
+
+table.cms3-form td.input div.autocomplete ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+table.cms3-form td.input div.autocomplete li {
+    padding-left: 0.3em;
+    padding-top: 0.14em;
+    padding-bottom: 0.14em;
+    border-bottom: white solid 1px;
+    border-top: white solid 1px;
+}
+
+table.cms3-form td.input div.autocomplete li.hover {
+    background-color: #CCC;
+    border-bottom: #999 solid 1px;
+    border-top: #999 solid 1px;
+}
+
+/* Select */
+table.cms3-form tr.field.select div.select-button {
+    /*width: 1.8em;*/
+    /*height: 1.8em;*/
+    right: 0;
+    top: 0;
+    position: absolute;
+}
+
+table.cms3-form tr.field.select div.select-button button{
+    font-size: 0.9em;
+    height: 1.5em;
+    margin: 0;
+}
+
+table.cms3-form tr.field.select td.input input {
+    padding-right: 2em;
+    margin-left: -2.3em;
+}
+
+table.cms3-form tr.field.select td.input div.wrapper {
+    padding-left: 2.3em;
+}

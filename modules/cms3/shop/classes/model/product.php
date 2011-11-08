@@ -24,10 +24,10 @@ class Model_Product extends Model {
 			)),
 			'product_type'	=> ORM::field('belongsto',
 				array(
-					'select_type' => 'list'
+					'select_type' => 'normal'
 				)
 			),
-			'price'         => ORM::field('hasmany'),
+			'product_price'         => ORM::field('hasmany'),
 			'discontinued'	=> ORM::field('boolean')
 		));
 	}

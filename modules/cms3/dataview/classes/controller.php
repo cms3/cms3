@@ -28,14 +28,15 @@ class Controller extends Abstract_Controller
 		// TODO: автоматически
 		$params = array_merge(Request::$initial->param(), $params);
 
-
-		$data = Helper_Dataview::buildFields($this->model($params['model']));
+		$helper = new Helper_Dataview();
+		$models = $helper->build_models($params['model']);
 
 		$view_vars = array(
-			'data' => $data,
+			'models' => $models,
 			'block_id' => $params['block_id'],
 			//TODO: получать текущий контроллер с неймспейсом, для ссылок сохранения/добавления/ets
-			'controller' => get_class($this)
+			'controller' => get_class($this),
+			'model' => $params['model'],
 		);
 
 		echo View::factory('cms3\dataview\grid', $view_vars);

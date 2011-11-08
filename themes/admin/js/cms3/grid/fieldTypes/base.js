@@ -35,8 +35,6 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
 
     init: function() {
         this.buildSelectors();
-
-
     },
 
     createEvents: function(){
