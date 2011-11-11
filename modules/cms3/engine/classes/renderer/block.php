@@ -11,8 +11,11 @@ class Renderer_Block extends Renderer implements Renderer_Interface {
 			$params['position'] = 'default';
 		}
 
-		$blocks = Model::factory('block')->query()->by_position($params['position']);
-		
+		$blocks = Model::factory('block')
+				->query()
+				->by_position($params['position'])
+				->select();
+
 		$data = '';
 		foreach ($blocks as $block)
 		{

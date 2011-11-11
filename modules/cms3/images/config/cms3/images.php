@@ -2,5 +2,10 @@
 return array
 (
 	'thumbs_dir' => APPPATH.'cache'.DIRECTORY_SEPARATOR.'thumbs',
-	'resize_method' => \Image::AUTO,
+	'resize_params' => array(
+		'width'  => 0,
+		'height' => 0,
+		'zoom'   => 100,
+		'crop'   => FALSE
+	)
 );

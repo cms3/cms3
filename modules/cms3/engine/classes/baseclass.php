@@ -23,4 +23,13 @@ abstract class BaseClass {
 			return '';
 		}
 	}
+
+	public static function factory()
+	{
+		$reflection = new \ReflectionClass(get_called_class());
+		$args = func_get_args();
+		$class = $reflection->newInstanceArgs($args);
+
+		return $class;
+	}
 }
