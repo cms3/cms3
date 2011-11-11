@@ -291,8 +291,12 @@ $grid_data = JSON::encode($grid_data, array(
 					<td class="caption"><span>Product Type:</span></td>
 					<td class="input">
 						<div class="input">
-							<div class="wrapper"><input class="hint" type="text" value="Подсказка" /></div>
-							<div style="display: none;" class="autocomplete">
+							<table>
+								<tr>
+									<td><input class="hint" type="text" value="Подсказка" /></td>
+								</tr>
+							</table>
+							<div class="autocomplete">
 								<ul>
 									<li>Все</li>
 									<li class="hover">Всыыы</li>
@@ -303,15 +307,18 @@ $grid_data = JSON::encode($grid_data, array(
 						</div>
 					</td>
 				</tr>
+
 				<tr class="field select">
-					<td class="caption"><span>Product Type:</span></td>
+					<td class="caption"><span>Productxxxxxxxxxxxxxx Type:</span></td>
 					<td class="input">
 						<div class="input">
-							<div class="wrapper">
-								<input class="hint" type="text" value="Подсказка" />
-							</div>
-							<div class="select-button"><button>▼</button></div>
-							<div style="display: block;" class="autocomplete">
+							<table>
+								<tr>
+									<td><input class="hint" type="text" value="Подсказка" /></td>
+									<td class="select-button"><span>▼</span></td>
+								</tr>
+							</table>
+							<div class="autocomplete">
 								<ul>
 									<li>Все</li>
 									<li class="hover">Всыыы</li>
