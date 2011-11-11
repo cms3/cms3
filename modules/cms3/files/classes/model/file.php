@@ -26,6 +26,6 @@ class Model_File extends Model
 	
 	public function filename()
 	{
-		return $this->dir . DIRECTORY_SEPARATOR . $this->filename;
+		return DOCROOT . $this->dir . DIRECTORY_SEPARATOR . $this->filename;
 	}
 }

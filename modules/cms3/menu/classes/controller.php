@@ -8,14 +8,16 @@ use CMS3\Engine\Controller as Abstract_Controller;
 use CMS3\Engine\View;
 
 class Controller extends Abstract_Controller {
-  
+
 	public function action_display($params = array(), $template = NULL)
 	{
 		if (empty($params['menu_id']))
 		{
 			throw new Exception('Menu ID doesn\'t set');
 		}
-		$menu = ORM::query('cms3\menu\menu', $params['menu_id'])->select();
+		$menu = Model_Menu::factory()
+			->query($params['menu_id'])
+			->select();
 
 		$view_data = array(
 			'items' => $menu->items->build_tree()
