@@ -1,5 +1,6 @@
-cms3.richGrid.fieldTypes.base = new Object();
-cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
+cms3.field = new Object();
+cms3.field.base = new Object();
+cms3.extend(cms3.field.base, cms3.object, {
     display: true,
     cellTemplate: 'Default',
     cellContainerTemplate: 'Default',
@@ -85,16 +86,6 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
     },
 
     filter: function(filter, cell) {
-        /*var $ = jQuery;
-        var specialChars = ['[', ']', '\\', '^', '$', '.' ,'|', '?', '*', '+', '(', ')', '{', '}'];
-        $.each(specialChars, function(i, specialChar){
-            var pos = 0;
-            while ((pos = filter.indexOf(specialChar, pos+1)) != -1)
-            {
-                                
-            }
-        });*/
-
         if (cell.search(new RegExp(filter, "i")) == -1)
         {
             return false;

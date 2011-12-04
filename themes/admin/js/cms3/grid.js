@@ -10,7 +10,7 @@ cms3.extend(cms3.richGrid, cms3.object, {
                field.id = fieldId;
                field.selectors = grid.selectors;
                field.grid = grid;
-               model.fields[fieldId] = grid.fieldTypes[field.type].create(field);
+               model.fields[fieldId] = cms3.field[field.type].create(field);
                // Если нужно будет строить список моделей автоматически
                /*if (field.model != undefined){
                    grid.createFieldsObjects(field.model.fields);

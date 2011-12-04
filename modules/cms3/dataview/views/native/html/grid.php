@@ -266,77 +266,125 @@ $grid_data = JSON::encode($grid_data, array(
 	</div>
 </script>
 
-<div class="cms3-window maximize">
-	<div class="cms3-window-head">
-		<div>
-			<span>Название окна</span>
-			<div class="cms3-window-head-buttons">
-				<span class="minimized">_
-					<span class="separator"></span>
-				</span>
-				<span class="maximized">□
-					<span class="separator"></span>
-				</span>
-				<span class="normal">▫
-					<span class="separator"></span>
-				</span>
-				<span class="close">✖</span>
+<script id="cms3-template-window" type="text/x-jquery-tmpl">
+	<div id="${id}" class="cms3-window ${windowState}">
+		<div class="cms3-window-head">
+			<div>
+				<span>${caption}</span>
+				<div class="cms3-window-head-buttons">
+					<span class="minimized">_
+						<span class="separator"></span>
+					</span>
+					<span class="maximized">□
+						<span class="separator"></span>
+					</span>
+					<span class="normal">▫
+						<span class="separator"></span>
+					</span>
+					<span class="close">✖</span>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="cms3-window-content">
-		<form>
-			<table class="cms3-form">
-				<tr class="field text">
-					<td class="caption"><span>Product Type:</span></td>
-					<td class="input">
-						<div class="input">
-							<table>
-								<tr>
-									<td><input class="hint" type="text" value="Подсказка" /></td>
-								</tr>
-							</table>
-							<div class="autocomplete">
-								<ul>
-									<li>Все</li>
-									<li class="hover">Всыыы</li>
-									<li>Всы</li>
-									<li>Вса</li>
-								</ul>
-							</div>
-						</div>
-					</td>
-				</tr>
+		<div class="cms3-window-content">
 
-				<tr class="field select">
-					<td class="caption"><span>Productxxxxxxxxxxxxxx Type:</span></td>
-					<td class="input">
-						<div class="input">
-							<table>
-								<tr>
-									<td><input class="hint" type="text" value="Подсказка" /></td>
-									<td class="select-button"><span>▼</span></td>
-								</tr>
-							</table>
-							<div class="autocomplete">
-								<ul>
-									<li>Все</li>
-									<li class="hover">Всыыы</li>
-									<li>Всы</li>
-									<li>Вса</li>
-								</ul>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</form>
+		</div>
+		<div class="cms3-window-buttons">
+			<button><span>Сохранить</span></button> <button><span>Закрыть</span></button>
+		</div>
 	</div>
-	<div class="cms3-window-buttons">
-		<button><span>Save</span></button> <button><span>Cancel</span></button>
-	</div>
-</div>
+</script>
+
+<script id="cms3-template-form" type="text/x-jquery-tmpl">
+	<table class="cms3-form">
+		<tr class="field">
+			<td class="caption"><span>Название товара</span></td>
+			<td class="input">
+				<div class="cms3-field-editable text">
+					<div class="wrapper">
+						<input class="hint" type="text" value="Подсказка" />
+					</div>
+
+					<div class="autocomplete">
+						<ul>
+							<li>Все</li>
+							<li class="hover">Всыыы</li>
+							<li>Всы</li>
+							<li>Вса</li>
+						</ul>
+					</div>
+				</div>
+			</td>
+		</tr>
+
+		<tr class="field">
+			<td class="caption">Выделить в списке</td>
+			<td class="input" colspan="0">
+				<div class="cms3-field-editable checkbox">
+					<input type="text" id="checkbox"/>
+				</div>
+			</td>
+		</tr>
+
+		<tr class="field ">
+			<td class="caption"><span>Тип товара</span></td>
+			<td class="input">
+				<div class="cms3-field-editable select">
+					<table>
+						<tr>
+							<td><input class="hint" type="text" value="Подсказка" /></td>
+							<td class="select-button"><span>▼</span></td>
+						</tr>
+					</table>
+					<div class="autocomplete">
+						<ul>
+							<li>Все</li>
+							<li class="hover">Всыыы</li>
+							<li>Всы</li>
+							<li>Вса</li>
+						</ul>
+					</div>
+				</div>
+			</td>
+		</tr>
+
+		<tr class="field">
+			<td class="caption"><span>Тип товара</span></td>
+			<td class="input">
+				<div class="cms3-field-editable show-autocomplete select multiple">
+					<table>
+						<tr>
+							<td class="select"><div>aaaa <span>✖</span></div><div>bbbb <span>✖</span></div><div>aaa fff <span>✖</span></div></div><input class="hint" type="text" value="Подсказка" /></td>
+							<td class="select-button"><span>▼</span></td>
+						</tr>
+					</table>
+					<div class="autocomplete">
+						<ul>
+							<li>Все</li>
+							<li class="hover">Всыыы</li>
+							<li>Всы</li>
+							<li>Вса</li>
+						</ul>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+</script>
+
+<script id="cms3-template-field-base-editable" type="text/x-jquery-tmpl">
+
+</script>
 
 <script type="text/javascript">
 	cms3.richGrid.create(<?php echo $grid_data; ?>);
+
+	cms3.window.create({
+		caption: 'Название',
+        container: 'div#workspace'
+	});
+
+	cms3.form.create({
+		caption: 'Название',
+        container: '#window div.cms3-window-content'
+	});
 </script>

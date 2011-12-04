@@ -118,7 +118,7 @@ class Helper_Dataview
 								->as_array();
 			}
 
-			Helper_Dataview::clear_items(&$items);
+			$items = Helper_Dataview::clear_items($items);
 
 			$model_class = $model->class_param();
 			$model = new \StdClass;

@@ -11,7 +11,7 @@
 <link type="text/css" href="/themes/admin/css/window.css" rel="stylesheet"  />
 <link type="text/css" href="/themes/admin/css/form.css" rel="stylesheet"  />
 
-<script type="text/javascript" src="/themes/admin/js/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="/themes/admin/js/jquery-1.7.js"></script>
 <script type="text/javascript">
      var $j = jQuery.noConflict();
 </script>
@@ -25,21 +25,23 @@
 	<script type="text/javascript" src="/themes/admin/js/cms3.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/helper.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/object.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/window.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/form.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/grid.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/grid/selectors.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/base.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/primary.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/integer.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/float.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/string.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/stringMultilang.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/text.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/textMultilang.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/list.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/belongsto.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/hasmany.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/boolean.js"></script>
-	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/params.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/base.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/primary.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/integer.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/float.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/string.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/stringMultilang.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/text.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/textMultilang.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/list.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/belongsto.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/hasmany.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/boolean.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/field/params.js"></script>
 </head>
 
 <body>
