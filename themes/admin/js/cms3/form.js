@@ -2,40 +2,26 @@ cms3.form = new Object();
 cms3.extend(cms3.form, cms3.object, {
     id: 'form',
 
-    fields: {
-        "id":{
-            "default":null,
-            "filtration":[],
-            "label":"id",
-            "name":"id",
-            "type":"primary"
-        },
-        "user":{
-            "default":0,
-            "filtration":[],
-            "label":"user",
-            "name":"user",
-            "selectType":"list",
-            "type":"belongsto",
-            "modelName":"cms3-auth-user"
-        }
-    },
+    fields: {},
+
+    createFieldsObjects: cms3.field.createFieldsObjects,
 
     init: function(){
         var $ = jQuery;
         var form = this;
 
-        $(this.container).append($("#cms3-template-form").tmpl(this));
+        console.log(this);
 
-        /*cms3.each(this.fields, function(fieldId, field){
-           field.id = fieldId;
-           /*field.selectors = grid.selectors;*/
-           /*field.grid = grid;*/
-          /* form.model.fields[fieldId] = cms3.field[field.type].create(field);
-           // Если нужно будет строить список моделей автоматически
-           /*if (field.model != undefined){
-               grid.createFieldsObjects(field.model.fields);
-           }*/
-        //});
+        this.selectors.formId = this.id;
+        this.selectors.build();
+
+        //ссылки на текущую модель
+        this.fields = this.createFieldsObjects(this.models[this.model]);
+
+        $(this.container).append($("#cms3-template-form").tmpl({fields: this.fields, item: this.item, id: this.id}));
+
+        cms3.each(this.fields, function(fieldId, field){
+            field.createEvents();
+        });
     }
 });

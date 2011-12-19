@@ -1,21 +1,8 @@
 cms3.field.belongsto = {};
 cms3.extend(cms3.field.belongsto, cms3.field.base, {
-    cellTemplate: 'Belongsto',
-    //headTemplate: 'Belongsto',
-    //filterTemplate: 'Belongsto'
-    //$('select.foo option:selected').val();
+    parentInit: cms3.field.base.init,
 
-    init: function()
-    {
-        this.model = this.grid.models[this.modelName];
-        //alert(this.model.);
-        this.buildSelectors();
-    },
-
-    getFormValue: function(formId){
-        var $ = jQuery;
-
-        var formItem = $(this.selectors.editItems.editForm(formId) + ' div.cell-container.' + this.id + '-container' + ' div.cell option:selected');
-        return formItem.val()
+    init: function() {
+        this.parentInit();
     }
 });

@@ -2,7 +2,7 @@ cms3.window = new Object();
 cms3.extend(cms3.window, cms3.object, {
     id: 'window',
     windowState: 'maximized',
-    caption: '',
+    label: '',
     container: 'body',
     
     width: '500',
@@ -15,7 +15,7 @@ cms3.extend(cms3.window, cms3.object, {
         var window = this;
 
         $(this.container).append($("#cms3-template-window").tmpl(this));
-        /*window.minimized();*/
+
         $('div#' + this.id + ' div.cms3-window-head-buttons span.normal').click(function(e){
             window.normalize();
         });
@@ -52,6 +52,7 @@ cms3.extend(cms3.window, cms3.object, {
             });
 
             $('body').mouseup(function(){
+//                console.dir($(this));
                 $(this).off('mousemove');
                 $(this).off('mouseup');
                 return false;
@@ -108,6 +109,5 @@ cms3.extend(cms3.window, cms3.object, {
     close: function(){
         var $ = jQuery;
         $('div#' + this.id).remove();
-        delete this;
     }
 });

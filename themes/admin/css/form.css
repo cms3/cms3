@@ -20,8 +20,15 @@ div.cms3-field-editable input {
     padding-bottom: 0.3em;
 }
 
+div.input-container {
+    overflow: hidden;
+    position: relative;
+}
+
 div.cms3-field-editable div.wrapper input,
-div.cms3-field-editable.select td{
+div.cms3-field-editable.select td,
+div.cms3-field-editable div.input-container div.cms3-field-editable-options
+{
     padding-left: 5px;
     padding-right: 5px;
 }
@@ -31,8 +38,8 @@ div.cms3-field-editable {
     background-color: white;
 }
 
-/* Field caption */
-table.cms3-form td.caption {
+/* Field label */
+table.cms3-form td.label {
     padding: 0.3em;
     padding-right: 0.5em;
     text-align: right;
@@ -67,6 +74,26 @@ div.cms3-field-editable input.hint {
     color: #999;
 }
 
+/* undo image*/
+table.cms3-form td.undo {
+    vertical-align: middle;
+    text-align: center;
+    width: 24px;
+}
+
+table.cms3-form td.undo div {
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    background-image: url('/themes/admin/img/arrow-undo.png');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+table.cms3-form td.undo div:hover {
+    background-image: url('/themes/admin/img/arrow-undo-hover.png');
+}
+
 /* Input wrapper */
 
 div.cms3-field-editable div.wrapper {
@@ -86,36 +113,49 @@ table.cms3-form td.select-button:hover {
     border-left: #999 solid 1px;
 }
 
-/* Select multiple*/
-div.cms3-field-editable td.select div {
+/* Options */
+div.cms3-field-editable-options {
+    margin-top: 0.3em;
+}
+
+div.cms3-field-editable-options div {
     hite-space: nowrap;
     font-size: 0.9em;
     float: left;
     margin-right: 0.3em;
-    margin-top: 0.3em;
     padding-left: 0.3em;
     padding-right: 0.3em;
-    background-color: #EBEBEB;
+    background-color: #D9D9D9;
     border-radius: 1px;
     cursor: default;
 }
 
-div.cms3-field-editable td.select div:hover {
-    background-color: #D9D9D9
+div.cms3-field-editable div.input-container div.cms3-field-editable-options div {
+    background-color: #EBEBEB;
 }
 
-div.cms3-field-editable td.select div span{
+div.cms3-field-editable-options div:hover {
+    background-color: #FFC;
+}
+
+div.cms3-field-editable-options div span{
     display: inline-block;
     cursor: pointer;
     padding-left: 0.3em;
     border-left: #EBEBEB solid 1px;
 }
 
-div.cms3-field-editable td.select div span:hover {
-    background-color: #D9D9D9
+div.cms3-field-editable div.input-container div.cms3-field-editable-options {
+    position:absolute;
+    top:0;
+}
+
+div.cms3-field-editable div.input-container div.cms3-field-editable-options.hover div {
+    background-color: #FFC;
 }
 
 /* Autocomplete block */
+
 div.cms3-field-editable div.autocomplete {
     position: absolute;
     width: 100%;
@@ -155,6 +195,7 @@ div.cms3-field-editable.show-autocomplete div.autocomplete {
 div.cms3-field-editable.show-autocomplete input {
     border-bottom: none;
 }
+
 /* Checkbox */
 
 div.cms3-field-editable.checkbox {

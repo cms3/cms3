@@ -1,4 +1,4 @@
-cms3.object = {};
+cms3.array = {};
 cms3.extend(cms3.object, cms3.params, {
     getObject: function(userData) {
         var object = {};
@@ -6,7 +6,7 @@ cms3.extend(cms3.object, cms3.params, {
         return object;
     },
 
-    create: function(userData) {
+    create: function(userData){
         var object = this.getObject(userData);
         object.init();
         return object;
@@ -29,12 +29,10 @@ cms3.extend(cms3.object, cms3.params, {
         
         trigger: function(type, data) {
             if (this[type] != undefined) {
-                cms3.each(this[type], function(i, fn) {
+                cms3.each(this[type], function(i, fn){
                     fn(data);
                 });
             }
         }
     }
 });
-
-cms3.extend = cms3.object.extend;
