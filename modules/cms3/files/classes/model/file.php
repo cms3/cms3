@@ -24,8 +24,17 @@ class Model_File extends Model
 		));
 	}
 	
-	public function filename()
+	public function filepath()
 	{
 		return DOCROOT . $this->dir . DIRECTORY_SEPARATOR . $this->filename;
+	}
+
+	public function virtual_fields()
+	{
+		$fields = array(
+			'filepath'	=> $this->filepath()
+		);
+
+		return $fields;
 	}
 }

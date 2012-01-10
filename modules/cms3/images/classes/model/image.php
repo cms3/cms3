@@ -50,6 +50,16 @@ class Model_Image extends Model
 	public function __construct($key = NULL)
 	{
 		$this->_config = \CMS3::$config->load('cms3\images');
+		$this->_config = array
+			(
+				'thumbs_dir' => APPPATH.'cache'.DIRECTORY_SEPARATOR.'thumbs',
+				'resize_params' => array(
+					'width'  => 0,
+					'height' => 0,
+					'zoom'   => 100,
+					'crop'   => FALSE
+				)
+			);
 		$this->_resize_params = $this->_config['resize_params'];
 
 		return parent::__construct($key);
@@ -57,31 +67,11 @@ class Model_Image extends Model
 
 	public function thumbnail(array $params = array())
 	{
-		$orig_file = $this->file->filename();
-		if (! $orig_file)
-		{
-			return NULL;
-		}
+		$orig_file = $this->file->filepath();
 		$params = (array)$params + $this->_resize_params;
 		$thumb_file = $this->_thumbnail_filename($orig_file, $params);
 
-		$thumb = Thumbnail::factory();
-		$thumb->load($orig_file);
-		$thumb->filename($thumb_file);
-
-		if (! is_file($thumb_file))
-		{
-			$dir = dirname($thumb_file);
-			if (! is_dir($dir))
-			{
-				mkdir($dir, NULL, TRUE);
-			}
-
-			$thumb->render($params);
-			$thumb->save($thumb_file);
-		}
-
-		return $thumb;
+		return Thumbnail::factory($orig_file, $thumb_file, $params);
 	}
 
 	protected function _thumbnail_filename($filename, $params)

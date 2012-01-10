@@ -6,7 +6,7 @@ class ORM_Field extends \Jelly_Core_Field {
 
 	public $filtration = array();
 	
-	public function add_filter($value, $builder, $alias = NULL)
+	public function add_filter($value, $builder, $alias = NULL, $parent_alias = NULL)
 	{
 		if ($this->in_db)
 		{

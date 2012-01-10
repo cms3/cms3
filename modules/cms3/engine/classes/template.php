@@ -40,7 +40,11 @@ class Template {
 	 * @var  string 
 	 */
 	protected $_buffer = '';
-	
+
+	/**
+	 * @var  array
+	 */
+	public static $_cache = array();
 	
 	public static function display($name, array $vars = array(), $format = NULL, $theme = NULL)
 	{
@@ -57,20 +61,42 @@ class Template {
 	 	
 	 	return $template->render($vars);
 	}
-	
+
 	public function __construct()
 	{
 		$this->format = App::instance()->document->format;
 		$this->theme = App::instance()->document->current_theme;
 	}
+
+	protected function _get_cache_key()
+	{
+		return  $this->name . '-' . $this->format . '-' . $this->theme;
+	}
 	
 	public function load($name)
 	{
 		$this->name = $name;
+
+		$cache_key = $this->_get_cache_key();
+
+		if (isset(static::$_cache[$cache_key]))
+		{
+			$this->engine = static::$_cache[$cache_key]['engine'];
+			$this->_filename = static::$_cache[$cache_key]['filename'];
+		}
+
 		$this->_load_engine();
 		if ($this->_filename == NULL)
 		{
-			$this->_filename = $this->_find_filename();
+			if (isset(static::$_cache[$name]))
+			{
+				$this->_filename = $this->_cache[$name];
+			}
+			else
+			{
+				$this->_filename = $this->_find_filename();
+				static::$_cache[$name] = $this->_filename;
+			}
 		}
 		if (! is_file($this->_filename))
 		{
@@ -79,9 +105,24 @@ class Template {
 					':template' => $this->name,
 					':filename' => $this->_filename
 				)
-			); 
+			);
+		}
+
+		static::$_cache[$cache_key] = array(
+			'engine' => $this->engine->name(),
+			'filename' => $this->_filename
+		);
+
+		$profiling = \CMS3::$profiling === TRUE;
+		if ($profiling)
+		{
+			$benchmark = \Profiler::start(get_called_class(), __FUNCTION__ . '[file_get_contents]');
 		}
 		$this->_buffer = file_get_contents($this->_filename);
+		if ($profiling)
+		{
+			\Profiler::stop($benchmark);
+		}
 	}
 	
 	public function load_from($filename)
@@ -90,7 +131,7 @@ class Template {
 		{
 			throw new Exception('Must set the template engine first for render template file :filename',
 				array(':filename' => $filename)
-			); 
+			);
 		}
 		$this->_filename = $filename;
 		$name = pathinfo($filename, PATHINFO_FILENAME);
@@ -99,6 +140,11 @@ class Template {
 	
 	public function render(array $vars = array())
 	{
+		$profiling = \CMS3::$profiling === TRUE;
+		if ($profiling)
+		{
+			$benchmark = \Profiler::start(get_called_class(), __FUNCTION__ . '[file_get_contents]');
+		}
 		$this->_buffer = $this->_execute_renderers($this->_buffer);
 		
 		$real_path = pathinfo($this->_filename, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR;
@@ -112,7 +158,12 @@ class Template {
 		);
 		$this->engine->settings($settings);
 		$content = $this->engine->render($this->_buffer, $vars);
-		
+
+		if ($profiling)
+		{
+			\Profiler::stop($benchmark);
+		}
+
 		return $content;
 	}
 	
@@ -120,20 +171,25 @@ class Template {
 	{
 		if ($this->engine == NULL)
 		{
-			$engine_name = $this->_detect_engine();
-			if (! $engine_name)
+			$this->engine = $this->_detect_engine();
+			if (! $this->engine)
 			{
 				throw new Exception('Unable to detect template engine for template :template',
 					array(':template' => $this->name)
 				); 
 			}
-			$this->engine = Template_Engine::factory($engine_name);
+		}
+		if (is_string($this->engine))
+		{
+			$this->engine = Template_Engine::factory($this->engine);
 		}
 		return $this->engine;
 	}
 	
 	protected function _detect_engine()
 	{
+		return 'native'; // TODO!
+
 		$paths = $this->_get_possible_paths();
 		
 		foreach ($paths as $path)
@@ -169,17 +225,33 @@ class Template {
 	
 	protected function _find_filename()
 	{
-		$paths = $this->_get_possible_paths();
-
-		foreach ($paths as $path)
+		$profiling = \CMS3::$profiling === TRUE;
+		if ($profiling)
 		{
-			$filename = $this->_make_filename($path, $this->engine->name(), $this->engine->ext());
-			if (is_file($filename))
-			{
-				return $filename;
-			}
+			$benchmark = \Profiler::start(get_called_class(), __FUNCTION__);
 		}
-		return FALSE;
+
+		$file = NS::extract_class_name($this->name);
+		$name = strtolower($this->engine->name()) . DIRECTORY_SEPARATOR . $this->format . DIRECTORY_SEPARATOR . $file . '.' . $this->engine->ext();
+
+		$theme_path =  \DOCROOT . 'themes' . DIRECTORY_SEPARATOR . $this->theme . DIRECTORY_SEPARATOR . 'views';
+
+		if (is_file($theme_path . DIRECTORY_SEPARATOR . $name))
+		{
+			$result = $theme_path . DIRECTORY_SEPARATOR . $name;
+		}
+		else
+		{
+			$namespace = NS::extract_namespace($this->name);
+			$result = Autoloader::find_file_entity($name, $namespace, 'views');
+		}
+
+		if ($profiling)
+		{
+			\Profiler::stop($benchmark);
+		}
+
+		return $result;
 	}
 	
 	protected function _make_filename($dir, $engine_name, $ext)
@@ -191,6 +263,12 @@ class Template {
 	
 	protected function _get_possible_paths()
 	{
+		$profiling = \CMS3::$profiling === TRUE;
+		if ($profiling)
+		{
+			$benchmark = \Profiler::start(get_called_class(), __FUNCTION__);
+		}
+		
 		$list = array();
 		$namespace = NS::extract_namespace($this->name);
 		$paths = Autoloader::get_possible_paths($namespace, 'views');
@@ -207,12 +285,20 @@ class Template {
 			}
 		}
 		
+		if ($profiling)
+		{
+			\Profiler::stop($benchmark);
+		}
+		
 		return $list;
 	}
 	
 	protected function _execute_renderers($data)
 	{
-		if (preg_match_all('#<cms3:include\ (.*)\/>#iU', $data, $matches))
+
+		$reg_result = preg_match_all('#<cms3:include\ (.*)\/>#iU', $data, $matches);
+
+		if ($reg_result)
 		{
 			$matches[0] = array_reverse($matches[0]);
 			$matches[1] = array_reverse($matches[1]);

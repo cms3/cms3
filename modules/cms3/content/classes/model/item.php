@@ -16,6 +16,7 @@ class Model_Item extends Model {
 			'user'			=> ORM::field('belongsto',
 				array(
 					'namespace' => 'cms3\auth',
+					'select_type' => 'list'
 				)
 			),
 			'state'			=> ORM::field('integer'),

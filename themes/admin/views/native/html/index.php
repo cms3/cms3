@@ -8,6 +8,8 @@
 <link type="text/css" href="/themes/admin/css/custom-theme/jquery-ui-1.8.14.custom.css" rel="stylesheet" />
 <link type="text/css" href="/themes/admin/css/general.css" rel="stylesheet"  />
 <link type="text/css" href="/themes/admin/css/grid.css" rel="stylesheet"  />
+<link type="text/css" href="/themes/admin/css/window.css" rel="stylesheet"  />
+<link type="text/css" href="/themes/admin/css/form.css" rel="stylesheet"  />
 
 <script type="text/javascript" src="/themes/admin/js/jquery-1.6.1.min.js"></script>
 <script type="text/javascript">
@@ -28,6 +30,7 @@
 	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/base.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/primary.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/integer.js"></script>
+	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/float.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/string.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/stringMultilang.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/grid/fieldTypes/text.js"></script>

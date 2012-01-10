@@ -13,6 +13,8 @@ else
 	require MODPATH.'cms3/engine/classes/autoloader'.EXT;
 }
 
+CMS3\Engine\Autoloader::init();
+
 /**
  * Enable the Kohana auto-loader.
  *

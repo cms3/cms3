@@ -138,9 +138,14 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		return ORM::factory($model, $key);
 	}
 
-	public function as_array(array $fields = NULL, $recursive = FALSE, $add_virtual = TRUE)
+	public function as_array(array $fields = NULL, $recursive = FALSE, $add_virtual = TRUE, $max_level = 99, $current_level = 1)
 	{
 		$orig_fields = $fields;
+
+		if ($recursive && $max_level == $current_level)
+		{
+			$recursive = FALSE;
+		}
 
 		$fields = $fields ? $fields : array_keys($this->_meta->fields());
 		$result = array();
@@ -149,13 +154,13 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		{
 			$item = $this->{$field};
 
-			if ($item instanceof \Jelly_Collection)
+			if ($item instanceof \Jelly_Collection && $recursive)
 			{
 				$item = $item->as_tree_array($orig_fields, $recursive, $add_virtual);
 			}
 			elseif (is_object($item) && $recursive && method_exists($item, 'as_array'))
 			{
-				$item = $item->as_array($orig_fields, TRUE, $add_virtual);
+				$item = $item->as_array($orig_fields, TRUE, $add_virtual, $max_level, $current_level + 1);
 			}
 			else
 			{
@@ -167,8 +172,6 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 		{
 			$result = array_merge($result, $this->virtual_fields());
 		}
-
-		//print_r($result); exit;
 
 		return $result;
 	}
@@ -305,5 +308,18 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 	public static function method($method_name)
 	{
 		return new \ReflectionMethod(get_called_class(), $method_name);
+	}
+
+	public function &__get($name)
+	{
+		$value = parent::__get($name);
+
+		if ($value instanceof \ReflectionFunctionAbstract)
+		{
+			$value = $value->invoke();
+			$this->_retrieved[$name] = $value;
+		}
+
+		return $value;
 	}
 }

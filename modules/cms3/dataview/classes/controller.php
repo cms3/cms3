@@ -7,100 +7,129 @@ use CMS3\Engine\Controller as Abstract_Controller;
 use CMS3\Engine\Request;
 use CMS3\Engine\Model;
 use CMS3\Engine\Exception;
-//use CMS3\UI\Control_Interface;
 use CMS3\Dataview\Helper_JSON as JSON;
 
-class Controller extends Abstract_Controller //implements Control_Interface
+class Controller extends Abstract_Controller
 {
+	protected $_model = NULL;
+
+	public function model($model = NULL)
+	{
+		if ($model != NULL)
+		{
+			$this->_model = Model::factory($model);
+		}
+
+		return $this->_model;
+	}
+
 	public function action_display(array $params = array())
 	{
-		$params = array_merge(Request::$initial->param(), $params); // TODO: автоматически
-		if (isset($params['model']))
-		{
-			$model = Model_Grid::factory();
-			$model->source($params['model']);
-			$data = $model->load();
+		// TODO: автоматически
+		$params = array_merge(Request::$initial->param(), $params);
 
-			$view_vars = array(
-				'model' => $model->source(),
-				'data' => $data
-			);
+		$helper = new Helper_Dataview();
+		$models = $helper->build_models($params['model']);
 
-			$model = Model::factory($params['model']);
+		$view_vars = array(
+			'models' => $models,
+			'block_id' => $params['block_id'],
+			//TODO: получать текущий контроллер с неймспейсом, для ссылок сохранения/добавления/ets
+			'controller' => get_class($this),
+			'model' => $params['model'],
+		);
 
-			//print_r($model->query()->filter()->select()->as_array());
-
-			if (isset($params['block_id']))
-			{
-				$view_vars['block_id'] = $params['block_id'];
-			}
-			
-			echo View::factory('cms3\dataview\grid', $view_vars);
-		}
+		echo View::factory('cms3\dataview\grid', $view_vars);
 	}
 
 	public function action_save(array $params = array())
 	{
-		$params = array_merge(Request::$initial->param(), $params); // TODO: автоматически
+		// TODO: автоматически
+		$params = array_merge(Request::$initial->param(), $params);
 
-		$model = Model::factory($params['model']);
-		
-		$items = $_REQUEST['items'];//TODO: парсинг переменных не учитывает возможности массивов
+		// TODO: запихнуть в construct
+		$this->model = $model = Model::factory($params['model']);
 
-		$i = 0;
-		foreach ($items as $item)
-		{
-			foreach ($item['ids'] as $id)
-			{
+		// TODO: парсинг переменных не учитывает возможности массивов. $params['items'] - не существует
+		$items = $_REQUEST['items'];
+
+		$results = array();
+		// В одном запросе может быть несколько форм
+		foreach ($items as $item) {
+			// Одна форма может менять сразу несколько записей
+			// TODO: primary может быть не только id, и даже составной ключ, а вообще лучше переписать под дублирование произвольных полей
+			foreach ($item['ids'] as $id) {
+				// Строим форму
 				$form = $item;
-				unset($form['ids']);
+				// TODO: primary может быть не только id, и даже составной ключ
 				$form['id'] = $id;
+				unset($form['ids']);
 
-				$model = $model->query($form['id'])->select(); // TODO: Не загружать модель при сохранении
-				
+				foreach($form as $field_name => $field_value)
+				{
+					$field_name_decamelize = \inflector::decamelize($field_name, '_');
+					if ($field_name != $field_name_decamelize)
+					{
+						unset($form[$field_name]);
+						$form[$field_name_decamelize] = $field_value;
+					}
+				}
+
+				// TODO: Не загружать модель при сохранении
+				// TODO: primary может быть не только id, и даже составной ключ
+				$model = $model->query($form['id'])->select();
+
 				$model->set($form);
 
-				try
-				{
+				try {
 					$model->save();
 				}
-				catch (Exception $e)
-				{
+				catch (Exception $e) {
+					// TODO: обработка ошибок, функция продолжит выполнение?
 					$error = $e->getMessage();
 				}
 
-				if ($id == 0)
-				{
-					$id = $model->id;
+				// Если запись новая (id == 0), то получаем id записи
+				// TODO: primary может быть не только id, и даже составной ключ
+				if ($id == 0) {
+					$item['ids'][] = $model->id();
 				}
-
-
-				$data[$i] = $model->query($id)->select()->as_array();
-				$i++;
 			}
+
+			$primary_key = $model->meta()->primary_key();
+			$result = $model
+					->query()
+					// TODO: primary может быть не только id, и даже составной ключ
+					->where($primary_key, 'IN', $item['ids'])
+					->select_all()
+					->as_array();
+
+			$results = array_merge($result, $results);
+
 		}
-
-		//print_r($data);
-		echo json_encode($data);
-		//echo JSON::encode($data);
-
-		/*$view_vars = array(
-			'model' => $model->source(),
-			'data'  => $data
-		);*/
+		Helper_Dataview::clear_items(&$results);
+		echo JSON::encode($results, array(
+			'camelize' => true
+		));
 	}
 
 	public function action_delete(array $params = array())
 	{
-		$params = array_merge(Request::$initial->param(), $params); // TODO: автоматически
-		$model = Model::factory($params['model']);
+		// TODO: автоматически
+		$params = array_merge(Request::$initial->param(), $params);
 
-		$ids = $_REQUEST['ids'];//TODO: парсинг переменных не учитывает возможности массивов
+		// TODO: запихнуть в construct
+		$this->model = $model = Model::factory($params['model']);
 
-		foreach ($ids as $id)
-		{
-			$model->query($id)->delete();
-		}
+		// TODO: парсинг переменных не учитывает возможности массивов.
+		// TODO: primary может быть не только id, и даже составной ключ, а вообще лучше переписать под дублирование произвольных полей
+		$ids = $_REQUEST['ids'];
 
+		$primary_key = $model->meta()->primary_key();
+		$model ->query()
+		       ->where($primary_key, 'IN', $ids)
+			   ->delete();
+
+		// TODO: Сообщение об ошибке. Или запрос количества удаленных записей.
 	}
 }

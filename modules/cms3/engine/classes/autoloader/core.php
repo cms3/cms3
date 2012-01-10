@@ -3,9 +3,116 @@
 namespace CMS3\Engine;
 
 class Autoloader_Core {
+
+	protected static $_cache = NULL;
+
+	protected static $_new_cache = NULL;
+	
+	protected static $_cache_loaded = FALSE;
+
+	protected static $_cache_load_start_time = 0;
+
+	protected static $_cache_filename;
+	
+	public static function init()
+	{
+		static::$_cache_filename = \APPPATH . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'autoload.cache';
+
+		static::_load_cache();
+	}
+	
+	public static function deinit()
+	{
+		static::_save_cache();
+	}
+
+	protected static function _cache_key($namespace, $group, $filename)
+	{
+		$delimiter = '::';
+
+		return strtolower($namespace . $delimiter . $group . $delimiter . $filename);
+	}
+
+	protected static function _get_cached_path($namespace, $group, $filename)
+	{
+		$key = static::_cache_key($namespace, $group, $filename);
+		if (isset(static::$_new_cache[$key]))
+		{
+			return static::$_new_cache[$key];
+		}
+		elseif (isset(static::$_cache[$key]))
+		{
+			return static::$_cache[$key];
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	protected static function _set_cached_path($namespace, $group, $filename, $path)
+	{
+		$key = static::_cache_key($namespace, $group, $filename);
+		
+		static::$_new_cache[$key] = $path;
+	}
+	
+	protected static function _load_cache()
+	{
+		if (! static::$_cache_loaded)
+		{
+			static::$_cache_load_start_time = time();
+
+			if (is_file(static::$_cache_filename))
+			{
+				// TODO: в цикле, подавлять ошибки
+				$content = file_get_contents(static::$_cache_filename);
+				if ($content)
+				{
+					static::$_cache = eval($content);
+					static::$_cache_loaded = TRUE;
+				}
+			}
+		}
+	}
+	
+	protected static function _save_cache()
+	{
+		if (is_array(static::$_new_cache) && count(static::$_new_cache))
+		{
+			if (is_file(static::$_cache_filename))
+			{
+				if (filemtime(static::$_cache_filename) > static::$_cache_load_start_time)
+				{
+					return;
+				}
+
+				$file = fopen(static::$_cache_filename, 'r+');
+				fseek($file, -2, SEEK_END);
+				fwrite($file, ',');
+			}
+			else
+			{
+				$file = fopen(static::$_cache_filename, 'w');
+				fwrite($file, 'return array(');
+			}
+
+			$i = 1;
+			foreach (static::$_new_cache as $key => $value)
+			{
+				$line = "\n'$key' => '$value'";
+				$line .= ($i < count(static::$_new_cache)) ? ',' : ');';
+				fwrite($file, $line);
+				$i++;
+			}
+			fclose($file);
+		}
+	}
 	
 	public static function load_class($class)
 	{
+		$result = FALSE;
+
 		list($class_name, $namespace) = static::_parse_namespace($class);
 		$file = str_replace('_', DIRECTORY_SEPARATOR, strtolower($class_name));
 
@@ -13,30 +120,62 @@ class Autoloader_Core {
 
 		if (! empty($file_location))
 		{
+			$profiling = class_exists('\Profiler')  && class_exists('\CMS3') && \CMS3::$profiling === TRUE;
+			if ($profiling)
+			{
+				$benchmark = \Profiler::start(get_called_class(), __FUNCTION__ . ' [require_once]');
+			}
 			// Load the class file
 			require_once $file_location;
+			if ($profiling)
+			{
+				\Profiler::stop($benchmark);
+			}
 
-			// Class has been found
-			return TRUE;
+			$result = TRUE;
 		}
-		// Class is not in the filesystem
-		return FALSE;
+
+		return $result;
 	}
 
 	public static function find_file_entity($name, $namespace, $group, $ext = NULL)
 	{
-		$paths = static::get_possible_paths($namespace, $group);
-
-		foreach ($paths as $path)
+		$profiling = class_exists('\Profiler') && class_exists('\CMS3') && \CMS3::$profiling === TRUE;
+		if ($profiling)
 		{
-			$filename = $path . DIRECTORY_SEPARATOR . $name . $ext;
-			if (is_file($filename))
-			{
-				return $filename;
-			}
+			$benchmark = \Profiler::start(get_called_class(), __FUNCTION__);
 		}
 
-		return FALSE;
+		$path = static::_get_cached_path($namespace, $group, $name . $ext);
+		if ($path !== FALSE)
+		{
+			$result = $path;
+		}
+		else
+		{
+			$result = FALSE;
+
+			$paths = static::get_possible_paths($namespace, $group);
+
+			foreach ($paths as $path)
+			{
+				$filename = $path . DIRECTORY_SEPARATOR . $name . $ext;
+
+				if (is_file($filename))
+				{
+					$result = $filename;
+					break;
+				}
+			}
+			static::_set_cached_path($namespace, $group, $name . $ext, $result);
+		}
+
+		if ($profiling)
+		{
+			\Profiler::stop($benchmark);
+		}
+
+		return $result;
 	}
 
 	/**
@@ -78,6 +217,12 @@ class Autoloader_Core {
 
 	public static function get_possible_paths($namespace, $group)
 	{
+		$profiling = class_exists('\Profiler') && \CMS3::$profiling === TRUE;
+		if ($profiling)
+		{
+			$benchmark = \Profiler::start(get_called_class(), __FUNCTION__);
+		}
+	
 		$all_modules = static::get_module_names();
 		$global_modules = static::get_module_names('global');
 		$ns_modules = static::get_module_names('namespace');
@@ -102,6 +247,11 @@ class Autoloader_Core {
 		$paths = array_merge($paths, $override_paths, $native_paths);
 		$paths[] = \SYSPATH . $group;
 		$paths = array_merge($paths, $extend_paths);
+		
+		if ($profiling)
+		{
+			\Profiler::stop($benchmark);
+		}
 
 		return $paths;
 	}
@@ -112,7 +262,7 @@ class Autoloader_Core {
 		$paths = array();
 		foreach ($modules as $module)
 		{
-			$path = \MODPATH . str_replace('\\', DIRECTORY_SEPARATOR, $module) . DIRECTORY_SEPARATOR . $group;
+			$path = \MODPATH . str_replace('\\', DIRECTORY_SEPARATOR, strtolower($module)) . DIRECTORY_SEPARATOR . strtolower($group);
 			if ($dir != NULL)
 			{
 				$path .=  DIRECTORY_SEPARATOR . $dir;

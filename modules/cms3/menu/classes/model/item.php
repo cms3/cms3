@@ -7,6 +7,7 @@ use CMS3\Engine\Model;
 use CMS3\Engine\ORM;
 use CMS3\Engine\ORM_Meta;
 use CMS3\Engine\Request;
+use CMS3\Engine\URL;
 
 class Model_Item extends Model {
 	
@@ -23,7 +24,6 @@ class Model_Item extends Model {
 			'route'					=> ORM::field('belongsto',
 				array('namespace' => 'cms3\engine')
 			),
-			'route_id'				=> ORM::field('integer'),
 			'uri'					=> ORM::field('string'),
 			'title'					=> ORM::field('string', array(
 				'multilang' => TRUE
@@ -46,13 +46,13 @@ class Model_Item extends Model {
 		{
 			return $this->uri;
 		}
-		elseif ($this->route_id)
+		elseif ($this->route->id)
 		{
-			return App::instance()->get_uri($this->route_id, (array) $this->params);
+			return App::instance()->get_uri($this->route->id, (array) $this->params);
 		}
 		else
 		{
-			return '/';
+			return URL::query((array) $this->params, FALSE);
 		}
 	}
 	
@@ -70,10 +70,10 @@ class Model_Item extends Model {
 			{
 				return ! count(Request::current()->param());
 			}
-			
+
 			foreach ($params as $name => $value)
 			{
-				if (Request::$initial->param($name) != $value)
+				if (@$_GET[$name] != $value)
 				{
 					return false;
 				}

@@ -46,6 +46,36 @@ class ORM_Builder extends \Jelly_Builder {
 		{
 			$this->group_by(ORM::meta($this->_model)->primary_key());
 		}
+
+		return $this;
+	}
+	
+	public function pagination($offset = NULL, $limit = NULL)
+	{
+		$module = NS::extract_module_name($this->_model);
+		$model = NS::extract_class_name($this->_model);
+	
+		$pagination = App::instance()->pagination($module, $model);
+		if ($offset === NULL && isset($pagination['offset']))
+		{
+			$offset = $pagination['offset'];
+		}
+		if ($offset !== NULL)
+		{
+			$this->offset($offset);
+		}
+		if ($limit === NULL)
+		{
+			if (isset($pagination['limit']))
+			{
+				$limit = $pagination['limit'];
+			}
+			else
+			{
+				$limit = ORM::meta($this->_model)->default_limit();
+			}
+		}
+		$this->limit($limit);
 		
 		return $this;
 	}
@@ -81,10 +111,19 @@ class ORM_Builder extends \Jelly_Builder {
 			{
 				if ($field instanceof Field_Relationship_Interface)
 				{
+					if ($rel_alias !== NULL)
+					{
+						$parent_alias = $this->make_alias($basic_alias, $rel_alias);
+					}
+					else
+					{
+						$parent_alias = NULL;
+					}
+
 					$rel_alias = $this->make_alias($rel_alias, $field_name);
 					$alias = $this->make_alias($basic_alias, $rel_alias);
 					
-					$sub_model = $field->join($this, $alias);
+					$sub_model = $field->join($this, $alias, $parent_alias);
 					$sub_name = implode('.', $parts);
 					
 					$this->_add_param_filter($sub_model, $sub_name, $value, $basic_alias, $rel_alias);
@@ -123,13 +162,13 @@ class ORM_Builder extends \Jelly_Builder {
 		return $this->_protection_data[$this->_current_value];
 	}
 	
-	protected function _get_model_default_filters($model)
+	public function current_offset()
 	{
-		$meta = ORM::meta($model);
-
-		foreach ($meta->fields() as $field)
-		{
-			//
-		}
+		return $this->_offset;
+	}
+	
+	public function current_limit()
+	{
+		return $this->_limit;
 	}
 }

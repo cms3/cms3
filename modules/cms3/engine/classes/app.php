@@ -14,6 +14,8 @@ class App {
 	
 	protected $_filters;
 	
+	protected $_pagination;
+	
 	private $_languages = array();
 	
 	private $_config;
@@ -45,6 +47,23 @@ class App {
 		}
 
 		return $this->_filters;
+	}
+	
+	public function pagination($module = NULL, $model = NULL)
+	{
+		if ($module !== NULL)
+		{
+			if ($model !== NULL)
+			{
+				return @($this->_pagination[$module][$model]);
+			}
+			else
+			{
+				return @($this->_pagination[$module]);
+			}
+		}
+
+		return $this->_pagination;
 	}
 /*
 	protected function _build_filter_tree($params)
@@ -160,6 +179,39 @@ class App {
 		
 		return $result;
 	}
+	
+	protected function _build_pagination()
+	{
+		$result = array();
+		
+		$offset = (array)@$_REQUEST['offset']; // TODO
+		foreach ($offset as $path => $value)
+		{
+			$parts = explode('.', $path);
+			if (count($parts) >= 2)
+			{
+				$module = $parts[0];
+				$model = $parts[1];
+
+				$result[$module][$model]['offset'] = $value;
+			}
+		}
+		
+		$limit = (array)@$_REQUEST['limit']; // TODO
+		foreach ($limit as $path => $value)
+		{
+			$parts = explode('.', $path);
+			if (count($parts) >= 2)
+			{
+				$module = $parts[0];
+				$model = $parts[1];
+
+				$result[$module][$model]['limit'] = $value;
+			}
+		}
+		
+		return $result;
+	}
 
 	// TODO: убрать это отсюда
 	// TODO: переписать этот говнокод
@@ -203,7 +255,7 @@ class App {
 		Core::$config->attach(new Config_File_Reader);
 		
 		$this->_config = \CMS3::$config->load('cms3\core');
-		
+	
 		\Cookie::$salt = $this->get_cfg('cookie_salt');
   		
 		date_default_timezone_set($this->get_cfg('timezone'));
@@ -228,7 +280,7 @@ class App {
 		$connect_modules = array();
 		foreach ($this->modules as $module)
 		{
-			$connect_modules[$module->name] = MODPATH . $module->name;
+			$connect_modules[$module->name] = MODPATH . str_replace(NS::DELIMITER, DIRECTORY_SEPARATOR, $module->name);
 		}
 		Core::modules($connect_modules);
 		//Cache::$default = $this->get_cfg('default_caching_driver');
@@ -241,7 +293,15 @@ class App {
 			$parse = $this->_replace_inline_route($route->format);
 			Route::set($route->id, $parse[0], $parse[1]);
 		}
-		
+
+if (isset($_GET['c']))
+{
+		set_time_limit(0);
+		$i = new \CMS3\Import\Importer();
+		$i->import_xml(APPPATH . 'import/catalog.xml', TRUE);
+		exit;
+}
+
 		if (! \Security::token())
 		{
 			\Security::token(TRUE);
@@ -312,6 +372,9 @@ class App {
 				':controller' => $controller,
 			));
 		}
+		
+		// TODO!
+		Autoloader::deinit();
 	}
 
 	private function _replace_inline_route($uri)
@@ -371,7 +434,30 @@ class App {
 		$routes = Route::all();
 		unset($routes['default']);
 		unset($routes['action']);
-		
+/*
+		$items = \CMS3\Menu\Model_Item::factory()
+			->query()
+			->where('menu', '=', 6)
+			->select_all();
+
+		foreach ($items as $i => $item)
+		{
+			$type = \CMS3\Shop\Model_Product_Type::factory();
+
+			$type->ordering = 5;
+			$type->title = $item->title;
+				
+			$type->save();
+
+			$item->params = array(
+				array(
+					'name' => 'shop.product.type.id',
+					'value' => $type->id
+				)
+			);
+			$item->save();
+		}
+*/
 		$this->document = Document::factory($format);
 		$this->document->language = $this->language;
 		$this->document->charset = Core::$charset;
@@ -399,7 +485,9 @@ class App {
 
 		// TODO: единый интерфейс вызова
 		$this->_params = $this->_build_params_tree(Request::current()->param());
-		$this->_filters = $this->_build_filter_tree(Request::current()->param());
+		//$this->_filters = $this->_build_filter_tree(Request::current()->param());
+		$this->_filters = $this->_build_filter_tree($_GET); // TODO!
+		$this->_pagination = $this->_build_pagination();
 		
 		$this->document->current_theme = $this->_detect_theme();
 		
@@ -410,10 +498,14 @@ class App {
 			\Profiler::stop($benchmark);
 		}
 		
-		if (Request::current()->param('profile')) // TODO
+		if (@$_REQUEST['profile']) // TODO
 		{
 			echo new \View('profiler/stats');
 		}
+		
+		// TODO!
+		Autoloader::deinit();
+		exit;
 	}
 	
 	protected function _detect_theme()
@@ -468,7 +560,7 @@ class App {
 		{
 			return TRUE;
 		}
-		
+
 		$params = Request::current()->param();
 		$expression = new Expression_Calc_PHP();
 		/*

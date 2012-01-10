@@ -7,6 +7,8 @@ class ORM_Meta extends \Jelly_Core_Meta {
 	public $data = NULL;
 
 	protected $_language = NULL;
+	
+	protected $_default_limit = 30;
 
 	public function finalize($model)
 	{
@@ -148,5 +150,15 @@ class ORM_Meta extends \Jelly_Core_Meta {
 		}
 		
 		return $data;
+	}
+	
+	public function default_limit($value = NULL)
+	{
+		if (func_num_args() !== 0)
+		{
+			$this->_default_limit = $value;
+		}
+		
+		return $this->_default_limit;
 	}
 }

@@ -24,12 +24,12 @@ class Config_File_Reader implements \Kohana_Config_Reader {
 	public function load($group)
 	{
 		$config = array();
+		
+		$module = strtolower(str_replace(NS::DELIMITER, DIRECTORY_SEPARATOR, NS::extract_module_name($group)));
+		$ns = strtolower(str_replace(NS::DELIMITER, DIRECTORY_SEPARATOR, NS::extract_namespace($group)));
+		
+		$dir = $this->_directory . DIRECTORY_SEPARATOR . $ns;
 
-		$module = NS::extract_module_name($group);
-		$ns = NS::extract_namespace($group);
-		
-		$dir = $module . DIRECTORY_SEPARATOR . $this->_directory . DIRECTORY_SEPARATOR . $ns;
-		
 		if ($files = \CMS3::find_file($dir, $module, NULL, TRUE))
 		{
 			foreach ($files as $file)
@@ -41,5 +41,4 @@ class Config_File_Reader implements \Kohana_Config_Reader {
 
 		return $config;
 	}
-
 }

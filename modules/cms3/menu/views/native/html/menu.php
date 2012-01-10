@@ -18,9 +18,9 @@ $render = function($items, $itself)
 		?>><?php
 		
 		if (FALSE && $item['active']): // TODO
-			?><span class="active selected"><?php echo $item['title'] ?></span><?
+			?><span class="active selected"><?php echo $item['title'] ?></span><?php
 		else:
-			?><a href="<?php echo $item['uri'] ?>"<?php if ($item['selected']) echo ' class="selected"'; ?>><?php echo $item['title'] ?></a><?
+			?><a href="<?php echo $item['uri'] ?>"<?php if ($item['selected']) echo ' class="selected"'; ?>><?php echo $item['title'] ?></a><?php
 		endif;
 
 		?><?php

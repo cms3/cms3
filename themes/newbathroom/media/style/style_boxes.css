@@ -75,7 +75,7 @@ a:hover SPAN.newItemInCart 							{color: #ff3067;}
 .infoBoxContents a						{}
 .infoBoxContents li 					{ color:#7d7d7d; }
 .infoBoxContents li:hover				{}
-.infoBoxContents li a					{color:#292929; text-decoration:none; font-size:1.2em;
+.infoBoxContents li a, .infoBoxContents li strong					{color:#292929; text-decoration:none; font-size:1.2em;
 									 	 padding:2px 0px 3px 0; position:relative;}
 .infoBoxContents li a:hover				{color:#ff3067; text-decoration:none;}
 .infoBoxContents li a b					{color:#292929; font-weight:bold;margin: -2px 0px -3px -16px;padding: 2px 0px 3px 16px;text-decoration:none;display:block;}

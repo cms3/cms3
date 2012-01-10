@@ -1,0 +1,224 @@
+.product {
+	overflow: hidden;
+	padding-bottom: 2.2em;
+	color: black;
+}
+.product .description p {
+	margin-bottom: 0.8em;
+}
+.product .description em {
+	font-family: Arial, Helvetica, sans-serif;
+}
+.product .edition-info {
+	margin-bottom: 0.25em;
+	margin-top: 1.4em;
+	border-spacing: 0;
+	border-collapse: collapse;
+}
+.product .edition-info td {
+	padding-right: 1.2em;
+	padding-bottom: 0.35em;
+}
+.product h4 {
+	font-weight: bold;
+}
+
+.product .text {
+	font-size: 1.1em;
+}
+
+.product .price {
+	font-size: 1.25em;
+	color: #ff3067;
+	font-weight: bold;
+}
+.product .price .whole {
+	font-size: 1.21em;
+}
+.product #button-buy {
+	display: block;
+	width: 98px;
+	height: 37px;
+	background: url(../img/stuff.png) 0 -64px;
+	clear: left;
+	margin-top: 1em;
+	position: relative;
+	z-index: 2;
+}
+.product #button-buy:hover {
+	background-position: 0 -101px;
+}
+.product #button-buy.down:hover {
+	background-position: 0 -138px;
+}
+.product #button-buy:focus {
+	outline: none;
+}
+.product #buy-bottom-layer {
+	position: absolute;
+	width: 94px;
+	height: 32px;
+	background-color: #56CB32;
+	margin-top: -35px;
+	margin-left: 2px;
+	color: white;
+	font-weight: bold;
+	font-size: 1.11em;
+	text-align: center;
+	line-height: 30px;
+	
+	-moz-border-radius: 16px;
+	-webkit-border-radius: 16px;
+	border-radius: 16px;
+}
+
+.product .info {
+	overflow: hidden;
+}
+.product .selling {
+	margin-bottom: 2.5em;
+	overflow: hidden;
+}
+.product .notice {
+	font-style: italic;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #B00000;
+}
+
+.product .photo {
+	float: left;
+	margin-right: 2em;
+	margin-bottom: 0.8em;
+	position: relative;
+}
+
+.tab-control {
+	position: relative;
+	overflow: hidden;
+}
+.tab-control dt {
+	display: block;
+	float: left;
+	line-height: 2em;
+	height: 2em;
+	position: relative;
+	padding: 0 0.8em;
+}
+.tab-control dd {
+	background: #fff;
+	display: none;
+	float: right;
+	width: 100%;
+	padding-top: 1em;
+	border-top: solid 1px #DFDFDF;
+	margin-left: -100%;
+	margin-top: 2em;
+	position: relative;
+	overflow: hidden;
+}
+.js .tab-control dt a {
+	outline: none;
+}
+.tab-control dd.selected {
+	display: block;
+}
+.tab-control dt.selected {
+	background-color: #eeeeee;
+	font-weight: bold;
+}
+.tab-control dt.selected a {
+	cursor: default !important;
+	color: black !important;
+	text-decoration: none;
+}
+.tab-control dt.selected ins {
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 6px;
+	height: 6px;
+	background: url(../img/stuff-bw.png);
+}
+.tab-control dt.selected ins.l {
+	background-position: 0 -72px;
+	left: 0;
+}
+.tab-control dt.selected ins.r {
+	background-position: -6px -72px;
+	right: 0;
+}
+.css3borders .tab-control dt.selected ins {
+	display: none;
+}
+.css3borders .tab-control dt.selected {
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
+	-webkit-border-top-left-radius: 6px;
+	-webkit-border-top-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+
+#diff-notice {
+	font-size: 0.91em;
+	clear: both;
+	padding-top: 0.7em;
+}
+
+.other-products {
+	clear: left;
+	margin-top: 2em;
+	position: relative;
+}
+.other-products h2 {
+	border-bottom: solid 1px #DFDFDF;
+	font-size: 1.21em;
+	padding-bottom: 3px;
+	margin-bottom: 1.2em;
+}
+.other-products .scroll-box {
+	clear: both;
+	overflow: hidden;
+	position: relative;
+}
+.js .other-products.scroll-enabled .scroll-box {
+	margin: 0 28px;
+}
+.other-products .catalog {
+	font-size: 87%;
+	width: 9999px;
+	position: relative;
+}
+
+.other-products .catalog .item {
+}
+.other-products .catalog .brace {
+	width: 14.05em;
+}
+.other-products .scroll-arrow {
+	display: none;
+}
+.js .other-products.scroll-enabled .scroll-arrow {
+	display: block;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	margin-top: 3.5em;
+	z-index: 2;
+	cursor: pointer;
+	background: url(../img/stuff-bw.png);
+}
+.other-products.scroll-enabled .scroll-arrow.l {
+	background-position: 0 -28px;
+	left: 0;
+}
+.other-products .scroll-arrow.l:hover {
+	background-position: 0 -50px;
+}
+.other-products.scroll-enabled .scroll-arrow.r {
+	right: 0;
+	background-position: -22px -28px;
+}
+.other-products .scroll-arrow.r:hover {
+	background-position: -22px -50px;
+}

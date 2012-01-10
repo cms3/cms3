@@ -5,7 +5,7 @@ namespace CMS3\Images;
 use CMS3\Engine\BaseClass;
 use CMS3\Engine\URL;
 
-class Thumbnail extends BaseClass
+class Thumbnail
 {
 	protected $_image;
 
@@ -14,6 +14,28 @@ class Thumbnail extends BaseClass
 	protected $_driver;
 
 	public $quality = 100;
+
+	public static function factory($orig_file, $thumb_file, array $params = array())
+	{
+		$thumb = new static();
+
+		$thumb->filename($thumb_file);
+
+		if (! is_file($thumb_file))
+		{
+			$dir = dirname($thumb_file);
+			if (! is_dir($dir))
+			{
+				mkdir($dir, NULL, TRUE);
+			}
+
+			$thumb->load($orig_file);
+			$thumb->render($params);
+			$thumb->save($thumb_file);
+		}
+
+		return $thumb;
+	}
 
 	public function __construct($driver = NULL)
 	{
@@ -27,11 +49,11 @@ class Thumbnail extends BaseClass
 	public function render($params)
 	{
 		$this->load();
-		// TODO: реализовать разлинчые виды ресайзинга
-		
+		// TODO: реализовать различные виды ресайзинга
+
 		$width = isset($params['width']) ? $params['width'] : NULL;
 		$height = isset($params['height']) ? $params['height'] : NULL;
-		
+
 		if ($width || $height)
 		{
 			$this->_image->resize($width, $height);
@@ -82,10 +104,24 @@ class Thumbnail extends BaseClass
 		return URL::real_to_site($this->filename());
 	}
 
+	public function width()
+	{
+		$this->load();
+
+		return $this->_image->width;
+	}
+
+	public function height()
+	{
+		$this->load();
+
+		return $this->_image->height;
+	}
+
 	protected function _default_driver()
 	{
 		$result = NULL;
-		
+
 		if (extension_loaded('magickwand'))
 		{
 			$result = 'Imagick';

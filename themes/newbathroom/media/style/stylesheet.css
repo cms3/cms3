@@ -178,7 +178,7 @@ display:block;width:227px; height:227px; position:absolute; top:81px; left: 7px;
 .menu li a								{text-decoration:none;}
 
 .menu li.act a,
-.menu li:hover a						{ color:#c6c7c7;text-decoration:none;}
+.menu li:hover a, .menu li a.selected						{ color:#c6c7c7;text-decoration:none;}
 
 .menu li.first							{ background:none;}
 /* ************************************************************************************* */
@@ -212,7 +212,8 @@ display:block;width:227px; height:227px; position:absolute; top:81px; left: 7px;
 .enter											{margin-bottom:30px; height:53px; text-align:right; line-height:0;}
 .wrapper_cont									{padding: 20px 0px 0px 17px; }
 
-.menu-categories
+.menu-categories .selected
 {
-	
+	color: #ff3067 !important;
+	font-weight: bold;
 }

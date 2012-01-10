@@ -16,6 +16,9 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/css3.css">
 <link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/buttons.css">
 <link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/catalog/catalog.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/catalog/product.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/catalog/pagination.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/jquery.lightbox-0.5.css">
 
 <!--[if lt IE 9]>
 <style type="text/css">
@@ -47,12 +50,32 @@
  <![endif]-->
 <!--[if lt IE 7]> <div style=' clear: both; height: 59px; padding:0 15px 0 15px; position: relative; text-align:center;'> <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx?ocid=ie6_countdown_bannercode"><img src="http://www.theie6countdown.com/images/upgrade.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div> <![endif]--> 
 
-    <style type="text/css">
-        div.catalog ins.img-block img{
-            max-height: 213px;
-            max-width: 174px;
-        }
-    </style>
+<style type="text/css">
+	.product-images {
+		margin-top: 10px;
+	}
+	.product-images a {
+		dispaly: block;
+		float: left;
+		border: solid 3px white;
+		margin-left: 4px;
+	}
+</style>
+
+<script src="<?php echo $media_path ?>script/jquery-1.6.1.min.js"></script>
+<script src="<?php echo $media_path ?>script/jquery.lightbox-0.5.min.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        $('.product-images a').lightBox({
+			imageLoading:			'<?php echo $media_path ?>image/lightbox-ico-loading.gif',		// (string) Path and the name of the loading icon
+			imageBtnPrev:			'<?php echo $media_path ?>image/lightbox-btn-prev.gif',			// (string) Path and the name of the prev button image
+			imageBtnNext:			'<?php echo $media_path ?>image/lightbox-btn-next.gif',			// (string) Path and the name of the next button image
+			imageBtnClose:			'<?php echo $media_path ?>image/lightbox-btn-close.gif',		// (string) Path and the name of the close btn
+			imageBlank:				'<?php echo $media_path ?>image/lightbox-blank.gif'			// (string) Path and the name of a blank image (one pixel)
+        });
+    });
+    </script>
 
 </head>
 <body>
@@ -75,21 +98,21 @@
 		    <?php if ($is_main): ?>
             <div class="logo" style="position: absolute; z-index: 4">
                 <a href="/">
-                    <img src="<?php echo $media_path ?>image/store_logo_round.png" alt="">
+                    <img src="<?php echo $media_path ?>image/store_logo_round.png" alt="" />
                 </a>
             </div>
 		    
             <div style="padding-left: 440px; margin-top: 10px; position: relative">
-	                    <img src="<?php echo $media_path ?>image/bg4.jpg" />
+	                    <a href="/?shop.product.type.id=16"><img src="<?php echo $media_path ?>image/bg4.jpg" /></a>
             </div>
 		    <?php else: ?>
 		        <div class="logo" style="position: absolute; z-index: 4">
                 <a href="/">
-                    <img src="<?php echo $media_path ?>image/store_logo.png" alt="">
+                    <img src="<?php echo $media_path ?>image/store_logo.png" alt="" />
                 </a>
             </div>
 		    <div style="height: 22px; width: 100%"></div>
-			<? endif; ?>
+			<?php endif; ?>
 
 		    
         </div>
@@ -112,7 +135,7 @@
                              </div>
                          </div>
                      </div>
-                    <div class="currencies box3">
+                    <div class="currencies box3" style="display:none">
                         <label class="fl_left">Курс валюты: </label>
                         <form name="currencies" action="http://livedemo00.template-help.com/osc_35400/index.php" method="get">
                             <select name="currency" class="select">

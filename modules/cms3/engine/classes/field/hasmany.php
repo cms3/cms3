@@ -30,15 +30,17 @@ class Field_HasMany extends \Jelly_Field_HasMany implements Field_Relationship_I
 		}
 	}
 
-	public function join($builder, $alias = NULL)
+	public function join($builder, $alias = NULL, $parent_alias = NULL)
 	{
 		$meta = ORM::meta($this->model);
 		$foreign_meta = ORM::meta($this->foreign['model']);
+
+		$table = ($parent_alias ?: $meta->table());
 		
 		$foreign_field = ($alias ?: $foreign_meta->table()) . '.' . $this->foreign['field'];
 
 		$builder->join(array($foreign_meta->table(), $alias))
-				->on($foreign_field, '=', $meta->table() . '.' . $meta->primary_key());
+				->on($foreign_field, '=', $table . '.' . $meta->primary_key());
 
 		return $this->foreign['model'];
 	}

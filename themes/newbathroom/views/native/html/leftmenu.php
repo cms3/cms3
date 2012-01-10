@@ -1,4 +1,3 @@
-
 <?php 
 
 $render = function($items, $itself)
@@ -21,22 +20,20 @@ $render = function($items, $itself)
 		
 	
 		if (FALSE && $item['active']): // TODO
-			?><span class="active selected"><span><?php echo $item['title'] ?></span></span><?
+			?><span class="active selected"><span><?php echo $item['title'] ?></span></span><?php
 		else:
-		
-			?><a href="<?php echo $item['uri'] ?>"<?php if ($item['selected']) echo ' class="selected"'; ?>><?php
 			if (count($item['children'])):
 				?><strong><?php
 			else:
-				?><span><?php
+				?><a href="<?php echo $item['uri'] ?>"<?php if ($item['active']) echo ' class="selected"'; ?>><span><?php
 			endif;
 			echo $item['title'];
 			if (count($item['children'])):
 				?></strong><span class="category_arrow"></span><?php
 			else:
-				?></span><?php
+				?></span></a><?php
 			endif;
-			?></a><?
+			?></a><?php
 			
 		endif;
 

@@ -30,9 +30,9 @@ class Field_BelongsTo extends \Jelly_Field_BelongsTo implements Field_Relationsh
 		}
 	}
 	
-	public function join($builder, $alias = NULL)
+	public function join($builder, $alias = NULL, $parent_alias = NULL)
 	{
-		$table = ORM::meta($this->model)->table();
+		$table = ($parent_alias ?: ORM::meta($this->model)->table());
 
 		$foreign_meta = ORM::meta($this->foreign['model']);
 		$foreign_field = ($alias ?: $foreign_meta->table()) . '.' . $this->foreign['field'];

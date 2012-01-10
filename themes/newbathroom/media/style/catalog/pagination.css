@@ -1,0 +1,33 @@
+.pagination {
+	clear: both;
+	margin-top: 4em;
+}
+.pagination h4 {
+	font-weight: bold;
+	font-size: 1.15em;
+	margin-bottom: 0.6em;
+	margin-left: 9px;
+}
+.pagination .arrows {
+	clear: both;
+	font-size: 1.1em;
+	margin-bottom: 0.7em;
+	padding-left: 9px;
+}
+.pagination .arrows .disabled {
+	color: #a0a0a0;
+}
+.pagination .pages {
+	font-size: 1.15em;
+	clear: both;
+	overflow: hidden;
+}
+.pagination .pages a, .pagination .pages .selected {
+	display: block;
+	float: left;
+	padding: 0.2em 9px;
+}
+.pagination .pages .selected {
+	background: #989898;
+	color: white;
+}

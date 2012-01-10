@@ -6,7 +6,39 @@ class Jelly_Collection extends Jelly_Core_Collection {
 
 	public function as_array($key = NULL, $value = NULL)
 	{
-		return $this->_result->as_array($key, $value);
+		// TODO
+		if ($key !== NULL)
+		{
+			return $this->_result->as_array($key, $value);
+		}
+		else
+		{
+			$result = array();
+			foreach ($this as $item)
+			{
+				$node = array();
+				$fields = $item->meta()->fields();
+				foreach ($fields as $name => $field)
+				{
+					if ($item->{$name} instanceof \CMS3\Engine\Model)
+					{
+						$node[$name] = $item->{$name}->as_array(NULL, FALSE, TRUE, 1);
+					}
+					elseif ($item->{$name} instanceof \Jelly_Collection)
+					{
+						$node[$name] = $item->{$name}->as_array(NULL, NULL);
+					}
+					else
+					{
+						$node[$name] = $item->field_value($name);
+					}
+				}
+				$node = array_merge($node, $item->virtual_fields()); // TODO: нужно не всегда?
+				$result[] = $node;
+			}
+		//	print_r($result);
+			return $result;
+		}
 	}
 
 	public function as_tree_array(array $fields = NULL, $recursive = TRUE, $add_virtual = TRUE)

@@ -1,0 +1,61 @@
+/*@charset "utf-8";*/
+/* CSS Document */
+
+div.cms3-window {
+    background-color: #EBEBEB;
+    border: #999 solid 1px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+div.cms3-window.maximize{
+    width: 100%;
+}
+
+div.cms3-window.maximize div.cms3-window-head-buttons span.maximized{
+    display: none;
+}
+
+div.cms3-window.normal div.cms3-window-head-buttons span.minimized{
+    display: none;
+}
+
+div.cms3-window-head {
+    background-color: #D9D9D9;
+    border-bottom: #999 solid 1px;
+}
+
+div.cms3-window-head div{
+    padding: 0.3em;
+  /*  overflow: hidden;*/
+}
+
+div.cms3-window-head-buttons {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+div.cms3-window-head-buttons span.minimized:hover,
+div.cms3-window-head-buttons span.maximized:hover,
+div.cms3-window-head-buttons span.normal:hover,
+div.cms3-window-head-buttons span.close:hover {
+    color: #ff5233;
+    cursor: pointer;
+}
+
+div.cms3-window-head-buttons span.separator {
+    width: 0.3em;
+    display: inline-block;
+}
+
+div.cms3-window-content {
+    padding: 0.3em;
+}
+
+div.cms3-window-buttons {
+    background-color: white;
+    text-align: right;
+    padding: 0.3em;
+}

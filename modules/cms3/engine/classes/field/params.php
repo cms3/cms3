@@ -16,7 +16,7 @@ class Field_Params extends \Jelly_Field {
 			}
 			$value = $array;
 			// END
-			
+
 			$value = @json_encode($value);
 		}
 	
