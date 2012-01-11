@@ -13,23 +13,23 @@ class Model_Item extends Model {
 	{
 		$meta->fields(array(
 			'id'			=> ORM::field('primary'),
-			'user'			=> ORM::field('belongsto',
-				array(
-					'namespace' => 'cms3\auth',
-					'select_type' => 'list'
-				)
-			),
-			'state'			=> ORM::field('integer'),
 			'title'			=> ORM::field('string', array(
-				'multilang' => TRUE
+                'label' => __('Title'),
+                'multilang' => TRUE
 			)),
 			'text'			=> ORM::field('text', array(
+                'label' => __('Text'),
 				'multilang' => TRUE,
 				'filtration' => array(
 					'enabled' => static::method('get_text_filter_enabled'),
 					'default' => static::method('get_text_default')
 				)
 			)),
+			'user'			=> ORM::field('belongsto', array(
+					'label' => __('Author'),
+					'namespace' => 'cms3\auth',
+					'select_type' => 'list'
+			))
 		));
 	}
 

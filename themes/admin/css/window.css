@@ -7,17 +7,22 @@ div.cms3-window {
     position: absolute;
     left: 0px;
     top: 0px;
+    z-index: 100;
 }
 
-div.cms3-window.maximize{
+div.cms3-window.maximized{
     width: 100%;
 }
 
-div.cms3-window.maximize div.cms3-window-head-buttons span.maximized{
+div.cms3-window.normal {
+    box-shadow: -5px 5px 20px #999;
+}
+
+div.cms3-window.maximized div.cms3-window-head-buttons span.maximized{
     display: none;
 }
 
-div.cms3-window.normal div.cms3-window-head-buttons span.minimized{
+div.cms3-window.normal div.cms3-window-head-buttons span.normal{
     display: none;
 }
 
@@ -51,7 +56,7 @@ div.cms3-window-head-buttons span.separator {
 }
 
 div.cms3-window-content {
-    padding: 0.3em;
+    padding: 0.6em;
 }
 
 div.cms3-window-buttons {

@@ -123,7 +123,7 @@ $grid_data = JSON::encode($grid_data, array(
 	<td class="column${fieldId}">
 		{{each(i, item) field.model.items}}
 			{{if item.id == cell}}
-				{{tmpl({item: item, fields: field.model.fields}) '#titleGenerator'+field.titleGenerator+'Template'}}
+				{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}
 			{{/if}}
 		{{/each}}
 	</td>
@@ -133,7 +133,7 @@ $grid_data = JSON::encode($grid_data, array(
 	<td class="column${fieldId}">
 		{{each(i, item) field.model.items}}
 			{{if item.id == cell}}
-				{{tmpl({item: item, fields: field.model.fields}) '#titleGenerator'+field.titleGenerator+'Template'}}<br/>
+				{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}<br/>
 			{{/if}}
 		{{/each}}
 	</td>
@@ -170,12 +170,8 @@ $grid_data = JSON::encode($grid_data, array(
 	<br />
 </script>
 
-<script id="titleGeneratorDefaultTemplate" type="text/x-jquery-tmpl">
-	{{each(fieldId, cell) item}}
-		{{if fields[fieldId].showInList}}
-			${cell}
-		{{/if}}
-	{{/each}}
+<script id="cms3-template-field-list-item-generator-base" type="text/x-jquery-tmpl">
+{{each(fieldId, cell) item}}{{if fields[fieldId].showInList}}${cell}{{/if}}{{/each}}
 </script>
 
 <script id="cellBelongstoEditTemplate" type="text/x-jquery-tmpl">
@@ -183,9 +179,9 @@ $grid_data = JSON::encode($grid_data, array(
 	<div id="${fieldId}">
 		{{each(i, item) field.model.items}}
 			{{if item.id == cell}}
-				<input type="radio" id="${fieldId}-${item.id}" name="${fieldId}" value="${item.id}" checked="checked" /><label for="${fieldId}-${item.id}">{{tmpl({item: item, fields: field.model.fields}) '#titleGenerator'+field.titleGenerator+'Template'}}</label><br />
+				<input type="radio" id="${fieldId}-${item.id}" name="${fieldId}" value="${item.id}" checked="checked" /><label for="${fieldId}-${item.id}">{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</label><br />
 			{{else}}
-				<input type="radio" id="${fieldId}-${item.id}" name="${fieldId}" value="${item.id}"/><label for="${fieldId}-${item.id}">{{tmpl({item: item, fields: field.model.fields}) '#titleGenerator'+field.titleGenerator+'Template'}}</label><br />
+				<input type="radio" id="${fieldId}-${item.id}" name="${fieldId}" value="${item.id}"/><label for="${fieldId}-${item.id}">{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</label><br />
 			{{/if}}
 		{{/each}}
 		<input type="radio" id="${fieldId}-0" name="${fieldId}" value="0"/>
@@ -205,9 +201,9 @@ $grid_data = JSON::encode($grid_data, array(
 	<select multiple="multiple"  name="${fieldId}" id="${fieldId}">
 		{{each(i, item) field.model.items}}
 			{{if item.id == cell}}
-				<option value="${item.id}" selected="selected">{{tmpl({item: item, fields: field.model.fields}) '#titleGenerator'+field.titleGenerator+'Template'}}</option>
+				<option value="${item.id}" selected="selected">{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</option>
 			{{else}}
-				<option value="${item.id}">{{tmpl({item: item, fields: field.model.fields}) '#titleGenerator'+field.titleGenerator+'Template'}}</option>
+				<option value="${item.id}">{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</option>
 			{{/if}}
 		{{/each}}
 	</select>
@@ -266,77 +262,210 @@ $grid_data = JSON::encode($grid_data, array(
 	</div>
 </script>
 
-<div class="cms3-window maximize">
-	<div class="cms3-window-head">
-		<div>
-			<span>Название окна</span>
-			<div class="cms3-window-head-buttons">
-				<span class="minimized">_
-					<span class="separator"></span>
-				</span>
-				<span class="maximized">□
-					<span class="separator"></span>
-				</span>
-				<span class="normal">▫
-					<span class="separator"></span>
-				</span>
-				<span class="close">✖</span>
+<script id="cms3-template-window" type="text/x-jquery-tmpl">
+	<div id="${id}" class="cms3-window ${windowState}">
+		<div class="cms3-window-head">
+			<div>
+				<span>${label}</span>
+				<div class="cms3-window-head-buttons">
+					<span class="minimized">_
+						<span class="separator"></span>
+					</span>
+					<span class="maximized">□
+						<span class="separator"></span>
+					</span>
+					<span class="normal">▫
+						<span class="separator"></span>
+					</span>
+					<span class="close">✖</span>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="cms3-window-content">
-		<form>
-			<table class="cms3-form">
-				<tr class="field text">
-					<td class="caption"><span>Product Type:</span></td>
-					<td class="input">
-						<div class="input">
-							<table>
-								<tr>
-									<td><input class="hint" type="text" value="Подсказка" /></td>
-								</tr>
-							</table>
-							<div class="autocomplete">
-								<ul>
-									<li>Все</li>
-									<li class="hover">Всыыы</li>
-									<li>Всы</li>
-									<li>Вса</li>
-								</ul>
-							</div>
-						</div>
-					</td>
-				</tr>
+		<div class="cms3-window-content">
 
-				<tr class="field select">
-					<td class="caption"><span>Productxxxxxxxxxxxxxx Type:</span></td>
-					<td class="input">
-						<div class="input">
-							<table>
-								<tr>
-									<td><input class="hint" type="text" value="Подсказка" /></td>
-									<td class="select-button"><span>▼</span></td>
-								</tr>
-							</table>
-							<div class="autocomplete">
-								<ul>
-									<li>Все</li>
-									<li class="hover">Всыыы</li>
-									<li>Всы</li>
-									<li>Вса</li>
-								</ul>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</form>
+		</div>
+		<div class="cms3-window-buttons">
+			<button><span>Сохранить</span></button> <button><span>Закрыть</span></button>
+		</div>
 	</div>
-	<div class="cms3-window-buttons">
-		<button><span>Save</span></button> <button><span>Cancel</span></button>
-	</div>
-</div>
+</script>
+
+<script id="demo" type="text/x-jquery-tmpl">
+
+        <tr class="field">
+			<td class="label"><span>Название товара</span></td>
+			<td class="input">
+				<div class="cms3-field-editable text">
+					<div class="wrapper">
+						<input class="hint" type="text" value="Подсказка" />
+					</div>
+
+					<div class="autocomplete">
+						<ul>
+							<li>Все</li>
+							<li class="hover">Всыыы</li>
+							<li>Всы</li>
+							<li>Вса</li>
+						</ul>
+					</div>
+				</div>
+			</td>
+		</tr>
+
+		<tr class="field">
+			<td class="label">Выделить в списке</td>
+			<td class="input" colspan="0">
+				<div class="cms3-field-editable checkbox">
+					<input type="text" id="checkbox"/>
+				</div>
+			</td>
+		</tr>
+
+
+
+		<tr class="field">
+			<td class="label"><span>Тип товара</span></td>
+			<td class="input">
+				<div class="cms3-field-editable show-autocomplete select multiple">
+					<table>
+						<tr>
+							<td class="select"><div class="cms3-field-editable-options"><div>aaaa <span>✖</span></div><div>bbbb <span>✖</span></div><div>aaa fff <span>✖</span></div></div><input class="hint" type="text" value="Подсказка" /></td>
+							<td class="select-button"><span>▼</span></td>
+						</tr>
+					</table>
+					<div class="autocomplete">
+						<ul>
+							<li>Все</li>
+							<li class="hover">Всыыы</li>
+							<li>Всы</li>
+							<li>Вса</li>
+						</ul>
+					</div>
+				</div>
+			</td>
+            <td class="undo"><div></div></td>
+		</tr>
+</script>
+
+
+<script id="cms3-template-form" type="text/x-jquery-tmpl">
+	<table class="cms3-form" id="${id}">
+        {{each(fieldId, field) fields}}
+            {{tmpl({cells: item[fieldId], field: field, fieldId: fieldId}) '#cms3-template-form-field-'+field.templateCellFormContainer}}
+        {{/each}}
+        {{tmpl({}) '#demo'}}
+	</table>
+</script>
+
+<script id="cms3-template-form-field-base" type="text/x-jquery-tmpl">
+    <tr class="field ${fieldId}">
+        <td class="label"><span>${field.label}</span></td>
+        <td class="input">
+            {{tmpl({cells: cells, field: field, fieldId: fieldId}) '#cms3-template-field-editable-'+field.templateCellEditable}}
+        </td>
+        <td class="undo">
+            <div style="display:none" title="<?php echo __('Restore the original value.') ?>"></div>
+        </td>
+    </tr>
+</script>
+
+<script id="cms3-template-field-editable-base" type="text/x-jquery-tmpl">
+    <div class="cms3-field-editable text {{if field.label==''}}show-autocomplete{{/if}}">
+        <div class="input-container">
+            <div class="wrapper">
+                {{if cells.length == 1}}
+                    <input placeholder="${field.hint}" type="text" value="${cells}" />
+                {{else}}
+                    <input type="text" value="" />
+                {{/if}}
+            </div>
+
+            {{if cells.length > 1}}
+                <div class="cms3-field-editable-options">
+                    {{each(i, cell) cells}}
+                        <div>${cell}</div>
+                    {{/each}}
+                </div>
+            {{/if}}
+        </div>
+        <div class="autocomplete">
+            <ul>
+                <li>Все</li>
+                <li class="hover">Всыыы</li>
+                <li>Всы</li>
+                <li>Вса</li>
+            </ul>
+        </div>
+    </div>
+</script>
+
+<script id="cms3-template-field-editable-demo" type="text/x-jquery-tmpl">
+    <div class="cms3-field-editable select">
+        <table>
+            <tr>
+                {{each(fieldId, item) field.model.items}}
+                    {{if item.id == cell}}
+                        <td><input placeholder="${field.hint}" type="text" value="{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.listItemGenerator}}" /></td>
+                        <td class="select-button"><span>▼</span></td>
+                    {{/if}}
+                {{/each}}
+            </tr>
+        </table>
+        <div class="autocomplete">
+            <ul>
+                {{each(fieldId, item) field.model.items}}
+                    <li>{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</li>
+                {{/each}}
+                <li class="hover">Всыыы</li>
+            </ul>
+        </div>
+    </div>
+</script>
+
+<script id="cms3-template-field-editable-select" type="text/x-jquery-tmpl">
+    <div class="cms3-field-editable select show-autocomplete">
+        <table>
+            <tr>
+                {{each(j, item) field.model.items}}
+                    {{if item.id == cells[0]}}
+                        <td><input placeholder="${field.hint}" type="text" value="{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}" /></td>
+                        <td class="select-button"><span>▼</span></td>
+                    {{/if}}
+                {{/each}}
+            </tr>
+        </table>
+        <div class="autocomplete">
+            <ul>
+                {{each(i, item) field.model.items}}
+                    <li>{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</li>
+                {{/each}}
+
+                <li class="hover">Всыыы</li>
+            </ul>
+        </div>
+    </div>
+</script>
 
 <script type="text/javascript">
 	cms3.richGrid.create(<?php echo $grid_data; ?>);
+
+/*	cms3.window.create({
+		label: 'Название',
+        container: 'div#workspace'
+	});
+
+	cms3.form.create({
+		label: 'Название',
+        container: '#window div.cms3-window-content',
+        fields: {
+            title: {
+                label: 'Название товара',
+                hint: 'Подсказка',
+                type: 'string'
+            }
+        },
+        item: {
+            title: 'ert'
+        }
+	});*/
 </script>

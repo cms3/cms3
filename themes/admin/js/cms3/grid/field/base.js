@@ -1,11 +1,11 @@
-cms3.richGrid.fieldTypes.base = new Object();
-cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
+cms3.richGrid.field = new Object();
+cms3.richGrid.field.base = new Object();
+cms3.extend(cms3.richGrid.field.base, cms3.field.base, {
     display: true,
     cellTemplate: 'Default',
     cellContainerTemplate: 'Default',
     headTemplate: 'Default',
     filterTemplate: 'Default',
-    titleGenerator: 'Default',
     showInList: false,
     ordering: true,
     defaultValue: '',
@@ -34,10 +34,11 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
     },
 
     init: function() {
+        this.grid = this.parentObject;
         this.buildSelectors();
     },
 
-    createEvents: function(){
+    createEvents: function() {
         var $ = jQuery;
         var field = this;
         var grid = this.grid;
@@ -50,13 +51,10 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
             var asc = $(field.selectors.grid.field[field.id].ascSymbol);
             var desc = $(field.selectors.grid.field[field.id].descSymbol);
 
-            if (asc.is(':visible'))
-            {
+            if (asc.is(':visible')) {
                 grid.hideOrderings();
                 desc.show();
-            }
-            else
-            {
+            } else {
                 grid.hideOrderings();
                 asc.show();
             }
@@ -67,15 +65,14 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
     },
 
     buildSelectors: function() {
-        if (typeof this.selectors.grid.fieldFilter == 'undefined')
-        {
+        if (typeof this.selectors.grid.fieldFilter == 'undefined') {
             this.selectors.grid.fieldFilter = new Object();
         }
+
         this.selectors.grid.fieldFilter[this.id] = new Object();
         this.selectors.grid.fieldFilter[this.id].input = this.selectors.grid.fieldFilters(this.id) + ' input';
 
-        if (typeof this.selectors.grid.field == 'undefined')
-        {
+        if (typeof this.selectors.grid.field == 'undefined') {
             this.selectors.grid.field = new Object();
         }
         this.selectors.grid.field[this.id] = new Object();
@@ -85,22 +82,9 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
     },
 
     filter: function(filter, cell) {
-        /*var $ = jQuery;
-        var specialChars = ['[', ']', '\\', '^', '$', '.' ,'|', '?', '*', '+', '(', ')', '{', '}'];
-        $.each(specialChars, function(i, specialChar){
-            var pos = 0;
-            while ((pos = filter.indexOf(specialChar, pos+1)) != -1)
-            {
-                                
-            }
-        });*/
-
-        if (cell.search(new RegExp(filter, "i")) == -1)
-        {
+        if (cell.search(new RegExp(filter, "i")) == -1) {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     },
@@ -112,12 +96,9 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
     },
 
     isFilterSet: function() {
-        if (this.getFilterValue() == '')
-        {
+        if (this.getFilterValue() == '') {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     },
@@ -164,10 +145,6 @@ cms3.extend(cms3.richGrid.fieldTypes.base, cms3.object, {
                 return true;
             }
         }
-    },
-
-    sRand: function () { // Случайная
-        return Math.random() > 0.5 ? 1 : -1;
     },
 
     hideOrdering: function(){

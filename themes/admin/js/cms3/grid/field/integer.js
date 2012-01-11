@@ -1,5 +1,5 @@
-cms3.richGrid.fieldTypes.integer = {};
-cms3.extend(cms3.richGrid.fieldTypes.integer, cms3.richGrid.fieldTypes.base, {
+cms3.richGrid.field.integer = new Object();
+cms3.extend(cms3.richGrid.field.integer, cms3.field.integer, cms3.richGrid.field.base, {
     defaultValue: 0,
     sortASC: function (i, ii) { // По возрастанию
         return i[gridfield.id] - ii[gridfield.id];

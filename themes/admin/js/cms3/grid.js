@@ -2,37 +2,45 @@ cms3.richGrid = new Object();
 cms3.extend(cms3.richGrid, cms3.object, {
     fieldTypes: {},
 
+    fields: {},
+
     //Создание объектов колонок
-    createFieldsObjects: function(){
+    createFieldsObjects: cms3.field.createFieldsObjects,/*function(model){
+
         var grid = this;
-        cms3.each(grid.models, function(modelName, model){
-            cms3.each(model.fields, function(fieldId, field){
-               field.id = fieldId;
-               field.selectors = grid.selectors;
-               field.grid = grid;
-               model.fields[fieldId] = grid.fieldTypes[field.type].create(field);
-               // Если нужно будет строить список моделей автоматически
-               /*if (field.model != undefined){
-                   grid.createFieldsObjects(field.model.fields);
-               }*/
-            });
+        var fields = new Object();
+
+        cms3.each(model.fields, function(fieldId, field){
+           fields[fieldId] = cms3.clone(field);
+           fields[fieldId].id = fieldId;
+           fields[fieldId].selectors = grid.selectors;
+           fields[fieldId].grid = grid;
+           fields[fieldId] = cms3.richGrid.field[field.type].create(fields[fieldId]);
+
+           if (field.model != undefined && field.model instanceof String){
+               var modelName = field.model;
+               field.model = new Object();
+               field.model.items = grid.models[modelName].items;
+               field.model.fields = grid.createFieldsObjects(grid.models[modelName].fields);
+               field.model.model = field.model;
+           }
         });
-    },
+
+        return fields ;
+    },*/
 
     init: function(){
+        //console.dir(this);
         var $ = jQuery;
         var grid = this;
 
-        //ссылки на текущую модель
-        this.fields = this.models[this.model].fields;
-        this.items = this.models[this.model].items;
-
+        // создание селекторов
         this.selectors.gridId = this.id;
         this.selectors.build();
-        //alert(this.selectors.editFieldList.Button);
 
-        //Создание объектов колонок
-        this.createFieldsObjects();
+        //ссылки на текущую модель
+        this.fields = this.createFieldsObjects(this.models[this.model]);
+        this.items = this.models[this.model].items;
 
         //Build tablet items
         $(this.container).prepend($("#gridTemplate").tmpl({fields: this.fields, items: this.items, id: this.id}));
@@ -343,8 +351,7 @@ cms3.extend(cms3.richGrid, cms3.object, {
         //this.setOrdering();
     },
 
-    editItems: function(id)
-    {
+    editItems: function(id) {
         var $ = jQuery;
         var grid = this;
         var ids = this.getActiveItemIds(id);
@@ -353,29 +360,19 @@ cms3.extend(cms3.richGrid, cms3.object, {
         var currentItem = new Object();
 
         // редактирование
-        if (id != 0)
-        {
-            cms3.each(ids, function(i, id)
-            {
-                cms3.each(grid.items, function(i, item)
-                {
-                    if (item.id == id)
-                    {
-                        cms3.each(item, function(fieldId, cell)
-                        {
+        if (id != 0) {
+            cms3.each(ids, function(i, id) {
+                cms3.each(grid.items, function(i, item) {
+                    if (item.id == id) {
+                        cms3.each(item, function(fieldId, cell) {
                             var different = true;
                             var n = 0;
 
-                            if (currentItem[fieldId] == undefined)
-                            {
+                            if (currentItem[fieldId] == undefined) {
                                 currentItem[fieldId] = new Array();
-                            }
-                            else
-                            {
-                                cms3.each(currentItem[fieldId], function(k, knownCell)
-                                {
-                                    if (cell == knownCell)
-                                    {
+                            } else {
+                                cms3.each(currentItem[fieldId], function(k, knownCell) {
+                                    if (cell == knownCell) {
                                         different = false;
                                     }
 
@@ -384,8 +381,7 @@ cms3.extend(cms3.richGrid, cms3.object, {
                                 });
                             }
 
-                            if (different)
-                            {
+                            if (different) {
                                 currentItem[fieldId][n] = cell;
                                 // alert(n + '. ' + fieldId +': ' + cell);
                             }
@@ -393,30 +389,41 @@ cms3.extend(cms3.richGrid, cms3.object, {
                     }
                 });
             });
-        }
         //новый
-        else
-        {
+        } else {
             cms3.each(this.fields, function(fieldId, field) {
                 currentItem[fieldId] = new Array();
                 currentItem[fieldId][0] = field.defaultValue;
             });
         }
 
-        if (currentItem.id != undefined)
-        {
-            var formId = currentItem.id.join('_');
+        if (currentItem.id != undefined) {
+            var formIds = currentItem.id.join('_');
             ids = currentItem.id;
-            var formAbsoluteId = cms3.helper.removeIdPrefix(this.selectors.editItems.editForm(formId),'#');
+            //var formAbsoluteId = cms3.helper.removeIdPrefix(this.selectors.editItems.editForm(formId),'#');
+            var windowAbsoluteId = grid.id + '-window-' + formIds;
+            var formAbsoluteId = grid.id + '-form-' + formIds;
 
-            if ($(grid.selectors.editItems.editForm(formId)).length == 0)
-            {
-                $("#editItemTemplate").tmpl({fields: this.fields, item: currentItem, elementId: formAbsoluteId , gridId: grid.id}).appendTo(this.selectors.editItems.parentElement);
+            if ($(grid.selectors.editItems.editForm(formIds)).length == 0) {
+                cms3.window.create({
+                    label: 'Название',
+                    container: 'div#workspace',
+                    id: windowAbsoluteId
+                });
+
+                cms3.form.create({
+                    label: 'Название',
+                    container: '#' + windowAbsoluteId + ' div.cms3-window-content',
+                    id: formAbsoluteId,
+                    item: currentItem,
+                    models: grid.models,
+                    model: grid.model
+                });
+
+                /*$("#editItemTemplate").tmpl({fields: this.fields, item: currentItem, elementId: formAbsoluteId , gridId: grid.id}).appendTo(this.selectors.editItems.parentElement);
 
                 $(function() {
                     $(grid.selectors.editItems.editForm(formId)).dialog({
-                        /*width: 400,
-                        height: 350,*/
                         buttons: [
                             {
                                 text: "Save",
@@ -442,14 +449,14 @@ cms3.extend(cms3.richGrid, cms3.object, {
                         }
                     });
 
-                });
+                });*/
 
                 // Highlight edited items
-                $(this.selectors.editItems.editForm(formId)).mouseover(function(){
+                $(this.selectors.editItems.editForm(formIds)).mouseover(function(){
                     $(grid.selectors.grid.items(ids)).addClass('highlight');
                 });
 
-                $(this.selectors.editItems.editForm(formId)).mouseleave(function(){
+                $(this.selectors.editItems.editForm(formIds)).mouseleave(function(){
                     $(grid.selectors.grid.items(ids)).removeClass('highlight');
                 });
             }
@@ -585,3 +592,34 @@ cms3.extend(cms3.richGrid, cms3.object, {
         this.itemsView.sort(field.sIncrease); // В
     }
 });
+
+function extend(Child, Parent) {
+	var F = function() { }
+	F.prototype = Parent.prototype
+	Child.prototype = new F()
+	Child.prototype.constructor = Child
+	Child.superclass = Parent.prototype
+}
+
+
+// копирует все свойства из src в dst,
+// включая те, что в цепочке прототипов src до Object
+function mixin(dst, src){
+	// tobj - вспомогательный объект для фильтрации свойств,
+	// которые есть у объекта Object и его прототипа
+	var tobj = {}
+	for(var x in src){
+		// копируем в dst свойства src, кроме тех, которые унаследованы от Object
+		if((typeof tobj[x] == "undefined") || (tobj[x] != src[x])){
+			dst[x] = src[x];
+		}
+	}
+	// В IE пользовательский метод toString отсутствует в for..in
+	if(document.all && !document.isOpera){
+		var p = src.toString;
+		if(typeof p == "function" && p != dst.toString && p != tobj.toString &&
+		 p != "\nfunction toString() {\n    [native code]\n}\n"){
+			dst.toString = src.toString;
+		}
+	}
+}

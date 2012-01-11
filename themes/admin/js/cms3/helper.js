@@ -15,13 +15,13 @@ cms3.helper = {
         return temp;
     },
 
-    each: function(array, func)
+    each: function(array, fn)
     {
         $ = jQuery;
         $.each(array, function(i, item){
            if (typeof item != 'undefined')
            {
-               func(i, item);
+               fn(i, item);
            }
         });
     },
@@ -31,7 +31,6 @@ cms3.helper = {
         while (typeof array[i] == 'undefined' && i != false)
         {
             i--;
-            //alert(i);
         }
         return array[i];
     }
@@ -39,3 +38,4 @@ cms3.helper = {
 
 cms3.previousItem = cms3.helper.previousItem;
 cms3.each = cms3.helper.each;
+cms3.clone = cms3.helper.clone;

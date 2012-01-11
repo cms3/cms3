@@ -107,7 +107,7 @@ class Controller extends Abstract_Controller
 			$results = array_merge($result, $results);
 
 		}
-		Helper_Dataview::clear_items(&$results);
+		$results = Helper_Dataview::clear_items($results);
 		echo JSON::encode($results, array(
 			'camelize' => true
 		));
