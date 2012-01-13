@@ -34,7 +34,7 @@ class Model extends \Jelly_Model implements \Acl_Resource_Interface {
 				// See if field wants to alter the value on save()
 				$value = $field->save($this, $value, $key);
 			}
-
+			
 			// Only save in_db values
 			if ($field->in_db)
 			{

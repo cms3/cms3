@@ -4,6 +4,8 @@ namespace CMS3\Engine;
 
 class Autoloader_Core {
 
+	public static $config = array();
+
 	protected static $_cache = NULL;
 
 	protected static $_new_cache = NULL;
@@ -11,19 +13,33 @@ class Autoloader_Core {
 	protected static $_cache_loaded = FALSE;
 
 	protected static $_cache_load_start_time = 0;
-
-	protected static $_cache_filename;
 	
 	public static function init()
 	{
-		static::$_cache_filename = \APPPATH . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'autoload.cache';
+		static::$config = array(
+			'cache_filename' => \APPPATH . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'autoload.cache',
+			'use_cache' => TRUE
+		);
 
-		static::_load_cache();
+		$cfg_filename = \APPPATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'autoloader' . EXT;
+		if (is_file($cfg_filename))
+		{
+			$user_cfg = eval('?>' . file_get_contents($cfg_filename));
+			static::$config = array_merge(static::$config, $user_cfg);
+		}
+
+		if (static::$config['use_cache'])
+		{
+			static::_load_cache();
+		}
 	}
 	
 	public static function deinit()
 	{
-		static::_save_cache();
+		if (static::$config['use_cache'])
+		{
+			static::_save_cache();
+		}
 	}
 
 	protected static function _cache_key($namespace, $group, $filename)
@@ -63,10 +79,10 @@ class Autoloader_Core {
 		{
 			static::$_cache_load_start_time = time();
 
-			if (is_file(static::$_cache_filename))
+			if (is_file(static::$config['cache_filename']))
 			{
 				// TODO: в цикле, подавлять ошибки
-				$content = file_get_contents(static::$_cache_filename);
+				$content = file_get_contents(static::$config['cache_filename']);
 				if ($content)
 				{
 					static::$_cache = eval($content);
@@ -80,20 +96,20 @@ class Autoloader_Core {
 	{
 		if (is_array(static::$_new_cache) && count(static::$_new_cache))
 		{
-			if (is_file(static::$_cache_filename))
+			if (is_file(static::$config['use_cache']))
 			{
-				if (filemtime(static::$_cache_filename) > static::$_cache_load_start_time)
+				if (filemtime(static::$config['use_cache']) > static::$_cache_load_start_time)
 				{
 					return;
 				}
 
-				$file = fopen(static::$_cache_filename, 'r+');
+				$file = fopen(static::$config['use_cache'], 'r+');
 				fseek($file, -2, SEEK_END);
 				fwrite($file, ',');
 			}
 			else
 			{
-				$file = fopen(static::$_cache_filename, 'w');
+				$file = fopen(static::$config['use_cache'], 'w');
 				fwrite($file, 'return array(');
 			}
 
@@ -106,6 +122,14 @@ class Autoloader_Core {
 				$i++;
 			}
 			fclose($file);
+		}
+	}
+
+	public static function clear_cache()
+	{
+		if (is_file(static::$config['use_cache']))
+		{
+			unlink(static::$config['use_cache']);
 		}
 	}
 	
@@ -131,7 +155,7 @@ class Autoloader_Core {
 			{
 				\Profiler::stop($benchmark);
 			}
-
+		
 			$result = TRUE;
 		}
 
@@ -154,9 +178,9 @@ class Autoloader_Core {
 		else
 		{
 			$result = FALSE;
-
+			
 			$paths = static::get_possible_paths($namespace, $group);
-
+			
 			foreach ($paths as $path)
 			{
 				$filename = $path . DIRECTORY_SEPARATOR . $name . $ext;
@@ -167,14 +191,17 @@ class Autoloader_Core {
 					break;
 				}
 			}
-			static::_set_cached_path($namespace, $group, $name . $ext, $result);
+			if (static::$config['use_cache'])
+			{
+				static::_set_cached_path($namespace, $group, $name . $ext, $result);
+			}
 		}
-
+		
 		if ($profiling)
 		{
 			\Profiler::stop($benchmark);
 		}
-
+		
 		return $result;
 	}
 
@@ -217,8 +244,7 @@ class Autoloader_Core {
 
 	public static function get_possible_paths($namespace, $group)
 	{
-		$profiling = class_exists('\Profiler') && \CMS3::$profiling === TRUE;
-		if ($profiling)
+		if ($profiling = (class_exists('\Profiler') && \CMS3::$profiling))
 		{
 			$benchmark = \Profiler::start(get_called_class(), __FUNCTION__);
 		}
@@ -226,7 +252,7 @@ class Autoloader_Core {
 		$all_modules = static::get_module_names();
 		$global_modules = static::get_module_names('global');
 		$ns_modules = static::get_module_names('namespace');
-
+		
 		if ($namespace != '') // Entity use some namespace
 		{
 			$parts = explode('\\', $namespace);

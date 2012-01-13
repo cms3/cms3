@@ -176,7 +176,7 @@ class Template {
 			{
 				throw new Exception('Unable to detect template engine for template :template',
 					array(':template' => $this->name)
-				); 
+				);
 			}
 		}
 		if (is_string($this->engine))

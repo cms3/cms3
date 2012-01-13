@@ -294,14 +294,6 @@ class App {
 			Route::set($route->id, $parse[0], $parse[1]);
 		}
 
-if (isset($_GET['c']))
-{
-		set_time_limit(0);
-		$i = new \CMS3\Import\Importer();
-		$i->import_xml(APPPATH . 'import/catalog.xml', TRUE);
-		exit;
-}
-
 		if (! \Security::token())
 		{
 			\Security::token(TRUE);
@@ -348,6 +340,11 @@ if (isset($_GET['c']))
 
 	public function dispatch_action($controller, $action) // TODO
 	{
+		if (Core::$profiling === TRUE)
+		{
+			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
+		}
+
 		$params = $this->fetch_query_params();
 		if ($action == 'finish_auth')
 		{
@@ -361,6 +358,12 @@ if (isset($_GET['c']))
 			}
 		}
 
+		// TODO: вынести и сделать общиим с обычным dispatch
+		$this->document = Document::factory('html');
+		$this->document->language = $this->language;
+		$this->document->charset = Core::$charset;
+		$this->document->current_theme = $this->_detect_theme();
+
 		$controller = Controller::factory($controller);
 		if ($controller)
 		{
@@ -371,6 +374,16 @@ if (isset($_GET['c']))
 			throw new \HTTP_Exception_404('Controller :controller not found.', array(
 				':controller' => $controller,
 			));
+		}
+
+		if (isset($benchmark))
+		{
+			\Profiler::stop($benchmark);
+		}
+
+		if (@$_REQUEST['profile']) // TODO
+		{
+			echo new \View('profiler/stats');
 		}
 		
 		// TODO!

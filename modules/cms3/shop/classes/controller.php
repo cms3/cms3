@@ -48,11 +48,23 @@ class Controller extends Abstract_Controller {
 			->limit(1)
 			->select();
 
+		$paginator_data = $paginator->as_array();
+
+		if (\CMS3::$profiling === TRUE)
+		{
+			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
+		}
+
 		$view_data = array(
 			'title' => @$type->title,
 			'products' => $products->as_array(),
-			'pagination' => $paginator->as_array()
+			'pagination' => $paginator_data
 		);
+
+		if (isset($benchmark))
+		{
+			\Profiler::stop($benchmark);
+		}
 
 		echo View::factory('cms3\shop\catalog', $view_data);
 	}
@@ -63,9 +75,20 @@ class Controller extends Abstract_Controller {
 			->query()
 			->filter()
 			->order_by(\DB::expr('rand()'))
-			->limit(32)
-			->select_all()
-			->as_array();
+			->limit(32) // TODO: в конфиг
+			->select_all();
+
+		if (isset($benchmark))
+		{
+			\Profiler::stop($benchmark);
+		}
+
+		if (\CMS3::$profiling === TRUE)
+		{
+			$benchmark = \Profiler::start(get_class($this), __FUNCTION__ . '[as_array]');
+		}
+		
+		$products = $products->as_array();
 			
 		usort($products, function($a, $b)
 		{
@@ -78,7 +101,17 @@ class Controller extends Abstract_Controller {
 			'with_sections' => TRUE
 		);
 
+		if (\CMS3::$profiling === TRUE)
+		{
+			$benchmark = \Profiler::start(get_class($this), __FUNCTION__ . '[View::factory]');
+		}
+
 		echo View::factory('cms3\shop\catalog', $view_data);
+
+		if (isset($benchmark))
+		{
+			\Profiler::stop($benchmark);
+		}
 	}
   
 	public function action_display_product($params = array())
@@ -108,6 +141,8 @@ class Controller extends Abstract_Controller {
 		);
 
 		$product_arr = $product->as_array(NULL, TRUE, TRUE, 2);
+
+		$product_arr['images'] = array();
 
 		// TODO
 		foreach ($product_arr['images'] as $i => $image)

@@ -78,6 +78,18 @@ class Field_ManyToMany extends \Jelly_Field_ManyToMany implements Field_Relation
 		return $result;
 	}
 
+	public function get($model, $value)
+	{
+		// If the value hasn't changed, we need to pull from the database
+		if ( ! $model->changed($this->name))
+		{
+			$value = $this->_in($model, TRUE);
+		}
+
+		return ORM::query($this->foreign['model'])
+		            ->where($this->foreign['field'], 'IN', $value);
+	}
+
 	public function save($model, $value, $loaded)
 	{
 		// Don't do anything on insert when we don't have anything
