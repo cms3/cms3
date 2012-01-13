@@ -96,20 +96,20 @@ class Autoloader_Core {
 	{
 		if (is_array(static::$_new_cache) && count(static::$_new_cache))
 		{
-			if (is_file(static::$config['use_cache']))
+			if (is_file(static::$config['cache_filename']))
 			{
-				if (filemtime(static::$config['use_cache']) > static::$_cache_load_start_time)
+				if (filemtime(static::$config['cache_filename']) > static::$_cache_load_start_time)
 				{
 					return;
 				}
 
-				$file = fopen(static::$config['use_cache'], 'r+');
+				$file = fopen(static::$config['cache_filename'], 'r+');
 				fseek($file, -2, SEEK_END);
 				fwrite($file, ',');
 			}
 			else
 			{
-				$file = fopen(static::$config['use_cache'], 'w');
+				$file = fopen(static::$config['cache_filename'], 'w');
 				fwrite($file, 'return array(');
 			}
 
@@ -127,9 +127,9 @@ class Autoloader_Core {
 
 	public static function clear_cache()
 	{
-		if (is_file(static::$config['use_cache']))
+		if (is_file(static::$config['cache_filename']))
 		{
-			unlink(static::$config['use_cache']);
+			unlink(static::$config['cache_filename']);
 		}
 	}
 	
