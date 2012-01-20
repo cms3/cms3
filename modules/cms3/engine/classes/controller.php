@@ -4,6 +4,10 @@ namespace CMS3\Engine;
 
 class Controller extends \Controller {
 
+	public static $default_controller = 'CMS3\Engine\App';
+
+	public static $default_action = 'display';
+
 	public function __construct(\Request $request = NULL, \Response $response = NULL)
 	{
 		if ($request === NULL)

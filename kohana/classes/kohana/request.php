@@ -782,6 +782,8 @@ class Kohana_Request implements HTTP_Request {
 			// Remove trailing slashes from the URI
 			$uri = trim($uri, '/');
 
+
+
 			$processed_uri = Request::process_uri($uri, $this->_injected_routes);
 
 			// Return here rather than throw exception. This will allow

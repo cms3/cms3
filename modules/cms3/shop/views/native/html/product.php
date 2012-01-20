@@ -30,7 +30,7 @@
 	</div>
 	<table class="edition-info">
 	<?php if (isset($this->product['vendor'])): ?>
-		<tr><td>Производитель</td><td><a href="/shop/?shop.product.type.id=<?php echo $this->product['type']['id'] ?>&shop.product.properties.vendor.id=<?php echo $this->product['vendor']['id'] ?>"><?php echo $this->product['vendor']['title'] ?></a></td></tr>
+		<tr><td>Производитель</td><td><a href="/?shop.product.type.id=<?php echo $this->product['type']['id'] ?>&shop.product.properties.vendor.id=<?php echo $this->product['vendor']['id'] ?>"><?php echo $this->product['vendor']['title'] ?></a></td></tr>
 	<?php endif; ?>
 	<?php if ($this->product['properties']['width']): ?>
 		<tr><td>Ширина</td><td><?php echo $this->product['properties']['width'] ?></td></tr>

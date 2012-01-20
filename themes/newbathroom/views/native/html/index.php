@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en" xmlns:cms3="http://www.w3.org/2001/XInclude"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html dir="ltr" lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<cms3:include renderer="document" name="header" priority="-100" />
 	
 <?php
+	//print_r($_GET); exit;
+
 	$media_path = $this->settings('url_path') . '../../../media/';
-	$is_main = count(\CMS3\Engine\App::instance()->param()) == 0; // TODO
+	$is_main = count(\CMS3\Engine\Request::$current->param()) == 1; // TODO
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/960_24_col.css">
