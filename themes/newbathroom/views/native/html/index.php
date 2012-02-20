@@ -103,10 +103,9 @@
                     <img src="<?php echo $media_path ?>image/store_logo_round.png" alt="" />
                 </a>
             </div>
+            
+            <cms3:include renderer="block" position="banner" />
 		    
-            <div style="padding-left: 440px; margin-top: 10px; position: relative">
-	                    <a href="/?shop.product.type.id=16"><img src="<?php echo $media_path ?>image/bg4.jpg" /></a>
-            </div>
 		    <?php else: ?>
 		        <div class="logo" style="position: absolute; z-index: 4">
                 <a href="/">

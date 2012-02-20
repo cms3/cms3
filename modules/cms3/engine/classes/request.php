@@ -94,15 +94,15 @@ class Request extends \Request {
 				$this->_directory = $params['directory'];
 			}
 
-			if (isset($params['action']))
+			if (isset($params['controller']))
 			{
-				// Store the action
+				// Store the controller
 				$this->_controller = $params['controller'];
 			}
 			else
 			{
-				// Use the default action
-				$this->_controller = Controller::$default_controller;
+				// Use the default controller
+				$this->_controller = NULL;
 			}
 
 			if (isset($params['action']))

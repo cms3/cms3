@@ -31,7 +31,7 @@ class Controller extends Abstract_Controller {
 	{
 		$model = Model_Product::factory();
 		$model->meta()->default_limit(32);
-		
+
 		$builder = $model->query()
 			->filter()
 			->order_by('type');

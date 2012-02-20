@@ -82,55 +82,13 @@ class App {
 			\Profiler::stop($benchmark);
 		}
 	}
-
-	public function dispatch_action($controller, $action) // TODO
-	{
-		if (Core::$profiling === TRUE)
-		{
-			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
-		}
-
-		$params = $this->fetch_query_params();
-
-		// TODO: вынести и сделать общиим с обычным dispatch
-		$this->document = Document::factory('html');
-		$this->document->language = $this->language;
-		$this->document->charset = Core::$charset;
-		$this->document->current_theme = $this->_detect_theme();
-
-		$controller = Controller::factory($controller);
-		if ($controller)
-		{
-			$controller->action($action, $params);
-		}
-		else
-		{
-			throw new \HTTP_Exception_404('Controller :controller not found.', array(
-				':controller' => $controller,
-			));
-		}
-
-		if (isset($benchmark))
-		{
-			\Profiler::stop($benchmark);
-		}
-
-		if (@$_REQUEST['profile']) // TODO
-		{
-			echo new \View('profiler/stats');
-		}
-		
-		// TODO!
-		Autoloader::deinit();
-	}
   
-	public function dispatch($path, $language = NULL, $format = NULL)
+	public function dispatch($controller = NULL, $action = NULL, $language = NULL, $format = NULL)
 	{
 		if (Core::$profiling === TRUE)
 		{
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
-		$get_params = Request::current()->param();
 
 		$lang_list = $this->_languages->as_array('short_code');
 
@@ -150,10 +108,26 @@ class App {
 		$this->document = Document::factory($format);
 		$this->document->language = $this->language;
 		$this->document->charset = Core::$charset;
-		
 		$this->document->current_theme = $this->_detect_theme();
-		
-		$this->document->render();
+
+		if (! empty($controller))
+		{
+			$controller = Controller::factory($controller);
+			if ($controller)
+			{
+				$controller->action($action, Request::current()->param());
+			}
+			else
+			{
+				throw new \HTTP_Exception_404('Controller :controller not found.', array(
+					':controller' => $controller,
+				));
+			}
+		}
+		else
+		{
+			$this->document->render();
+		}
 		
 		if (isset($benchmark))
 		{
@@ -205,19 +179,10 @@ class App {
 		}
 
 		$params = Request::current()->param();
+		unset($params['session']); // TODO
+		$params['_count'] = count($params);
 		$expression = new Expression_Calc_PHP();
-		/*
-		$expression = new Expression();
 
-		//TODO: ужасный костыль
-		$parsed_params = array();
-		foreach ($params as $name => $value)
-		{
-			$name = str_replace('.', '_', $name);
-			$parsed_params[$name] = $value;
-		}
-		$params = $parsed_params;
-		*/
 		return $expression->evaluate($condition, $params) != '';
 	}
 
@@ -304,24 +269,6 @@ class App {
 
 		return $this->_pagination;
 	}
-/*
-	protected function _build_filter_tree($params)
-	{
-		$result = array();
-
-		foreach ($params['filter'] as $param => $value)
-		{
-			$parts = explode('.', $param);
-
-			if (count($parts) >= 2)
-			{
-				//$parent =
-			}
-		}
-
-		return $result;
-	}
-	*/
 
 	// TODO: remove it from here
 	public function param($module = NULL, $model = NULL)
