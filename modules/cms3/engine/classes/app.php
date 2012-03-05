@@ -179,39 +179,6 @@ class App {
 		
 		return $result;
 	}
-	
-	protected function _build_pagination()
-	{
-		$result = array();
-		
-		$offset = (array)@$_REQUEST['offset']; // TODO
-		foreach ($offset as $path => $value)
-		{
-			$parts = explode('.', $path);
-			if (count($parts) >= 2)
-			{
-				$module = $parts[0];
-				$model = $parts[1];
-
-				$result[$module][$model]['offset'] = $value;
-			}
-		}
-		
-		$limit = (array)@$_REQUEST['limit']; // TODO
-		foreach ($limit as $path => $value)
-		{
-			$parts = explode('.', $path);
-			if (count($parts) >= 2)
-			{
-				$module = $parts[0];
-				$model = $parts[1];
-
-				$result[$module][$model]['limit'] = $value;
-			}
-		}
-		
-		return $result;
-	}
 
 	// TODO: убрать это отсюда
 	// TODO: переписать этот говнокод
@@ -242,6 +209,39 @@ class App {
 		}
 		
 		return $ordering;
+	}
+
+    protected function _build_pagination()
+	{
+		$result = array();
+
+		$offset = (array)@$_REQUEST['offset']; // TODO
+		foreach ($offset as $path => $value)
+		{
+			$parts = explode('.', $path);
+			if (count($parts) >= 2)
+			{
+				$module = $parts[0];
+				$model = $parts[1];
+
+				$result[$module][$model]['offset'] = $value;
+			}
+		}
+
+		$limit = (array)@$_REQUEST['limit']; // TODO
+		foreach ($limit as $path => $value)
+		{
+			$parts = explode('.', $path);
+			if (count($parts) >= 2)
+			{
+				$module = $parts[0];
+				$model = $parts[1];
+
+				$result[$module][$model]['limit'] = $value;
+			}
+		}
+
+		return $result;
 	}
 
 	public function initialize()
@@ -294,13 +294,10 @@ class App {
 			Route::set($route->id, $parse[0], $parse[1]);
 		}
 
-if (isset($_GET['c']))
-{
-		set_time_limit(0);
-		$i = new \CMS3\Import\Importer();
-		$i->import_xml(APPPATH . 'import/catalog.xml', TRUE);
-		exit;
-}
+        $acl = new \CMS3\Acl\Acl;
+        $role = \Auth::instance()->current_user();
+        echo $acl->check($role, 'admin_panel', 'login');
+        exit;
 
 		if (! \Security::token())
 		{
@@ -629,8 +626,23 @@ if (isset($_GET['c']))
 
 	public function get_uri($route_id, $params, $format = NULL, $language = NULL)
 	{
-		$params = $this->implode_request_params($params);
-		$path = Route::get($route_id)->uri($params);
+        //TODO: костыль
+        $parsed_params = array();
+		foreach ($params as $name => $value)
+		{
+			$name = str_replace('.', '_', $name);
+			$parsed_params[$name] = $value;
+        }
+
+		$path = Route::get($route_id)->uri($parsed_params);
+
+        // TODO: еще больший костыль
+        foreach ($params as $name => $value)
+		{
+            $tmp_name = str_replace('.', '_', $name);
+            $good_name = str_replace('_', '.', $name);
+            $path = str_replace($tmp_name, $name, $path);
+		}
 
 		return $this->expand_uri($path, $format, $language);
 	}

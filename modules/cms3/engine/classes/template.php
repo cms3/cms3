@@ -232,13 +232,24 @@ class Template {
 		}
 
 		$file = NS::extract_class_name($this->name);
-		$name = strtolower($this->engine->name()) . DIRECTORY_SEPARATOR . $this->format . DIRECTORY_SEPARATOR . $file . '.' . $this->engine->ext();
+        $info_part = strtolower($this->engine->name()) . DIRECTORY_SEPARATOR . $this->format;
+		$name = $info_part . DIRECTORY_SEPARATOR . $file . '.' . $this->engine->ext();
 
-		$theme_path =  \DOCROOT . 'themes' . DIRECTORY_SEPARATOR . $this->theme . DIRECTORY_SEPARATOR . 'views';
+        $theme_path =  \DOCROOT . 'themes' . DIRECTORY_SEPARATOR . $this->theme . DIRECTORY_SEPARATOR . 'views';
+        
+        // TODO: переписать вместе с каталогом для хранения тем
+        if ($module = NS::extract_module_name($this->name))
+        {
+            $theme_file = $theme_path . DIRECTORY_SEPARATOR . $info_part . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . $file . '.' . $this->engine->ext();
+        }
+        else
+        {
+            $theme_file = $theme_path . DIRECTORY_SEPARATOR . $name;
+        }
 
-		if (is_file($theme_path . DIRECTORY_SEPARATOR . $name))
+		if (is_file($theme_file))
 		{
-			$result = $theme_path . DIRECTORY_SEPARATOR . $name;
+			$result = $theme_file;
 		}
 		else
 		{

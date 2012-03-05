@@ -31,7 +31,8 @@ class Model_Rule extends Model  {
 			'assert_condition' => ORM::field('belongsto',
 				array('foreign' => 'cms3\engine\condition')
 			),
-			'allow' => ORM::field('boolean'),
+            'allow' => ORM::field('boolean'),
+			'enabled' => ORM::field('boolean'),
 		));
    }
 }

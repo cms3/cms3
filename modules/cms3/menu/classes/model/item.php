@@ -52,7 +52,7 @@ class Model_Item extends Model {
 		}
 		else
 		{
-			return URL::query((array) $this->params, FALSE);
+			return URL::site(URL::query((array) $this->params, FALSE));
 		}
 	}
 	

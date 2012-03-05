@@ -22,107 +22,6 @@ class Request extends \Request {
 		$this->_params = $params;
 	}
 	
-	public function __construct($uri, \HTTP_Cache $cache = NULL, $injected_routes = array())
-	{
-		// Initialise the header
-		$this->_header = new \HTTP_Header(array());
-
-		// Assign injected routes
-		$this->_injected_routes = $injected_routes;
-
-		// Cleanse query parameters from URI (faster that parse_url())
-		$split_uri = explode('?', $uri);
-		$uri = array_shift($split_uri);
-
-		// Initial request has global $_GET already applied
-		if (\Request::$initial !== NULL)
-		{
-			if ($split_uri)
-			{
-				parse_str($split_uri[0], $this->_get);
-			}
-		}
-
-		// Detect protocol (if present)
-		// Always default to an internal request if we don't have an initial.
-		// This prevents the default index.php from being able to proxy
-		// external pages.
-		if (\Request::$initial === NULL OR strpos($uri, '://') === FALSE)
-		{
-			// Remove trailing slashes from the URI
-			$uri = trim($uri, '/');
-
-			$processed_uri = static::process_uri($uri, $this->_injected_routes);
-
-			// Return here rather than throw exception. This will allow
-			// use of Request object even with unmatched route
-			if ($processed_uri === NULL)
-			{
-				$this->_uri = $uri;
-				return;
-			}
-
-			// Store the URI
-			$this->_uri = $uri;
-
-			// Store the matching route
-			$this->_route = $processed_uri['route'];
-			$params = $processed_uri['params'];
-
-			// Is this route external?
-			$this->_external = $this->_route->is_external();
-
-			if (isset($params['directory']))
-			{
-				// Controllers are in a sub-directory
-				$this->_directory = $params['directory'];
-			}
-
-			// Store the controller
-			$this->_controller = $params['controller'];
-
-			if (isset($params['action']))
-			{
-				// Store the action
-				$this->_action = $params['action'];
-			}
-			else
-			{
-				// Use the default action
-				$this->_action = Route::$default_action;
-			}
-
-			// These are accessible as public vars and can be overloaded
-			unset($params['controller'], $params['action'], $params['directory']);
-
-			// Params cannot be changed once matched
-			$this->_params = $params;
-
-			// Apply the client
-			$this->_client = new Request_Client_Internal(array('cache' => $cache));
-		}
-		else
-		{
-			// Create a route
-			$this->_route = new Route($uri);
-
-			// Store the URI
-			$this->_uri = $uri;
-			
-			// Set the security setting if required
-			if (strpos($uri, 'https://') === 0)
-			{
-				$this->secure(TRUE);
-			}
-
-			// Set external state
-			$this->_external = TRUE;
-
-			// Setup the client
-			$this->_client = new \Request_Client_External(array('cache' => $cache));
-		}
-	}
-	
 	public static function factory($uri = TRUE, \HTTP_Cache $cache = NULL, $injected_routes = array())
 	{
 		// If this is the initial request
@@ -319,4 +218,105 @@ class Request extends \Request {
 
 		return $request;
 	}
+	
+	public function __construct($uri, \HTTP_Cache $cache = NULL, $injected_routes = array())
+	{
+		// Initialise the header
+		$this->_header = new \HTTP_Header(array());
+
+		// Assign injected routes
+		$this->_injected_routes = $injected_routes;
+
+		// Cleanse query parameters from URI (faster that parse_url())
+		$split_uri = explode('?', $uri);
+		$uri = array_shift($split_uri);
+
+		// Initial request has global $_GET already applied
+		if (\Request::$initial !== NULL)
+		{
+			if ($split_uri)
+			{
+				parse_str($split_uri[0], $this->_get);
+			}
+		}
+
+		// Detect protocol (if present)
+		// Always default to an internal request if we don't have an initial.
+		// This prevents the default index.php from being able to proxy
+		// external pages.
+		if (\Request::$initial === NULL OR strpos($uri, '://') === FALSE)
+		{
+			// Remove trailing slashes from the URI
+			$uri = trim($uri, '/');
+
+			$processed_uri = static::process_uri($uri, $this->_injected_routes);
+
+			// Return here rather than throw exception. This will allow
+			// use of Request object even with unmatched route
+			if ($processed_uri === NULL)
+			{
+				$this->_uri = $uri;
+				return;
+			}
+
+			// Store the URI
+			$this->_uri = $uri;
+
+			// Store the matching route
+			$this->_route = $processed_uri['route'];
+			$params = $processed_uri['params'];
+
+			// Is this route external?
+			$this->_external = $this->_route->is_external();
+
+			if (isset($params['directory']))
+			{
+				// Controllers are in a sub-directory
+				$this->_directory = $params['directory'];
+			}
+
+			// Store the controller
+			$this->_controller = $params['controller'];
+
+			if (isset($params['action']))
+			{
+				// Store the action
+				$this->_action = $params['action'];
+			}
+			else
+			{
+				// Use the default action
+				$this->_action = Route::$default_action;
+			}
+
+			// These are accessible as public vars and can be overloaded
+			unset($params['controller'], $params['action'], $params['directory']);
+
+			// Params cannot be changed once matched
+			$this->_params = $params;
+
+			// Apply the client
+			$this->_client = new Request_Client_Internal(array('cache' => $cache));
+		}
+		else
+		{
+			// Create a route
+			$this->_route = new Route($uri);
+
+			// Store the URI
+			$this->_uri = $uri;
+			
+			// Set the security setting if required
+			if (strpos($uri, 'https://') === 0)
+			{
+				$this->secure(TRUE);
+			}
+
+			// Set external state
+			$this->_external = TRUE;
+
+			// Setup the client
+			$this->_client = new \Request_Client_External(array('cache' => $cache));
+		}
+    }
 }
