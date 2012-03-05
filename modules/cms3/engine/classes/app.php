@@ -294,9 +294,14 @@ class App {
 			Route::set($route->id, $parse[0], $parse[1]);
 		}
 
+		//$user = Model::factory('cms3\auth\user', 1);
+		//$auth = \Auth::instance()->do_login($user);
+		
         $acl = new \CMS3\Acl\Acl;
         $role = \Auth::instance()->current_user();
-        echo $acl->check($role, 'admin_panel', 'login');
+        
+        
+        echo (int)$acl->check($role, 'admin_panel', 'login');
         exit;
 
 		if (! \Security::token())
