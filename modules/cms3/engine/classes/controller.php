@@ -36,7 +36,7 @@ class Controller extends \Controller {
 		if (! method_exists($this, $call))
 		{
 			throw new \HTTP_Exception_404('Action :action not found in controller.', array(
-				':function' => $function,
+				':action' => $call,
 			));
 		}
 

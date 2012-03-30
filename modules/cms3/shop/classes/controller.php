@@ -13,11 +13,11 @@ class Controller extends Abstract_Controller {
 	{
 		$params = $_REQUEST; // Request::$initial->param(); // TODO: автоматически
 
-		if (isset($params["shop_product_id"]))
+		if (isset($params["shop/product/id"]))
 		{
 			$this->action_display_product($params);
 		}
-		elseif (isset($params["shop_product_type_id"]))
+		elseif (isset($params["shop/product/type/id"]))
 		{
 			$this->action_display_catalog($params);
 		}
@@ -39,12 +39,12 @@ class Controller extends Abstract_Controller {
 		$total = $builder->count();
 		$builder->pagination();
 
-		$paginator = new Paginator($total, $builder->current_limit(), $builder->current_offset(), 'shop.product');
+		$paginator = new Paginator($total, $builder->current_limit(), $builder->current_offset(), 'shop/product');
 		
 		$products = $builder->select_all();
 		
 		$type = Model_Product_Type::factory()
-			->query($params["shop_product_type_id"])
+			->query($params["shop/product/type/id"])
 			->limit(1)
 			->select();
 
@@ -71,11 +71,13 @@ class Controller extends Abstract_Controller {
 	
 	public function action_display_main($params = array())
 	{
+        $product_count = isset($params['product_count']) ? $params['product_count'] : 32;
+
 		$products = Model_Product::factory()
 			->query()
 			->filter()
 			->order_by(\DB::expr('rand()'))
-			->limit(32) // TODO: в конфиг
+			->limit($product_count)
 			->select_all();
 
 		if (isset($benchmark))
@@ -116,7 +118,7 @@ class Controller extends Abstract_Controller {
   
 	public function action_display_product($params = array())
 	{
-		$product_id = empty($params["shop_product_id"]) ? 0 : intval($params["shop_product_id"]);
+		$product_id = empty($params["shop/product/id"]) ? 0 : intval($params["shop/product/id"]);
 
 		$product = Model_Product::factory()
 			->query($product_id)

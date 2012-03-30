@@ -110,6 +110,10 @@ class App {
 		$this->document->charset = Core::$charset;
 		$this->document->current_theme = $this->_detect_theme();
 
+        $this->_params = $this->_build_params_tree(Request::current()->param());
+        $this->_filters = $this->_build_filter_tree(Request::current()->param());
+        $this->_pagination = $this->_build_pagination();
+
 		if (! empty($controller))
 		{
 			$controller = Controller::factory($controller);
@@ -146,15 +150,11 @@ class App {
 	
 	protected function _detect_theme()
 	{
-		$themes = Model_Theme::factory()->query()->select();
+		$themes = Model_Theme::factory()->query()->select_all();
 		
 		foreach ($themes as $theme)
 		{
-			if (empty($theme->condition->id))
-			{
-				continue;
-			}
-			if (App::check_page_condition($theme->condition->condition))
+			if (! $theme->condition->loaded() || App::check_page_condition($theme->condition->condition))
 			{
 				return $theme->name;
 			}
@@ -299,7 +299,7 @@ class App {
 			{
 				continue;
 			}
-			$parts = explode('.', $param);
+			$parts = explode(URL::PART_DELIMITER, $param);
 		 	if (count($parts) >= 2)
 		 	{
 				$parent = &$result;
@@ -313,7 +313,7 @@ class App {
 					$i++;
 				}
 				array_unshift($parts, $name);
-				$name = implode('.', $parts);
+				$name = implode(URL::PART_DELIMITER, $parts);
 				$parent[$name] = $value;
 		 	}
 		 	else
@@ -331,7 +331,7 @@ class App {
 
 		foreach ($params as $param => $value)
 		{
-			$parts = explode('.', $param);
+			$parts = explode(URL::PART_DELIMITER, $param);
 		 	if (count($parts) >= 3 && strpos($param, '[') === FALSE ) // TODO
 		 	{
 				$module = array_shift($parts);
@@ -344,7 +344,7 @@ class App {
 		$ordering = (array)@$_REQUEST['ordering']; // TODO
 		foreach ($ordering as $path => $order)
 		{
-			$parts = explode('.', $path);
+			$parts = explode(URL::PART_DELIMITER, $path);
 			if (count($parts) >= 2)
 			{
 				$module = $parts[0];
@@ -373,7 +373,7 @@ class App {
 		$offset = (array)@$_REQUEST['offset']; // TODO
 		foreach ($offset as $path => $value)
 		{
-			$parts = explode('.', $path);
+			$parts = explode(URL::PART_DELIMITER, $path);
 			if (count($parts) >= 2)
 			{
 				$module = $parts[0];
@@ -386,7 +386,7 @@ class App {
 		$limit = (array)@$_REQUEST['limit']; // TODO
 		foreach ($limit as $path => $value)
 		{
-			$parts = explode('.', $path);
+			$parts = explode(URL::PART_DELIMITER, $path);
 			if (count($parts) >= 2)
 			{
 				$module = $parts[0];

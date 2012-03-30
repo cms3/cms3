@@ -4,10 +4,8 @@
 	<cms3:include renderer="document" name="header" priority="-100" />
 	
 <?php
-	//print_r($_GET); exit;
-
 	$media_path = $this->settings('url_path') . '../../../media/';
-	$is_main = count(\CMS3\Engine\Request::$current->param()) == 1; // TODO
+	$is_main = \CMS3\Engine\App::instance()->check_page_condition('_count=0'); // TODO
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/960_24_col.css">
@@ -97,23 +95,9 @@
 </div>
 </div>
 
-		    <?php if ($is_main): ?>
-            <div class="logo" style="position: absolute; z-index: 4">
-                <a href="/">
-                    <img src="<?php echo $media_path ?>image/store_logo_round.png" alt="" />
-                </a>
-            </div>
-            
-            <cms3:include renderer="block" position="banner" />
-		    
-		    <?php else: ?>
-		        <div class="logo" style="position: absolute; z-index: 4">
-                <a href="/">
-                    <img src="<?php echo $media_path ?>image/store_logo.png" alt="" />
-                </a>
-            </div>
-		    <div style="height: 22px; width: 100%"></div>
-			<?php endif; ?>
+			<cms3:include renderer="block" position="nb_logo" />
+
+            <cms3:include renderer="block" position="nb_banner" />
 
 		    
         </div>

@@ -19,7 +19,7 @@ class Renderer_Block extends Renderer implements Renderer_Interface {
 		$data = '';
 		foreach ($blocks as $block)
 		{
-			if (App::check_page_condition($block->condition->condition))
+			if (! $block->condition->loaded() || App::check_page_condition($block->condition->condition))
 			{
 				$block_params = (array)$block->params;
 				$block_params['block_id'] = $block->id;
