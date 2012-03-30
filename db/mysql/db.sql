@@ -1,4 +1,5 @@
 -- phpMyAdmin SQL Dump
+<<<<<<< HEAD
 -- version 3.4.5
 -- http://www.phpmyadmin.net
 --
@@ -9,6 +10,14 @@
 =======
 -- Generation Time: Feb 07, 2012 at 02:18 PM
 -- Server version: 5.1.40
+>>>>>>> origin/prasol
+=======
+-- version 3.3.5.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Mar 30, 2012 at 12:49 PM
+-- Server version: 5.0.45
 >>>>>>> origin/prasol
 -- PHP Version: 5.3.3
 
@@ -29,6 +38,9 @@ SET time_zone = "+00:00";
 
 --
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/prasol
 -- Table structure for table `acl__roles`
 --
 
@@ -95,7 +107,11 @@ CREATE TABLE IF NOT EXISTS `acl__rules` (
 --
 
 INSERT INTO `acl__rules` (`id`, `role`, `resource`, `privilege`, `assert_condition_id`, `allow`, `enabled`, `ordering`) VALUES
+<<<<<<< HEAD
 (1, 'user_1', 'admin_panel', 'login', NULL, 1, 1, 0);
+=======
+(1, 'user_2', 'admin_panel', 'login', NULL, 1, 1, 0);
+>>>>>>> origin/prasol
 
 -- --------------------------------------------------------
 
@@ -140,7 +156,11 @@ CREATE TABLE IF NOT EXISTS `auth__method_basic_params` (
 --
 
 INSERT INTO `auth__method_basic_params` (`id`, `user_id`, `username`, `password`) VALUES
+<<<<<<< HEAD
 (1, 1, 'admin', '5f4dcc3b5aa765d61d8327deb882cf99');
+=======
+(1, 1, 'admin', '202cb962ac59075b964b07152d234b70');
+>>>>>>> origin/prasol
 
 -- --------------------------------------------------------
 
@@ -157,6 +177,14 @@ CREATE TABLE IF NOT EXISTS `auth__method_openid_params` (
   UNIQUE KEY `openid` (`openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `auth__method_openid_params`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -223,6 +251,7 @@ CREATE TABLE IF NOT EXISTS `auth__tokens` (
 --
 
 INSERT INTO `auth__tokens` (`id`, `user_id`, `token`, `created`, `expires`) VALUES
+<<<<<<< HEAD
 (1, 1, 'aaSi9l5I36qc7It98k57VdGjsPRLlPUm', '2011-03-21 12:05:14', '2011-03-21 12:05:14'),
 (2, 1, 'DtiikMM4i4c9w7SFCP0qoDXtTmxkyCK0', '2011-03-21 12:05:15', '2011-03-21 12:05:15'),
 (3, 1, 'O47YjsULVVjagc9IXBw5Y9GOMHEWwYt6', '2011-03-21 12:05:16', '2011-03-21 12:05:16'),
@@ -231,6 +260,16 @@ INSERT INTO `auth__tokens` (`id`, `user_id`, `token`, `created`, `expires`) VALU
 (7, 1, 'CtYbQWybfIpjXZeryYkxC93Yrh83bzPT', '2011-05-10 13:58:33', '2011-05-10 13:58:33'),
 (10, 1, 'WWpPHdk5mP392gQ7qNmuGypVBZt9mxz8', '2011-05-10 15:05:02', '2011-05-10 15:05:02'),
 (12, 1, 'njFFDicig3ovoWVnW9IzSmAnhCq4skEF', '2011-05-20 11:02:18', '2011-05-20 11:02:18');
+=======
+(1, 1, 'aaSi9l5I36qc7It98k57VdGjsPRLlPUm', '2011-03-21 14:05:14', '2011-03-21 14:05:14'),
+(2, 1, 'DtiikMM4i4c9w7SFCP0qoDXtTmxkyCK0', '2011-03-21 14:05:15', '2011-03-21 14:05:15'),
+(3, 1, 'O47YjsULVVjagc9IXBw5Y9GOMHEWwYt6', '2011-03-21 14:05:16', '2011-03-21 14:05:16'),
+(4, 1, 'NHozd20ymY0SfmuPr1QUyPC1vp31R0aW', '2011-03-21 14:09:08', '2011-03-21 14:09:08'),
+(5, 1, 'ejL15mA4hO0qOXbItDjhkIDShfvYPnDS', '2011-03-21 14:09:12', '2011-03-21 14:09:12'),
+(7, 1, 'CtYbQWybfIpjXZeryYkxC93Yrh83bzPT', '2011-05-10 16:58:33', '2011-05-10 16:58:33'),
+(10, 1, 'WWpPHdk5mP392gQ7qNmuGypVBZt9mxz8', '2011-05-10 18:05:02', '2011-05-10 18:05:02'),
+(12, 1, 'njFFDicig3ovoWVnW9IzSmAnhCq4skEF', '2011-05-20 14:02:18', '2011-05-20 14:02:18');
+>>>>>>> origin/prasol
 
 -- --------------------------------------------------------
 
@@ -276,9 +315,15 @@ INSERT INTO `content__items` (`id`, `language`, `title`, `text`, `user_id`, `sta
 (1, 'ru_ru', '8888y', 'kl22', 1, 1),
 (31, 'ru_ru', 'Русский текст', 'Some', 0, 5),
 (32, 'ru_ru', '555', 'ddd', 0, 1),
+<<<<<<< HEAD
 (33, 'ru_ru', 'Оплата и доставка - 111', 'Оплата и доставка', 1, 0),
 (34, 'ru_ru', 'О нас - 22222', 'О нас', 1, 0),
 (35, 'ru_ru', 'Контакты - 333333', 'Контакты', 2, 0),
+=======
+(33, 'ru_ru', 'Оплата и доставка', 'Оплата и доставка', 1, 0),
+(34, 'ru_ru', 'О нас', 'О нас', 1, 0),
+(35, 'ru_ru', 'Контакты', 'Контакты', 2, 0),
+>>>>>>> origin/prasol
 (36, 'ru_ru', 'TEXT BLYUA', 'TITLE1', 1, 1),
 (44, '', 'df', 'dfg5t5', 0, 0);
 
@@ -294,16 +339,26 @@ CREATE TABLE IF NOT EXISTS `engine__blocks` (
   `module` varchar(255) NOT NULL,
   `action` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
+<<<<<<< HEAD
   `condition_id` int(11) unsigned NOT NULL,
   `template` varchar(255) NOT NULL,
   `params` text NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+=======
+  `condition_id` int(11) unsigned default NULL,
+  `template` varchar(255) NOT NULL,
+  `params` text NOT NULL,
+  `content` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+>>>>>>> origin/prasol
 
 --
 -- Dumping data for table `engine__blocks`
 --
 
+<<<<<<< HEAD
 INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, `condition_id`, `template`, `params`) VALUES
 (1, 'center', 'cms3\\shop', '', 1, 1, '', '[]'),
 (2, 'center', 'cms3\\shop', 'catalog', 2, 2, '', '{"count":"10","category_id":"150"}'),
@@ -318,10 +373,24 @@ INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, 
 (12, 'nb_content', 'cms3\\shop', '', 0, 11, '', ''),
 (14, 'admin-menu', 'cms3\\menu', '', 0, 0, '', '{"menu_id":"1"}'),
 (15, 'nb_leftmenu', 'cms3\\menu', '', 0, 0, 'leftmenu', '{"menu_id":"6"}');
+=======
+INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, `condition_id`, `template`, `params`, `content`) VALUES
+(10, 'nb_topmenu', 'cms3\\menu', '', 0, NULL, '', '{"menu_id":"5"}', ''),
+(11, 'nb_content', 'cms3\\content', '', 0, 4, '', '', ''),
+(12, 'nb_content', 'cms3\\shop', '', 0, 5, '', '', ''),
+(15, 'nb_leftmenu', 'cms3\\menu', '', 0, NULL, 'leftmenu', '{"menu_id":"6"}', ''),
+(16, 'nb_banner', '', '', 0, 1, '', '', '<div style="padding-left: 440px; margin-top: 10px; position: relative">\r\n	                    <a href="/?shop.product.type.id=16"><img src="http://newbathroom.com.ua/themes/newbathroom/views/native/html/../../../media/image/bg4.jpg" /></a>\r\n            </div>'),
+(17, 'nb_logo', '', '', 0, 1, '', '', '<div class="logo" style="position: absolute; z-index: 4">\r\n                <a href="/">\r\n                    <img src="<?php echo $media_path ?>image/store_logo_round.png" alt="" />\r\n                </a>\r\n            </div>'),
+(18, 'nb_logo', '', '', 0, 2, '', '', '<div class="logo" style="position: absolute; z-index: 4">\r\n                <a href="/">\r\n                    <img src="<?php echo $media_path ?>image/store_logo.png" alt="" />\r\n                </a>\r\n            </div>\r\n		    <div style="height: 22px; width: 100%"></div>'),
+(19, 'nb_content', 'cms3\\shop', 'main', 0, 1, '', '{"product_count":32}', '');
+>>>>>>> origin/prasol
 
 -- --------------------------------------------------------
 
 --
+<<<<<<< HEAD
+=======
+>>>>>>> origin/prasol
 =======
 >>>>>>> origin/prasol
 -- Table structure for table `engine__conditions`
@@ -334,6 +403,7 @@ CREATE TABLE IF NOT EXISTS `engine__conditions` (
   `condition` varchar(1024) NOT NULL,
   `engine` varchar(255) NOT NULL,
 <<<<<<< HEAD
+<<<<<<< HEAD
   `user` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
@@ -342,17 +412,29 @@ CREATE TABLE IF NOT EXISTS `engine__conditions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
 >>>>>>> origin/prasol
+=======
+  `user` tinyint(1) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+>>>>>>> origin/prasol
 
 --
 -- Dumping data for table `engine__conditions`
 --
 
 INSERT INTO `engine__conditions` (`id`, `language`, `title`, `condition`, `engine`, `user`) VALUES
+<<<<<<< HEAD
 (4, 'ru_ru', '', 'content.item.id <> ''''', '', 0),
 (5, 'ru_ru', 'Админка', 'grid <> "" or (form <> "")', '', 0),
 (10, 'ru_ru', '', '1', '', 0),
 <<<<<<< HEAD
 (11, 'ru_ru', '', 'content.item.id = ''''', '', 0);
+=======
+(1, 'ru_ru', 'Главная страница', '_count = 0', '', 0),
+(2, 'ru_ru', 'Внутренняя', '_count > 0', '', 0),
+(4, 'ru_ru', '', 'content/item/id <> 0', '', 0),
+(5, 'ru_ru', '', 'shop/product/id <> 0 || shop/product/type/id <> 0', '', 0);
+>>>>>>> origin/prasol
 
 -- --------------------------------------------------------
 
@@ -688,10 +770,17 @@ INSERT INTO `engine__routes` (`id`, `language`, `title`, `format`) VALUES
 (1, 'ru_ru', 'Магазин', 'shop(/<shop_path:.*>)'),
 (2, 'ru_ru', 'Галерея', 'gallery(/<gallery_album_id>(/<gallery_photo_id>))'),
 (3, 'ru_ru', 'Профайлер', '<profile:profile>'),
+<<<<<<< HEAD
 (4, 'ru_ru', 'Контент', 'content(/?content_item_id=<content_item_id>)'),
 (5, 'ru_ru', 'Админка', '<grid:admin>(/<model>)'),
 (6, 'ru_ru', '', '<form:admin>((/<model>)(/<id>))'),
 (15, 'ru_ru', 'Категория магазина', 'shop/?shop_product_type_id=<shop_product_type_id>');
+=======
+(4, 'ru_ru', 'Контент', 'content(/?content/item/id=<content_item_id>)'),
+(5, 'ru_ru', 'Админка', '<grid:admin>(/<model>)'),
+(6, 'ru_ru', '', '<form:admin>((/<model>)(/<id>))'),
+(15, 'ru_ru', 'Категория магазина', 'shop/?shop/product/type/id=<shop_product_type_id>');
+>>>>>>> origin/prasol
 
 -- --------------------------------------------------------
 
@@ -702,7 +791,11 @@ INSERT INTO `engine__routes` (`id`, `language`, `title`, `format`) VALUES
 CREATE TABLE IF NOT EXISTS `engine__themes` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
+<<<<<<< HEAD
   `condition_id` int(11) unsigned NOT NULL,
+=======
+  `condition_id` int(11) unsigned default NULL,
+>>>>>>> origin/prasol
   PRIMARY KEY  (`id`),
   KEY `condition_id` (`condition_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
@@ -712,8 +805,11 @@ CREATE TABLE IF NOT EXISTS `engine__themes` (
 --
 
 INSERT INTO `engine__themes` (`id`, `name`, `condition_id`) VALUES
+<<<<<<< HEAD
 (2, 'default_blue', 1),
 (3, 'admin', 5),
+=======
+>>>>>>> origin/prasol
 (4, 'newbathroom', 10);
 
 -- --------------------------------------------------------
@@ -11639,6 +11735,7 @@ CREATE TABLE IF NOT EXISTS `menu__items` (
 
 INSERT INTO `menu__items` (`id`, `language`, `title`, `menu_id`, `uri`, `parent_id`, `ordering`, `active_condition_id`, `route_id`, `params`) VALUES
 (1, 'ru_ru', 'Главная', 5, '/', 0, 1, 0, 1, '[]'),
+<<<<<<< HEAD
 (2, 'ru_ru', 'Категория', 2, '', 1, 2, 0, 1, '{"shop_category_id":"1"}'),
 (3, 'ru_ru', 'Товар', 2, '', 2, 3, 0, 1, '{"shop_category_id":"1","shop_product_id":"1"}'),
 (4, 'ru_ru', 'Галерея', 2, '', 0, 4, 0, 2, '{"gallery_album_id":"1","gallery_photo_id":"2"}'),
@@ -11677,6 +11774,39 @@ INSERT INTO `menu__items` (`id`, `language`, `title`, `menu_id`, `uri`, `parent_
 (177, '', 'Насосы', 6, '', 173, NULL, 0, 15, '{"shop.product.type.id":23}'),
 (178, '', 'Канализация', 6, '', 173, NULL, 0, 15, '{"shop.product.type.id":24}'),
 (179, '', 'Трубы и фитинги (ППР)', 6, '', 173, NULL, 0, 15, '{"shop.product.type.id":25}');
+=======
+(10, 'ru_ru', 'Оплата и доставка', 5, '', 0, 3, 0, 4, '{"content/item/id":33}'),
+(11, 'ru_ru', 'О нас', 5, '', 0, 4, 0, 4, '{"content/item/id":34}'),
+(12, 'ru_ru', 'Контакты', 5, '', 0, 5, 0, 4, '{"content/item/id":35}'),
+(152, '', 'Плитка', 6, '', 0, NULL, 0, NULL, NULL),
+(153, '', 'Плитка напольная', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":1}'),
+(154, '', 'Плитка настенная', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":2}'),
+(155, '', 'Декор', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":3}'),
+(156, '', 'Фриз', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":4}'),
+(157, '', 'Профиль', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":5}'),
+(158, '', 'Сантехника', 6, '', 0, NULL, 0, NULL, NULL),
+(159, '', 'Компакты, унитазы, уриналы', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":6}'),
+(160, '', 'Биде', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":7}'),
+(161, '', 'Сиденье для унитазов и биде', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":8}'),
+(162, '', 'Умывальник', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":9}'),
+(163, '', 'Инсталляции', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":10}'),
+(164, '', 'Ванны', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":11}'),
+(165, '', 'Гидромассажные системы', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":12}'),
+(166, '', 'Гидромассажные боксы', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":13}'),
+(167, '', 'Душевые кабины', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":14}'),
+(168, '', 'Поддоны', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":15}'),
+(169, '', 'Смесители', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":16}'),
+(170, '', 'Сифоны', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":17}'),
+(171, '', 'Мебель для ванной комнаты', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":18}'),
+(172, '', 'Аксессуары для ванной комнаты', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":19}'),
+(173, '', 'Отопление', 6, '', 0, NULL, 0, NULL, NULL),
+(174, '', 'Котлы', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":20}'),
+(175, '', 'Радиаторы', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":21}'),
+(176, '', 'Водонагреватели', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":22}'),
+(177, '', 'Насосы', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":23}'),
+(178, '', 'Канализация', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":24}'),
+(179, '', 'Трубы и фитинги (ППР)', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":25}');
+>>>>>>> origin/prasol
 
 -- --------------------------------------------------------
 
@@ -16243,6 +16373,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_booleans` (
   PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_booleans`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16259,6 +16397,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_booleans_i18n` (
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_booleans_i18n`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16272,6 +16418,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_floats` (
   PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_floats`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16288,6 +16442,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_floats_i18n` (
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_floats_i18n`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16325,6 +16487,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_integers_i18n` (
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_integers_i18n`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16338,6 +16508,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists` (
   PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_lists`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16354,6 +16532,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_i18n` (
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_lists_i18n`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16366,6 +16552,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_options` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_lists_options`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16382,6 +16576,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_options_i18n` (
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_lists_options_i18n`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16458,6 +16660,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_booleans` (
   PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_value_booleans`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16470,6 +16680,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_floats` (
   PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_value_floats`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16502,6 +16720,14 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_lists` (
   PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `properties__property_value_lists`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16536,6 +16762,14 @@ CREATE TABLE IF NOT EXISTS `shop__distributors` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `shop__distributors`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -16553,6 +16787,14 @@ CREATE TABLE IF NOT EXISTS `shop__distributor_products` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `shop__distributor_products`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -30924,6 +31166,14 @@ CREATE TABLE IF NOT EXISTS `shop__product_properties` (
   PRIMARY KEY  (`product_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `shop__product_properties`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -30939,6 +31189,14 @@ CREATE TABLE IF NOT EXISTS `shop__product_property_values` (
   PRIMARY KEY  (`item_id`,`value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `shop__product_property_values`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -30998,6 +31256,14 @@ CREATE TABLE IF NOT EXISTS `shop__product_types_properties` (
   PRIMARY KEY  (`product_type_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `shop__product_types_properties`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31013,6 +31279,14 @@ CREATE TABLE IF NOT EXISTS `shop__product_types_property_values` (
   PRIMARY KEY  (`product_type_id`,`value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `shop__product_types_property_values`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31125,6 +31399,14 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_floats` (
   PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `_new_properties__property_floats`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31163,6 +31445,14 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_lists` (
   PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `_new_properties__property_lists`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31176,6 +31466,14 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_lists_options` (
   PRIMARY KEY  (`value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `_new_properties__property_lists_options`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31192,6 +31490,14 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_lists_options_i18n` (
   UNIQUE KEY `property_id` (`value_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `_new_properties__property_lists_options_i18n`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31270,6 +31576,14 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_value_booleans` (
   PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `_new_properties__property_value_booleans`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31282,6 +31596,14 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_value_floats` (
   PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `_new_properties__property_value_floats`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31314,6 +31636,14 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_value_lists` (
   PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
+=======
+--
+-- Dumping data for table `_new_properties__property_value_lists`
+--
+
+
+>>>>>>> origin/prasol
 -- --------------------------------------------------------
 
 --
@@ -31333,6 +31663,7 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_value_strings` (
 
 INSERT INTO `_new_properties__property_value_strings` (`property_value_id`, `language`, `value`) VALUES
 (2, 'ru_ru', 'Янис');
+<<<<<<< HEAD
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
@@ -31340,4 +31671,6 @@ INSERT INTO `_new_properties__property_value_strings` (`property_value_id`, `lan
 =======
 (11, 'ru_ru', '', 'content.item.id = ''''', '', 0),
 (100, 'ru_ru', 'Главная', '_count = 0', '', 0);
+>>>>>>> origin/prasol
+=======
 >>>>>>> origin/prasol
