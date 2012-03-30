@@ -65,7 +65,7 @@ class Model_Product extends Model {
 	public function virtual_fields()
 	{
 		return array(
-			'default_image' => $this->_default_image(),
+			//'default_image' => $this->_default_image(),
 			'vendor' => $this->properties->vendor->as_array()
 		);
 	}

@@ -84,7 +84,8 @@ class Thumbnail
 		$this->load();
 		if ($this->_image)
 		{
-			return $this->_image->render(NULL, $this->quality);
+			//return $this->_image->render(NULL, $this->quality);
+            return readfile($this->filename());
 		}
 		return NULL;
 	}

@@ -41,7 +41,7 @@ class Controller extends Abstract_Controller {
 
 		$paginator = new Paginator($total, $builder->current_limit(), $builder->current_offset(), 'shop/product');
 		
-		$products = $builder->select_all();
+		$products = $builder->select_all()->as_array();
 		
 		$type = Model_Product_Type::factory()
 			->query($params["shop/product/type/id"])
@@ -55,9 +55,19 @@ class Controller extends Abstract_Controller {
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
 
+        foreach ($products as &$product)
+        {
+            // TODO !
+            if (count($product['images']))
+            {
+                $img = $product['images'][0];
+                $product['default_image']['thumbnail']['url'] = '/?controller=cms3/images&action=thumbnail&width=150&height=120&image=' . $img['file']['dir'] . '/' . $img['file']['filename'];
+            }
+        }
+
 		$view_data = array(
 			'title' => @$type->title,
-			'products' => $products->as_array(),
+			'products' => $products,
 			'pagination' => $paginator_data
 		);
 
@@ -97,6 +107,16 @@ class Controller extends Abstract_Controller {
 			return $a['type']['id'] > $b['type']['id'];
 		});
 
+        foreach ($products as &$product)
+        {
+            // TODO !
+            if (count($product['images']))
+            {
+                $img = $product['images'][0];
+                $product['default_image']['thumbnail']['url'] = '/?controller=cms3/images&action=thumbnail&width=150&height=120&image=' . $img['file']['dir'] . '/' . $img['file']['filename'];
+            }
+        }
+
 		$view_data = array(
 			'title' => 'Новинки',
 			'products' => $products,
@@ -131,6 +151,8 @@ class Controller extends Abstract_Controller {
 				':product_id' => $product_id,
 			));
 		}
+
+        $product->image = $product->_default_image();
 
 		$product->image_params = array(
 			'width' => 400,

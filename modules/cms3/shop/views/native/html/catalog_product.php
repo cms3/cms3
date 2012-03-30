@@ -8,7 +8,7 @@
 			endif;
 		?>
 		<ins class="img-block">
-			<a href="/?shop/product/id=<?php echo $this->product['id'] ?>" class="drag-obj"><img width="<?php echo $this->product['default_image']['thumbnail']['width'] ?>" height="<?php echo $this->product['default_image']['thumbnail']['height'] ?>" src="<?php echo $this->product['default_image']['thumbnail']['url'] ?>" alt="<?php echo $this->product['title'] ?>" /></a><br />
+			<a href="/?shop/product/id=<?php echo $this->product['id'] ?>" class="drag-obj"><img src="<?php echo $this->product['default_image']['thumbnail']['url'] ?>" alt="<?php echo $this->product['title'] ?>" /></a><br />
 		</ins>
 		<div class="caption">
 			<?php
