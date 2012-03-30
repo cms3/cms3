@@ -31,10 +31,8 @@ class Paginator {
 		$limit_param = 'limit[' . $model . ']';
 		
 		$get = $_GET;
-		unset($get[$offset_param]);
-		unset($get[$limit_param]);
-		unset($get[urlencode($offset_param)]);
-		unset($get[urlencode($limit_param)]);
+		unset($get['offset']);
+		unset($get['limit']);
 	
 		$count = ceil($total / $limit);
 		$active_no = floor($offset / $limit) + 1;

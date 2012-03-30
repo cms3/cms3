@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en" xmlns:cms3="http://www.w3.org/2001/XInclude"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html dir="ltr" lang="ru"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 	<cms3:include renderer="document" name="header" priority="-100" />
 	
 <?php
 	$media_path = $this->settings('url_path') . '../../../media/';
-	$is_main = count(\CMS3\Engine\App::instance()->param()) == 0; // TODO
+	$is_main = \CMS3\Engine\App::instance()->check_page_condition('_count=0'); // TODO
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $media_path ?>style/960_24_col.css">
@@ -95,24 +95,9 @@
 </div>
 </div>
 
-		    <?php if ($is_main): ?>
-            <div class="logo" style="position: absolute; z-index: 4">
-                <a href="/">
-                    <img src="<?php echo $media_path ?>image/store_logo_round.png" alt="" />
-                </a>
-            </div>
-		    
-            <div style="padding-left: 440px; margin-top: 10px; position: relative">
-	                    <a href="/?shop.product.type.id=16"><img src="<?php echo $media_path ?>image/bg4.jpg" /></a>
-            </div>
-		    <?php else: ?>
-		        <div class="logo" style="position: absolute; z-index: 4">
-                <a href="/">
-                    <img src="<?php echo $media_path ?>image/store_logo.png" alt="" />
-                </a>
-            </div>
-		    <div style="height: 22px; width: 100%"></div>
-			<?php endif; ?>
+			<cms3:include renderer="block" position="nb_logo" />
+
+            <cms3:include renderer="block" position="nb_banner" />
 
 		    
         </div>

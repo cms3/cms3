@@ -10,24 +10,24 @@ class Expression_Calc_PHP implements Expression_Interface {
 	{
 		foreach ($variables as $var_name => $var_value)
 		{
-			$var_name = str_replace('.', '_', $var_name);
 			$this->_vars[$var_name] = $var_value;
 		}
-
+        
 		$expression = strtolower($expression);
-		$expression = str_replace('.', '_', $expression);
 		$expression = str_replace('=', '==', $expression);
 		$expression = str_replace('<>', '!=', $expression);
 		
 		$expression = preg_replace('/([^\w])and([^\w])/', '$1&&$2', $expression);
 		$expression = preg_replace('/([^\w])or([^\w])/', '$1||$2', $expression);
 		$expression = preg_replace('/([^\w])not([^\w])/', '$1!$2', $expression);
+        
+		$regexp = '/([a-zA-Z_\/]+)/';
+		$expression = preg_replace($regexp, '$this->_vars[\'$1\']', $expression);
 
-		$regexp = '/([^\w]|^)([a-zA-Z_])/';
-		$expression = preg_replace($regexp, '$1$this->$2', $expression);
-
+        set_error_handler(function(){});
 		$result = eval("return $expression;");
-
+        restore_error_handler();
+        
 		return $result;
 	}
 

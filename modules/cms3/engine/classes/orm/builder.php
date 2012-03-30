@@ -34,7 +34,7 @@ class ORM_Builder extends \Jelly_Builder {
 		if ($params === NULL && $module !== NULL && $model !== NULL)
 		{
 			$params = (array)(App::instance()->filter($module, $model));
-		}
+ 		}
 		$alias = $this->make_alias($module, $model);
 
 		$filtered = FALSE;
@@ -93,7 +93,7 @@ class ORM_Builder extends \Jelly_Builder {
 	protected function _add_param_filter($model, $name, $value, $basic_alias, $rel_alias = NULL)
 	{
 		$result = FALSE;
-		
+
 		$meta = ORM::meta($model);
 		
 		$parts = explode('.', $name);

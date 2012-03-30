@@ -7,6 +7,23 @@ class Request_Client_Internal extends \Kohana_Request_Client_Internal
 	
 	public function execute_request(Request $request)
 	{
+		// Store the currently active request
+		$previous = Request::$current;
+
+		// Change the current request to this request
+		Request::$current = $request;
+		try
+		{
+			$request->response() ?: $request->create_response();
+			App::instance()->dispatch($request->controller(), $request->action());
+		}
+		catch (Exception $e)
+		{
+			Request::$current = $previous;
+		}
+		Request::$current = $previous;
+
+		/*
 		// Create the class prefix
 		$prefix = 'controller_';
 
@@ -114,8 +131,9 @@ class Request_Client_Internal extends \Kohana_Request_Client_Internal
 			// Stop the benchmark
 			\Profiler::stop($benchmark);
 		}
-
+*/
 		// Return the response
 		return $request->response();
+
 	}
 }

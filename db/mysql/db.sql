@@ -3,8 +3,13 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
+<<<<<<< HEAD
 -- Generation Time: Mar 05, 2012 at 07:21 PM
 -- Server version: 5.0.45
+=======
+-- Generation Time: Feb 07, 2012 at 02:18 PM
+-- Server version: 5.1.40
+>>>>>>> origin/prasol
 -- PHP Version: 5.3.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -23,6 +28,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+<<<<<<< HEAD
 -- Table structure for table `acl__roles`
 --
 
@@ -316,6 +322,8 @@ INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, 
 -- --------------------------------------------------------
 
 --
+=======
+>>>>>>> origin/prasol
 -- Table structure for table `engine__conditions`
 --
 
@@ -325,9 +333,15 @@ CREATE TABLE IF NOT EXISTS `engine__conditions` (
   `title` varchar(255) NOT NULL,
   `condition` varchar(1024) NOT NULL,
   `engine` varchar(255) NOT NULL,
+<<<<<<< HEAD
   `user` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+=======
+  `user` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
+>>>>>>> origin/prasol
 
 --
 -- Dumping data for table `engine__conditions`
@@ -337,6 +351,7 @@ INSERT INTO `engine__conditions` (`id`, `language`, `title`, `condition`, `engin
 (4, 'ru_ru', '', 'content.item.id <> ''''', '', 0),
 (5, 'ru_ru', 'Админка', 'grid <> "" or (form <> "")', '', 0),
 (10, 'ru_ru', '', '1', '', 0),
+<<<<<<< HEAD
 (11, 'ru_ru', '', 'content.item.id = ''''', '', 0);
 
 -- --------------------------------------------------------
@@ -31322,3 +31337,7 @@ INSERT INTO `_new_properties__property_value_strings` (`property_value_id`, `lan
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+=======
+(11, 'ru_ru', '', 'content.item.id = ''''', '', 0),
+(100, 'ru_ru', 'Главная', '_count = 0', '', 0);
+>>>>>>> origin/prasol

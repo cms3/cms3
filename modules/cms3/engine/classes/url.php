@@ -4,6 +4,8 @@ namespace CMS3\Engine;
 
 class URL extends \URL {
 
+    const PART_DELIMITER = '/';
+
 	public static function current()
 	{
 		return static::site(Request::current()->uri(), TRUE);
@@ -39,6 +41,46 @@ class URL extends \URL {
 		}
 		
 		return $url;
+	}
+
+    public static function query(array $params = NULL, $use_get = TRUE, $escape_special = FALSE)
+	{
+		if ($use_get)
+		{
+			if ($params === NULL)
+			{
+				// Use only the current parameters
+				$params = $_GET;
+			}
+			else
+			{
+				// Merge the current and new parameters
+				$params = array_merge($_GET, $params);
+			}
+		}
+
+		if (empty($params))
+		{
+			// No query parameters
+			return '';
+		}
+
+		if ($escape_special)
+        {
+		    $query = http_build_query($params, '', '&');
+        }
+        else
+        {
+            $query = array();
+            foreach ($params as $name => $value)
+            {
+                $query[] = $name . '=' . $value;
+            }
+            $query = implode('&', $query);
+        }
+
+		// Don't prepend '?' to an empty string
+		return ($query === '') ? '' : ('?'.$query);
 	}
 
 }

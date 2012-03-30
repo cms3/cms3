@@ -68,10 +68,13 @@ class Model_Image extends Model
 	public function thumbnail(array $params = array())
 	{
 		$orig_file = $this->file->filepath();
+
 		$params = (array)$params + $this->_resize_params;
 		$thumb_file = $this->_thumbnail_filename($orig_file, $params);
 
-		return Thumbnail::factory($orig_file, $thumb_file, $params);
+		$thumb = Thumbnail::factory($orig_file, $thumb_file, $params);
+
+		return $thumb;
 	}
 
 	protected function _thumbnail_filename($filename, $params)

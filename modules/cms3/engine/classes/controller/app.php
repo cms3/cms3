@@ -23,4 +23,11 @@ class Controller_App extends Controller {
 		
 		App::instance()->dispatch_action($controller, $action);
 	}
+	
+	// TODO
+	public function action_clear_path_cache()
+	{
+		Autoloader::init();
+		Autoloader::clear_cache();
+	}
 }

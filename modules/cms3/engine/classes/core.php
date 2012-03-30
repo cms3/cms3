@@ -30,6 +30,7 @@ class Core extends \Kohana {
 			}
 			return parent::modules($expanded);
 		}
+		
 		return parent::modules($modules);
 	}
 

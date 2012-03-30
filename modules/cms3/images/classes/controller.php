@@ -10,8 +10,6 @@ class Controller extends Abstract_Controller
 
 	public function action_thumbnail(array $params = array())
 	{
-		$params = $_REQUEST; // TODO: автоматически
-
 		if (isset($params['image']))
 		{
 			$model = Model_Image::factory()
@@ -22,6 +20,7 @@ class Controller extends Abstract_Controller
 			if ($model->loaded())
 			{
 				$this->response->headers('Content-Type', $model->file->mime);
+                header('Content-Type: ' . $model->file->mime); // TODO ! разобраться почему через response не работает
 				
 				echo $model->thumbnail($params)->display();
 			}

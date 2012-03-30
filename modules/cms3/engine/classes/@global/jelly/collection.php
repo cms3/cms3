@@ -7,36 +7,87 @@ class Jelly_Collection extends Jelly_Core_Collection {
 	public function as_array($key = NULL, $value = NULL)
 	{
 		// TODO
-		if ($key !== NULL)
+		if ($key !== NULL || $value !== NULL)
 		{
 			return $this->_result->as_array($key, $value);
 		}
 		else
 		{
+
 			$result = array();
 			foreach ($this as $item)
 			{
+
 				$node = array();
 				$fields = $item->meta()->fields();
+				if (\CMS3::$profiling === TRUE)
+				{
+					$benchmark_global = \Profiler::start(get_class($this), __FUNCTION__);
+				}
 				foreach ($fields as $name => $field)
 				{
 					if ($item->{$name} instanceof \CMS3\Engine\Model)
 					{
+						if (\CMS3::$profiling === TRUE)
+						{
+							$benchmark = \Profiler::start(get_class($this), __FUNCTION__ . '[Model as_array]');
+						}
+
 						$node[$name] = $item->{$name}->as_array(NULL, FALSE, TRUE, 1);
+
+						if (isset($benchmark))
+						{
+							\Profiler::stop($benchmark);
+						}
 					}
 					elseif ($item->{$name} instanceof \Jelly_Collection)
 					{
+						if (\CMS3::$profiling === TRUE)
+						{
+							$benchmark = \Profiler::start(get_class($this), __FUNCTION__ . '[Collection as_array]');
+						}
+
 						$node[$name] = $item->{$name}->as_array(NULL, NULL);
+
+						if (isset($benchmark))
+						{
+							\Profiler::stop($benchmark);
+						}
 					}
 					else
 					{
+						if (\CMS3::$profiling === TRUE)
+						{
+							$benchmark = \Profiler::start(get_class($this), __FUNCTION__ . '[$item->field_value]');
+						}
+
 						$node[$name] = $item->field_value($name);
+
+						if (isset($benchmark))
+						{
+							\Profiler::stop($benchmark);
+						}
 					}
 				}
+				if (\CMS3::$profiling === TRUE)
+				{
+					$benchmark = \Profiler::start(get_class($this), __FUNCTION__ . '[$item->virtual_fields]');
+				}
+				
 				$node = array_merge($node, $item->virtual_fields()); // TODO: нужно не всегда?
+
+				if (isset($benchmark))
+				{
+					\Profiler::stop($benchmark);
+				}
+				if (isset($benchmark_global))
+				{
+					\Profiler::stop($benchmark_global);
+				}
+
 				$result[] = $node;
 			}
-		//	print_r($result);
+
 			return $result;
 		}
 	}
