@@ -1,36 +1,9 @@
 cms3.richGrid = new Object();
-cms3.extend(cms3.richGrid, cms3.object, {
-    fieldTypes: {},
-
-    fields: {},
-
-    //Создание объектов колонок
-    createFieldsObjects: cms3.field.createFieldsObjects,/*function(model){
-
-        var grid = this;
-        var fields = new Object();
-
-        cms3.each(model.fields, function(fieldId, field){
-           fields[fieldId] = cms3.clone(field);
-           fields[fieldId].id = fieldId;
-           fields[fieldId].selectors = grid.selectors;
-           fields[fieldId].grid = grid;
-           fields[fieldId] = cms3.richGrid.field[field.type].create(fields[fieldId]);
-
-           if (field.model != undefined && field.model instanceof String){
-               var modelName = field.model;
-               field.model = new Object();
-               field.model.items = grid.models[modelName].items;
-               field.model.fields = grid.createFieldsObjects(grid.models[modelName].fields);
-               field.model.model = field.model;
-           }
-        });
-
-        return fields ;
-    },*/
+cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
 
     init: function(){
-        //console.dir(this);
+        /*var d = new Date();
+        console.log(d.getTime());*/
         var $ = jQuery;
         var grid = this;
 
@@ -39,7 +12,7 @@ cms3.extend(cms3.richGrid, cms3.object, {
         this.selectors.build();
 
         //ссылки на текущую модель
-        this.fields = this.createFieldsObjects(this.models[this.model]);
+        this.createFieldsObjects();
         this.items = this.models[this.model].items;
 
         //Build tablet items
@@ -126,6 +99,8 @@ cms3.extend(cms3.richGrid, cms3.object, {
             });
             $( "table.grid tbody" ).disableSelection();
         });*/
+        /*var d = new Date();
+        console.log(d.getTime());*/
     },
 
     getFilters: function(){
@@ -146,7 +121,7 @@ cms3.extend(cms3.richGrid, cms3.object, {
         var $ = jQuery;
         var grid = this;
         var filters = grid.getFilters();
-        
+
         cms3.each(this.items, function(i, item){
             var visible = true;
             cms3.each(filters, function(filterFieldId, filter){
