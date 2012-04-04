@@ -126,7 +126,7 @@ class Controller extends Abstract_Controller {
             if (count($product->images))
             {
                 $img = $product->images[0];
-                $products_arr[$i]['default_image']['thumbnail']['url'] = $img->thumbnail(array('width' => 150, 'height' => 120))->url();
+                $products_arr[$i]['default_image']['thumbnail']['url'] = $img->thumbnail(array('width' => 150, 'height' => 120), FALSE)->url();
             }
         }
 
