@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 30, 2012 at 12:49 PM
+-- Generation Time: Apr 04, 2012 at 07:32 PM
 -- Server version: 5.0.45
 -- PHP Version: 5.3.3
 
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `engine__blocks` (
   `params` text NOT NULL,
   `content` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `engine__blocks`
@@ -311,7 +311,8 @@ INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, 
 (16, 'nb_banner', '', '', 0, 1, '', '', '<div style="padding-left: 440px; margin-top: 10px; position: relative">\r\n	                    <a href="/?shop.product.type.id=16"><img src="http://newbathroom.com.ua/themes/newbathroom/views/native/html/../../../media/image/bg4.jpg" /></a>\r\n            </div>'),
 (17, 'nb_logo', '', '', 0, 1, '', '', '<div class="logo" style="position: absolute; z-index: 4">\r\n                <a href="/">\r\n                    <img src="<?php echo $media_path ?>image/store_logo_round.png" alt="" />\r\n                </a>\r\n            </div>'),
 (18, 'nb_logo', '', '', 0, 2, '', '', '<div class="logo" style="position: absolute; z-index: 4">\r\n                <a href="/">\r\n                    <img src="<?php echo $media_path ?>image/store_logo.png" alt="" />\r\n                </a>\r\n            </div>\r\n		    <div style="height: 22px; width: 100%"></div>'),
-(19, 'nb_content', 'cms3\\shop', 'main', 0, 1, '', '{"product_count":32}', '');
+(19, 'nb_content', 'cms3\\shop', 'main', 0, 1, '', '{"product_count":32}', ''),
+(20, 'admin', 'cms3\\dataview', '', 0, NULL, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -327,7 +328,7 @@ CREATE TABLE IF NOT EXISTS `engine__conditions` (
   `engine` varchar(255) NOT NULL,
   `user` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `engine__conditions`
@@ -337,7 +338,9 @@ INSERT INTO `engine__conditions` (`id`, `language`, `title`, `condition`, `engin
 (1, 'ru_ru', 'Главная страница', '_count = 0', '', 0),
 (2, 'ru_ru', 'Внутренняя', '_count > 0', '', 0),
 (4, 'ru_ru', '', 'content/item/id <> 0', '', 0),
-(5, 'ru_ru', '', 'shop/product/id <> 0 || shop/product/type/id <> 0', '', 0);
+(5, 'ru_ru', '', 'shop/product/id <> 0 || shop/product/type/id <> 0', '', 0),
+(10, 'ru_ru', 'Кроме админки', 'model = ''''', '', 0),
+(13, 'ru_ru', 'Админка', 'model <> ''''', '', 0);
 
 -- --------------------------------------------------------
 
@@ -690,14 +693,15 @@ CREATE TABLE IF NOT EXISTS `engine__themes` (
   `condition_id` int(11) unsigned default NULL,
   PRIMARY KEY  (`id`),
   KEY `condition_id` (`condition_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `engine__themes`
 --
 
 INSERT INTO `engine__themes` (`id`, `name`, `condition_id`) VALUES
-(4, 'newbathroom', 10);
+(4, 'newbathroom', 10),
+(5, 'admin', 13);
 
 -- --------------------------------------------------------
 
