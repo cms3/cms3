@@ -99,14 +99,16 @@ class Controller extends Abstract_Controller {
 		{
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__ . '[as_array]');
 		}
+
+
 		
-		$products = $products->as_array();
+		$products_arr = $products->as_array();
 			
-		usort($products, function($a, $b)
+		usort($products_arr, function($a, $b)
 		{
 			return $a['type']['id'] > $b['type']['id'];
 		});
-
+            /*
         foreach ($products as &$product)
         {
             // TODO !
@@ -116,10 +118,21 @@ class Controller extends Abstract_Controller {
                 $product['default_image']['thumbnail']['url'] = '/?controller=cms3/images&action=thumbnail&width=150&height=120&image=' . $img['file']['dir'] . '/' . $img['file']['filename'];
             }
         }
+              */
+
+        foreach ($products as $i => $product)
+        {
+            // TODO !
+            if (count($product->images))
+            {
+                $img = $product->images[0];
+                $products_arr[$i]['default_image']['thumbnail']['url'] = $img->thumbnail(array('width' => 150, 'height' => 120))->url();
+            }
+        }
 
 		$view_data = array(
 			'title' => 'Новинки',
-			'products' => $products,
+			'products' => $products_arr,
 			'with_sections' => TRUE
 		);
 
@@ -152,7 +165,7 @@ class Controller extends Abstract_Controller {
 			));
 		}
 
-        $product->image = $product->_default_image();
+
 
 		$product->image_params = array(
 			'width' => 400,
@@ -165,6 +178,8 @@ class Controller extends Abstract_Controller {
 		);
 
 		$product_arr = $product->as_array(NULL, TRUE, TRUE, 2);
+
+        $product_arr['default_image'] = $product->_default_image();
 
 		$product_arr['images'] = array();
 
