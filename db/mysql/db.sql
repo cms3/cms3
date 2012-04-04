@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 3.2.3
+-- version 3.3.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 10, 2012 at 06:50 PM
--- Server version: 5.1.40
+-- Generation Time: Apr 04, 2012 at 07:32 PM
+-- Server version: 5.0.45
 -- PHP Version: 5.3.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
@@ -26,12 +26,12 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 CREATE TABLE IF NOT EXISTS `acl__roles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `name` varchar(255) NOT NULL,
   `parent_id` int(11) unsigned NOT NULL,
   `ordering` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
@@ -53,7 +53,7 @@ INSERT INTO `acl__roles` (`id`, `language`, `name`, `parent_id`, `ordering`) VAL
 CREATE TABLE IF NOT EXISTS `acl__roles_users` (
   `role_id` int(11) unsigned NOT NULL,
   `user_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`role_id`,`user_id`),
+  PRIMARY KEY  (`role_id`,`user_id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -71,15 +71,15 @@ INSERT INTO `acl__roles_users` (`role_id`, `user_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `acl__rules` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `role` varchar(100) NOT NULL,
   `resource` varchar(100) NOT NULL,
   `privilege` varchar(100) NOT NULL,
-  `assert_condition_id` int(11) unsigned DEFAULT NULL,
+  `assert_condition_id` int(11) unsigned default NULL,
   `allow` tinyint(1) NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '0',
+  `enabled` tinyint(1) NOT NULL default '0',
   `ordering` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   KEY `condition_id` (`assert_condition_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `acl__rules` (
 --
 
 INSERT INTO `acl__rules` (`id`, `role`, `resource`, `privilege`, `assert_condition_id`, `allow`, `enabled`, `ordering`) VALUES
-(1, 'user_1', 'test_res', 'test_priv', NULL, 1, 1, 0);
+(1, 'user_2', 'admin_panel', 'login', NULL, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -97,10 +97,10 @@ INSERT INTO `acl__rules` (`id`, `role`, `resource`, `privilege`, `assert_conditi
 --
 
 CREATE TABLE IF NOT EXISTS `auth__methods` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(12) unsigned NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
@@ -118,11 +118,11 @@ INSERT INTO `auth__methods` (`id`, `language`, `name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `auth__method_basic_params` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(12) unsigned NOT NULL auto_increment,
   `user_id` int(12) unsigned NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(32) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `login` (`username`),
   UNIQUE KEY `user_id` (`user_id`),
   KEY `password` (`password`)
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `auth__method_basic_params` (
 --
 
 INSERT INTO `auth__method_basic_params` (`id`, `user_id`, `username`, `password`) VALUES
-(1, 1, 'admin', '5f4dcc3b5aa765d61d8327deb882cf99');
+(1, 1, 'admin', '202cb962ac59075b964b07152d234b70');
 
 -- --------------------------------------------------------
 
@@ -142,10 +142,10 @@ INSERT INTO `auth__method_basic_params` (`id`, `user_id`, `username`, `password`
 --
 
 CREATE TABLE IF NOT EXISTS `auth__method_openid_params` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(12) unsigned NOT NULL auto_increment,
   `user_id` int(12) unsigned NOT NULL,
   `openid` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `user_id` (`user_id`),
   UNIQUE KEY `openid` (`openid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `auth__method_openid_params` (
 --
 
 CREATE TABLE IF NOT EXISTS `auth__properties_users` (
-  `user_id` int(11) unsigned DEFAULT NULL,
+  `user_id` int(11) unsigned default NULL,
   `property_id` int(11) unsigned NOT NULL,
   `ordering` int(11) NOT NULL,
   UNIQUE KEY `user_id` (`user_id`,`property_id`)
@@ -187,7 +187,7 @@ CREATE TABLE IF NOT EXISTS `auth__property_values_users` (
   `user_id` int(10) unsigned NOT NULL,
   `property_id` int(10) unsigned NOT NULL,
   `value_id` int(11) NOT NULL,
-  PRIMARY KEY (`user_id`,`property_id`)
+  PRIMARY KEY  (`user_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -206,12 +206,12 @@ INSERT INTO `auth__property_values_users` (`user_id`, `property_id`, `value_id`)
 --
 
 CREATE TABLE IF NOT EXISTS `auth__tokens` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(12) unsigned NOT NULL auto_increment,
   `user_id` int(12) unsigned NOT NULL,
   `token` char(32) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `expires` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
+  `created` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `expires` timestamp NOT NULL default '0000-00-00 00:00:00',
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `token` (`token`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
@@ -237,10 +237,10 @@ INSERT INTO `auth__tokens` (`id`, `user_id`, `token`, `created`, `expires`) VALU
 --
 
 CREATE TABLE IF NOT EXISTS `auth__users` (
-  `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(12) unsigned NOT NULL auto_increment,
   `enabled` tinyint(1) unsigned NOT NULL,
   `display_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
@@ -257,13 +257,13 @@ INSERT INTO `auth__users` (`id`, `enabled`, `display_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `content__items` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `title` varchar(1024) NOT NULL,
   `text` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `state` tinyint(4) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
 
 --
@@ -274,9 +274,9 @@ INSERT INTO `content__items` (`id`, `language`, `title`, `text`, `user_id`, `sta
 (1, 'ru_ru', '8888y', 'kl22', 1, 1),
 (31, 'ru_ru', 'Русский текст', 'Some', 0, 5),
 (32, 'ru_ru', '555', 'ddd', 0, 1),
-(33, 'ru_ru', 'Оплата и доставка - 111', 'Оплата и доставка', 1, 0),
-(34, 'ru_ru', 'О нас - 22222', 'О нас', 1, 0),
-(35, 'ru_ru', 'Контакты - 333333', 'Контакты', 2, 0),
+(33, 'ru_ru', 'Оплата и доставка', 'Оплата и доставка', 1, 0),
+(34, 'ru_ru', 'О нас', 'О нас', 1, 0),
+(35, 'ru_ru', 'Контакты', 'Контакты', 2, 0),
 (36, 'ru_ru', 'TEXT BLYUA', 'TITLE1', 1, 1),
 (44, '', 'df', 'dfg5t5', 0, 0);
 
@@ -287,35 +287,32 @@ INSERT INTO `content__items` (`id`, `language`, `title`, `text`, `user_id`, `sta
 --
 
 CREATE TABLE IF NOT EXISTS `engine__blocks` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `position` varchar(255) NOT NULL,
   `module` varchar(255) NOT NULL,
   `action` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
-  `condition_id` int(11) unsigned NOT NULL,
+  `condition_id` int(11) unsigned default NULL,
   `template` varchar(255) NOT NULL,
   `params` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+  `content` text NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `engine__blocks`
 --
 
-INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, `condition_id`, `template`, `params`) VALUES
-(1, 'center', 'cms3\\shop', '', 1, 1, '', '[]'),
-(2, 'center', 'cms3\\shop', 'catalog', 2, 2, '', '{"count":"10","category_id":"150"}'),
-(3, 'center', 'cms3\\gallery', 'product_images', 2, 3, '', '[]'),
-(4, 'left', 'cms3\\menu', '', 1, 0, '', '{"menu_id":"2"}'),
-(5, 'left', 'cms3\\auth', 'login_form', 2, 0, '', '[]'),
-(6, 'center', 'cms3\\content', '', 1, 4, '', '[]'),
-(8, 'admin', 'cms3\\dataview', '', 0, 6, '', '[]'),
-(9, 'admin', 'cms3\\ui_form', '', 0, 7, '', ''),
-(10, 'nb_topmenu', 'cms3\\menu', '', 0, 0, '', '{"menu_id":"5"}'),
-(11, 'nb_content', 'cms3\\content', '', 0, 4, '', ''),
-(12, 'nb_content', 'cms3\\shop', '', 0, 11, '', ''),
-(14, 'admin-menu', 'cms3\\menu', '', 0, 0, '', '{"menu_id":"1"}'),
-(15, 'nb_leftmenu', 'cms3\\menu', '', 0, 0, 'leftmenu', '{"menu_id":"6"}');
+INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, `condition_id`, `template`, `params`, `content`) VALUES
+(10, 'nb_topmenu', 'cms3\\menu', '', 0, NULL, '', '{"menu_id":"5"}', ''),
+(11, 'nb_content', 'cms3\\content', '', 0, 4, '', '', ''),
+(12, 'nb_content', 'cms3\\shop', '', 0, 5, '', '', ''),
+(15, 'nb_leftmenu', 'cms3\\menu', '', 0, NULL, 'leftmenu', '{"menu_id":"6"}', ''),
+(16, 'nb_banner', '', '', 0, 1, '', '', '<div style="padding-left: 440px; margin-top: 10px; position: relative">\r\n	                    <a href="/?shop.product.type.id=16"><img src="http://newbathroom.com.ua/themes/newbathroom/views/native/html/../../../media/image/bg4.jpg" /></a>\r\n            </div>'),
+(17, 'nb_logo', '', '', 0, 1, '', '', '<div class="logo" style="position: absolute; z-index: 4">\r\n                <a href="/">\r\n                    <img src="<?php echo $media_path ?>image/store_logo_round.png" alt="" />\r\n                </a>\r\n            </div>'),
+(18, 'nb_logo', '', '', 0, 2, '', '', '<div class="logo" style="position: absolute; z-index: 4">\r\n                <a href="/">\r\n                    <img src="<?php echo $media_path ?>image/store_logo.png" alt="" />\r\n                </a>\r\n            </div>\r\n		    <div style="height: 22px; width: 100%"></div>'),
+(19, 'nb_content', 'cms3\\shop', 'main', 0, 1, '', '{"product_count":32}', ''),
+(20, 'admin', 'cms3\\dataview', '', 0, NULL, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -324,24 +321,26 @@ INSERT INTO `engine__blocks` (`id`, `position`, `module`, `action`, `ordering`, 
 --
 
 CREATE TABLE IF NOT EXISTS `engine__conditions` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `title` varchar(255) NOT NULL,
   `condition` varchar(1024) NOT NULL,
   `engine` varchar(255) NOT NULL,
-  `user` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+  `user` tinyint(1) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `engine__conditions`
 --
 
 INSERT INTO `engine__conditions` (`id`, `language`, `title`, `condition`, `engine`, `user`) VALUES
-(4, 'ru_ru', '', 'content.item.id <> ''''', '', 0),
-(5, 'ru_ru', 'Админка', 'grid <> "" or (form <> "")', '', 0),
-(10, 'ru_ru', '', '1', '', 0),
-(11, 'ru_ru', '', 'content.item.id = ''''', '', 0);
+(1, 'ru_ru', 'Главная страница', '_count = 0', '', 0),
+(2, 'ru_ru', 'Внутренняя', '_count > 0', '', 0),
+(4, 'ru_ru', '', 'content/item/id <> 0', '', 0),
+(5, 'ru_ru', '', 'shop/product/id <> 0 || shop/product/type/id <> 0', '', 0),
+(10, 'ru_ru', 'Кроме админки', 'model = ''''', '', 0),
+(13, 'ru_ru', 'Админка', 'model <> ''''', '', 0);
 
 -- --------------------------------------------------------
 
@@ -354,7 +353,7 @@ CREATE TABLE IF NOT EXISTS `engine__languages` (
   `short_code` varchar(3) NOT NULL,
   `title` varchar(255) NOT NULL,
   `active` tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY (`code`),
+  PRIMARY KEY  (`code`),
   UNIQUE KEY `short_code` (`short_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -374,15 +373,15 @@ INSERT INTO `engine__languages` (`code`, `short_code`, `title`, `active`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `engine__modules` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `title` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `module` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
-  `core` tinyint(1) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
+  `core` tinyint(1) NOT NULL default '0',
+  `enabled` tinyint(1) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
@@ -426,13 +425,13 @@ INSERT INTO `engine__modules` (`id`, `language`, `title`, `name`, `module`, `ord
 --
 
 CREATE TABLE IF NOT EXISTS `engine__pageheaders` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `tag` varchar(32) NOT NULL,
   `language` char(5) NOT NULL,
   `value` varchar(1024) NOT NULL,
   `attribute` varchar(32) NOT NULL,
   `condition_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
@@ -455,7 +454,7 @@ CREATE TABLE IF NOT EXISTS `engine__paths` (
   `group` varchar(255) NOT NULL,
   `filename` varchar(255) NOT NULL,
   `path` text NOT NULL,
-  PRIMARY KEY (`namespace`,`group`,`filename`)
+  PRIMARY KEY  (`namespace`,`group`,`filename`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -463,209 +462,197 @@ CREATE TABLE IF NOT EXISTS `engine__paths` (
 --
 
 INSERT INTO `engine__paths` (`namespace`, `group`, `filename`, `path`) VALUES
-('', 'classes', 'acl\\resource\\interface.php', 'Q:\\home\\cms3\\www\\modules\\acl\\classes\\acl\\resource\\interface.php'),
-('', 'classes', 'acl\\role\\interface.php', 'Q:\\home\\cms3\\www\\modules\\acl\\classes\\acl\\role\\interface.php'),
-('', 'classes', 'arr.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\arr.php'),
-('', 'classes', 'cms3.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\cms3.php'),
-('', 'classes', 'config\\group.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\config\\group.php'),
-('', 'classes', 'controller.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\controller.php'),
-('', 'classes', 'cookie.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\cookie.php'),
-('', 'classes', 'database.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database.php'),
-('', 'classes', 'database\\expression.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\expression.php'),
-('', 'classes', 'database\\mysql.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\mysql.php'),
-('', 'classes', 'database\\mysql\\result.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\mysql\\result.php'),
-('', 'classes', 'database\\query.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\query.php'),
-('', 'classes', 'database\\query\\builder.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\query\\builder.php'),
-('', 'classes', 'database\\query\\builder\\join.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\query\\builder\\join.php'),
-('', 'classes', 'database\\query\\builder\\select.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\query\\builder\\select.php'),
-('', 'classes', 'database\\query\\builder\\where.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\query\\builder\\where.php'),
-('', 'classes', 'database\\result.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\database\\result.php'),
-('', 'classes', 'db.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\db.php'),
-('', 'classes', 'html.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\html.php'),
-('', 'classes', 'http\\header.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\http\\header.php'),
-('', 'classes', 'http\\message.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\http\\message.php'),
-('', 'classes', 'http\\request.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\http\\request.php'),
-('', 'classes', 'http\\response.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\http\\response.php'),
-('', 'classes', 'i18n.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\i18n.php'),
-('', 'classes', 'image.php', 'Q:\\home\\cms3\\www\\modules\\image\\classes\\image.php'),
-('', 'classes', 'image\\gd.php', 'Q:\\home\\cms3\\www\\modules\\image\\classes\\image\\gd.php'),
-('', 'classes', 'inflector.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\inflector.php'),
-('', 'classes', 'jelly.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\jelly.php'),
-('', 'classes', 'jelly\\builder.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\builder.php'),
-('', 'classes', 'jelly\\collection.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\jelly\\collection.php'),
-('', 'classes', 'jelly\\core.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core.php'),
-('', 'classes', 'jelly\\core\\builder.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\builder.php'),
-('', 'classes', 'jelly\\core\\collection.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\collection.php'),
-('', 'classes', 'jelly\\core\\event.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\event.php'),
-('', 'classes', 'jelly\\core\\field.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field.php'),
-('', 'classes', 'jelly\\core\\field\\belongsto.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\belongsto.php'),
-('', 'classes', 'jelly\\core\\field\\boolean.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\boolean.php'),
-('', 'classes', 'jelly\\core\\field\\float.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\float.php'),
-('', 'classes', 'jelly\\core\\field\\hasmany.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\hasmany.php'),
-('', 'classes', 'jelly\\core\\field\\hasone.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\hasone.php'),
-('', 'classes', 'jelly\\core\\field\\integer.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\integer.php'),
-('', 'classes', 'jelly\\core\\field\\manytomany.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\manytomany.php'),
-('', 'classes', 'jelly\\core\\field\\primary.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\primary.php'),
-('', 'classes', 'jelly\\core\\field\\string.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\string.php'),
-('', 'classes', 'jelly\\core\\field\\supports\\addremove.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\supports\\addremove.php'),
-('', 'classes', 'jelly\\core\\field\\supports\\has.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\supports\\has.php'),
-('', 'classes', 'jelly\\core\\field\\supports\\save.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\supports\\save.php'),
-('', 'classes', 'jelly\\core\\field\\supports\\with.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\supports\\with.php'),
-('', 'classes', 'jelly\\core\\field\\text.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\text.php'),
-('', 'classes', 'jelly\\core\\meta.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\meta.php'),
-('', 'classes', 'jelly\\core\\model.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\model.php'),
-('', 'classes', 'jelly\\event.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\event.php'),
-('', 'classes', 'jelly\\field.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\jelly\\field.php'),
-('', 'classes', 'jelly\\field\\belongsto.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\belongsto.php'),
-('', 'classes', 'jelly\\field\\boolean.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\boolean.php'),
-('', 'classes', 'jelly\\field\\float.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\float.php'),
-('', 'classes', 'jelly\\field\\hasmany.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\hasmany.php'),
-('', 'classes', 'jelly\\field\\hasone.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\hasone.php'),
-('', 'classes', 'jelly\\field\\integer.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\integer.php'),
-('', 'classes', 'jelly\\field\\manytomany.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\manytomany.php'),
-('', 'classes', 'jelly\\field\\primary.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\primary.php'),
-('', 'classes', 'jelly\\field\\string.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\string.php'),
-('', 'classes', 'jelly\\field\\supports\\addremove.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\supports\\addremove.php'),
-('', 'classes', 'jelly\\field\\supports\\has.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\supports\\has.php'),
-('', 'classes', 'jelly\\field\\supports\\save.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\supports\\save.php'),
-('', 'classes', 'jelly\\field\\supports\\with.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\supports\\with.php'),
-('', 'classes', 'jelly\\field\\text.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\text.php'),
-('', 'classes', 'jelly\\meta.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\jelly\\meta.php'),
-('', 'classes', 'jelly\\model.php', 'Q:\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\model.php'),
-('', 'classes', 'kohana.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\kohana.php'),
-('', 'classes', 'kohana\\arr.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\arr.php'),
-('', 'classes', 'kohana\\config.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\config.php'),
-('', 'classes', 'kohana\\config\\file.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\file.php'),
-('', 'classes', 'kohana\\config\\file\\reader.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\file\\reader.php'),
-('', 'classes', 'kohana\\config\\group.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\group.php'),
-('', 'classes', 'kohana\\config\\reader.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\reader.php'),
-('', 'classes', 'kohana\\config\\source.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\source.php'),
-('', 'classes', 'kohana\\controller.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\controller.php'),
-('', 'classes', 'kohana\\cookie.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\cookie.php'),
-('', 'classes', 'kohana\\core.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\core.php'),
-('', 'classes', 'kohana\\database.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database.php'),
-('', 'classes', 'kohana\\database\\expression.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\expression.php'),
-('', 'classes', 'kohana\\database\\mysql.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\mysql.php'),
-('', 'classes', 'kohana\\database\\mysql\\result.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\mysql\\result.php'),
-('', 'classes', 'kohana\\database\\query.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query.php'),
-('', 'classes', 'kohana\\database\\query\\builder.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query\\builder.php'),
-('', 'classes', 'kohana\\database\\query\\builder\\join.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query\\builder\\join.php'),
-('', 'classes', 'kohana\\database\\query\\builder\\select.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query\\builder\\select.php'),
-('', 'classes', 'kohana\\database\\query\\builder\\where.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query\\builder\\where.php'),
-('', 'classes', 'kohana\\database\\result.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\result.php'),
-('', 'classes', 'kohana\\db.php', 'Q:\\home\\cms3\\www\\modules\\database\\classes\\kohana\\db.php'),
-('', 'classes', 'kohana\\exception.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\exception.php'),
-('', 'classes', 'kohana\\file.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\file.php'),
-('', 'classes', 'kohana\\html.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\html.php'),
-('', 'classes', 'kohana\\http\\header.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\http\\header.php'),
-('', 'classes', 'kohana\\http\\message.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\http\\message.php'),
-('', 'classes', 'kohana\\http\\request.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\http\\request.php'),
-('', 'classes', 'kohana\\http\\response.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\http\\response.php'),
-('', 'classes', 'kohana\\i18n.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\i18n.php'),
-('', 'classes', 'kohana\\image.php', 'Q:\\home\\cms3\\www\\modules\\image\\classes\\kohana\\image.php'),
-('', 'classes', 'kohana\\image\\gd.php', 'Q:\\home\\cms3\\www\\modules\\image\\classes\\kohana\\image\\gd.php'),
-('', 'classes', 'kohana\\inflector.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\inflector.php'),
-('', 'classes', 'kohana\\kohana\\exception.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\kohana\\exception.php'),
-('', 'classes', 'kohana\\log.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\log.php'),
-('', 'classes', 'kohana\\profiler.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\profiler.php'),
-('', 'classes', 'kohana\\request.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\request.php'),
-('', 'classes', 'kohana\\request\\client.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\request\\client.php'),
-('', 'classes', 'kohana\\request\\client\\internal.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\request\\client\\internal.php'),
-('', 'classes', 'kohana\\response.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\response.php'),
-('', 'classes', 'kohana\\route.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\route.php'),
-('', 'classes', 'kohana\\security.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\security.php'),
-('', 'classes', 'kohana\\session.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\session.php'),
-('', 'classes', 'kohana\\session\\native.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\session\\native.php'),
-('', 'classes', 'kohana\\url.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\url.php'),
-('', 'classes', 'kohana\\utf8.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\utf8.php'),
-('', 'classes', 'kohana\\view.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\kohana\\view.php'),
-('', 'classes', 'log.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\log.php'),
-('', 'classes', 'profiler.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\profiler.php'),
-('', 'classes', 'request.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\request.php'),
-('', 'classes', 'request\\client.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\request\\client.php'),
-('', 'classes', 'response.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\response.php'),
-('', 'classes', 'route.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\route.php'),
-('', 'classes', 'security.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\security.php'),
-('', 'classes', 'session.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\session.php'),
-('', 'classes', 'session\\native.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\session\\native.php'),
-('', 'classes', 'url.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\url.php'),
-('', 'classes', 'utf8.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\utf8.php'),
-('', 'classes', 'view.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\view.php'),
-('cms3\\auth', 'classes', 'model\\user.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\auth\\classes\\model\\user.php'),
-('cms3\\content', 'classes', 'controller.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\content\\classes\\controller.php'),
-('cms3\\content', 'classes', 'model\\item.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\content\\classes\\model\\item.php'),
-('cms3\\content', 'views', 'native\\html\\article.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\content\\views\\native\\html\\article.php'),
-('cms3\\engine', 'classes', 'app.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\app.php'),
-('cms3\\engine', 'classes', 'config\\file\\reader.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\config\\file\\reader.php'),
-('cms3\\engine', 'classes', 'controller.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\controller.php'),
-('cms3\\engine', 'classes', 'controller\\app.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\controller\\app.php'),
-('cms3\\engine', 'classes', 'core.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\core.php'),
-('cms3\\engine', 'classes', 'db.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\db.php'),
-('cms3\\engine', 'classes', 'document.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\document.php'),
-('cms3\\engine', 'classes', 'document\\format\\html.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\document\\format\\html.php'),
-('cms3\\engine', 'classes', 'document\\media.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\document\\media.php'),
-('cms3\\engine', 'classes', 'expression\\calc\\php.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\expression\\calc\\php.php'),
-('cms3\\engine', 'classes', 'expression\\interface.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\expression\\interface.php'),
-('cms3\\engine', 'classes', 'field\\belongsto.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\belongsto.php'),
-('cms3\\engine', 'classes', 'field\\boolean.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\boolean.php'),
-('cms3\\engine', 'classes', 'field\\float.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\float.php'),
-('cms3\\engine', 'classes', 'field\\hasmany.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\hasmany.php'),
-('cms3\\engine', 'classes', 'field\\hasone.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\hasone.php'),
-('cms3\\engine', 'classes', 'field\\integer.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\integer.php'),
-('cms3\\engine', 'classes', 'field\\manytomany.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\manytomany.php'),
-('cms3\\engine', 'classes', 'field\\params.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\params.php'),
-('cms3\\engine', 'classes', 'field\\primary.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\primary.php'),
-('cms3\\engine', 'classes', 'field\\relationship\\interface.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\relationship\\interface.php'),
-('cms3\\engine', 'classes', 'field\\string.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\string.php'),
-('cms3\\engine', 'classes', 'field\\text.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\text.php'),
-('cms3\\engine', 'classes', 'html.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\html.php'),
-('cms3\\engine', 'classes', 'model.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model.php'),
-('cms3\\engine', 'classes', 'model\\block.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\block.php'),
-('cms3\\engine', 'classes', 'model\\builder\\block.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\builder\\block.php'),
-('cms3\\engine', 'classes', 'model\\condition.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\condition.php'),
-('cms3\\engine', 'classes', 'model\\language.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\language.php'),
-('cms3\\engine', 'classes', 'model\\module.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\module.php'),
-('cms3\\engine', 'classes', 'model\\pageheader.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\pageheader.php'),
-('cms3\\engine', 'classes', 'model\\route.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\route.php'),
-('cms3\\engine', 'classes', 'model\\theme.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\theme.php'),
-('cms3\\engine', 'classes', 'ns.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\ns.php'),
-('cms3\\engine', 'classes', 'orm.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\orm.php'),
-('cms3\\engine', 'classes', 'orm\\builder.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\orm\\builder.php'),
-('cms3\\engine', 'classes', 'orm\\field.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\orm\\field.php'),
-('cms3\\engine', 'classes', 'orm\\meta.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\orm\\meta.php'),
-('cms3\\engine', 'classes', 'renderer.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer.php'),
-('cms3\\engine', 'classes', 'renderer\\block.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer\\block.php'),
-('cms3\\engine', 'classes', 'renderer\\document.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer\\document.php'),
-('cms3\\engine', 'classes', 'renderer\\interface.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer\\interface.php'),
-('cms3\\engine', 'classes', 'renderer\\template.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer\\template.php'),
-('cms3\\engine', 'classes', 'request.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\request.php'),
-('cms3\\engine', 'classes', 'request\\client\\internal.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\request\\client\\internal.php'),
-('cms3\\engine', 'classes', 'route.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\route.php'),
-('cms3\\engine', 'classes', 'template.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\template.php'),
-('cms3\\engine', 'classes', 'template\\engine.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\template\\engine.php'),
-('cms3\\engine', 'classes', 'template\\engine\\interface.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\template\\engine\\interface.php'),
-('cms3\\engine', 'classes', 'url.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\url.php'),
-('cms3\\engine', 'classes', 'view.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\view.php'),
-('cms3\\files', 'classes', 'file.php', 'Q:\\home\\cms3\\www\\kohana\\classes\\file.php'),
-('cms3\\files', 'classes', 'model\\file.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\files\\classes\\model\\file.php'),
-('cms3\\images', 'classes', 'model\\builder\\image.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\images\\classes\\model\\builder\\image.php'),
-('cms3\\images', 'classes', 'model\\image.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\images\\classes\\model\\image.php'),
-('cms3\\images', 'classes', 'thumbnail.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\images\\classes\\thumbnail.php'),
-('cms3\\menu', 'classes', 'controller.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\menu\\classes\\controller.php'),
-('cms3\\menu', 'classes', 'model\\item.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\menu\\classes\\model\\item.php'),
-('cms3\\menu', 'classes', 'model\\menu.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\menu\\classes\\model\\menu.php'),
-('cms3\\menu', 'views', 'native\\html\\menu.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\menu\\views\\native\\html\\menu.php'),
-('cms3\\nbshop', 'classes', 'model\\property.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\nbshop\\classes\\model\\property.php'),
-('cms3\\nbshop', 'classes', 'model\\vendor.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\nbshop\\classes\\model\\vendor.php'),
-('cms3\\pagination', 'classes', 'paginator.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\pagination\\classes\\paginator.php'),
-('cms3\\pagination', 'views', 'native\\html\\pagination.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\pagination\\views\\native\\html\\pagination.php'),
-('cms3\\shop', 'classes', 'controller.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\shop\\classes\\controller.php'),
-('cms3\\shop', 'classes', 'model\\product.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\shop\\classes\\model\\product.php'),
-('cms3\\shop', 'classes', 'model\\product\\price.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\shop\\classes\\model\\product\\price.php'),
-('cms3\\shop', 'classes', 'model\\product\\type.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\shop\\classes\\model\\product\\type.php'),
-('cms3\\shop', 'views', 'native\\html\\catalog.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\shop\\views\\native\\html\\catalog.php'),
-('cms3\\shop', 'views', 'native\\html\\catalog_product.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\shop\\views\\native\\html\\catalog_product.php'),
-('cms3\\template', 'classes', 'engine\\native.php', 'Q:\\home\\cms3\\www\\modules\\cms3\\template_native\\classes\\@extend\\cms3\\template\\engine\\native.php');
+('', 'classes', 'acl\\resource\\interface.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\acl\\classes\\acl\\resource\\interface.php'),
+('', 'classes', 'arr.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\arr.php'),
+('', 'classes', 'cms3.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\cms3.php'),
+('', 'classes', 'config\\group.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\config\\group.php'),
+('', 'classes', 'controller.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\controller.php'),
+('', 'classes', 'cookie.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\cookie.php'),
+('', 'classes', 'database.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database.php'),
+('', 'classes', 'database\\expression.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database\\expression.php'),
+('', 'classes', 'database\\mysql.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database\\mysql.php'),
+('', 'classes', 'database\\mysql\\result.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database\\mysql\\result.php'),
+('', 'classes', 'database\\query.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database\\query.php'),
+('', 'classes', 'database\\query\\builder.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database\\query\\builder.php'),
+('', 'classes', 'database\\query\\builder\\select.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database\\query\\builder\\select.php'),
+('', 'classes', 'database\\query\\builder\\where.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database\\query\\builder\\where.php'),
+('', 'classes', 'database\\result.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\database\\result.php'),
+('', 'classes', 'db.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\db.php'),
+('', 'classes', 'html.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\html.php'),
+('', 'classes', 'http\\header.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\http\\header.php'),
+('', 'classes', 'http\\message.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\http\\message.php'),
+('', 'classes', 'http\\request.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\http\\request.php'),
+('', 'classes', 'http\\response.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\http\\response.php'),
+('', 'classes', 'i18n.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\i18n.php'),
+('', 'classes', 'image.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\image\\classes\\image.php'),
+('', 'classes', 'image\\gd.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\image\\classes\\image\\gd.php'),
+('', 'classes', 'inflector.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\inflector.php'),
+('', 'classes', 'jelly.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\jelly.php'),
+('', 'classes', 'jelly\\builder.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\builder.php'),
+('', 'classes', 'jelly\\collection.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\jelly\\collection.php'),
+('', 'classes', 'jelly\\core.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core.php'),
+('', 'classes', 'jelly\\core\\builder.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\builder.php'),
+('', 'classes', 'jelly\\core\\collection.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\collection.php'),
+('', 'classes', 'jelly\\core\\event.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\event.php'),
+('', 'classes', 'jelly\\core\\field.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field.php'),
+('', 'classes', 'jelly\\core\\field\\belongsto.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\belongsto.php'),
+('', 'classes', 'jelly\\core\\field\\boolean.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\boolean.php'),
+('', 'classes', 'jelly\\core\\field\\float.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\float.php'),
+('', 'classes', 'jelly\\core\\field\\hasmany.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\hasmany.php'),
+('', 'classes', 'jelly\\core\\field\\hasone.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\hasone.php'),
+('', 'classes', 'jelly\\core\\field\\integer.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\integer.php'),
+('', 'classes', 'jelly\\core\\field\\manytomany.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\manytomany.php'),
+('', 'classes', 'jelly\\core\\field\\primary.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\primary.php'),
+('', 'classes', 'jelly\\core\\field\\string.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\string.php'),
+('', 'classes', 'jelly\\core\\field\\supports\\addremove.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\supports\\addremove.php'),
+('', 'classes', 'jelly\\core\\field\\supports\\has.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\supports\\has.php'),
+('', 'classes', 'jelly\\core\\field\\supports\\save.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\supports\\save.php'),
+('', 'classes', 'jelly\\core\\field\\supports\\with.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\supports\\with.php'),
+('', 'classes', 'jelly\\core\\field\\text.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\field\\text.php'),
+('', 'classes', 'jelly\\core\\meta.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\meta.php'),
+('', 'classes', 'jelly\\core\\model.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\core\\model.php'),
+('', 'classes', 'jelly\\event.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\event.php'),
+('', 'classes', 'jelly\\field.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\jelly\\field.php'),
+('', 'classes', 'jelly\\field\\belongsto.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\belongsto.php'),
+('', 'classes', 'jelly\\field\\boolean.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\boolean.php'),
+('', 'classes', 'jelly\\field\\float.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\float.php'),
+('', 'classes', 'jelly\\field\\hasmany.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\hasmany.php'),
+('', 'classes', 'jelly\\field\\hasone.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\hasone.php'),
+('', 'classes', 'jelly\\field\\integer.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\integer.php'),
+('', 'classes', 'jelly\\field\\manytomany.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\manytomany.php'),
+('', 'classes', 'jelly\\field\\primary.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\primary.php'),
+('', 'classes', 'jelly\\field\\string.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\string.php'),
+('', 'classes', 'jelly\\field\\supports\\addremove.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\supports\\addremove.php'),
+('', 'classes', 'jelly\\field\\supports\\has.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\supports\\has.php'),
+('', 'classes', 'jelly\\field\\supports\\save.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\supports\\save.php'),
+('', 'classes', 'jelly\\field\\supports\\with.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\supports\\with.php'),
+('', 'classes', 'jelly\\field\\text.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\field\\text.php'),
+('', 'classes', 'jelly\\meta.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\jelly\\meta.php'),
+('', 'classes', 'jelly\\model.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\jelly\\classes\\jelly\\model.php'),
+('', 'classes', 'kohana.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\kohana.php'),
+('', 'classes', 'kohana\\arr.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\arr.php'),
+('', 'classes', 'kohana\\config.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\config.php'),
+('', 'classes', 'kohana\\config\\file.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\file.php'),
+('', 'classes', 'kohana\\config\\file\\reader.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\file\\reader.php'),
+('', 'classes', 'kohana\\config\\group.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\group.php'),
+('', 'classes', 'kohana\\config\\reader.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\reader.php'),
+('', 'classes', 'kohana\\config\\source.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\config\\source.php'),
+('', 'classes', 'kohana\\controller.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\controller.php'),
+('', 'classes', 'kohana\\cookie.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\cookie.php'),
+('', 'classes', 'kohana\\core.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\core.php'),
+('', 'classes', 'kohana\\database.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database.php'),
+('', 'classes', 'kohana\\database\\expression.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\expression.php'),
+('', 'classes', 'kohana\\database\\mysql.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\mysql.php'),
+('', 'classes', 'kohana\\database\\mysql\\result.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\mysql\\result.php'),
+('', 'classes', 'kohana\\database\\query.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query.php'),
+('', 'classes', 'kohana\\database\\query\\builder.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query\\builder.php'),
+('', 'classes', 'kohana\\database\\query\\builder\\select.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query\\builder\\select.php'),
+('', 'classes', 'kohana\\database\\query\\builder\\where.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\query\\builder\\where.php'),
+('', 'classes', 'kohana\\database\\result.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\database\\result.php'),
+('', 'classes', 'kohana\\db.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\database\\classes\\kohana\\db.php'),
+('', 'classes', 'kohana\\exception.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\exception.php'),
+('', 'classes', 'kohana\\file.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\file.php'),
+('', 'classes', 'kohana\\html.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\html.php'),
+('', 'classes', 'kohana\\http\\header.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\http\\header.php'),
+('', 'classes', 'kohana\\http\\message.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\http\\message.php'),
+('', 'classes', 'kohana\\http\\request.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\http\\request.php'),
+('', 'classes', 'kohana\\http\\response.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\http\\response.php'),
+('', 'classes', 'kohana\\i18n.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\i18n.php'),
+('', 'classes', 'kohana\\image.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\image\\classes\\kohana\\image.php'),
+('', 'classes', 'kohana\\image\\gd.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\image\\classes\\kohana\\image\\gd.php'),
+('', 'classes', 'kohana\\inflector.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\inflector.php'),
+('', 'classes', 'kohana\\kohana\\exception.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\kohana\\exception.php'),
+('', 'classes', 'kohana\\log.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\log.php'),
+('', 'classes', 'kohana\\profiler.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\profiler.php'),
+('', 'classes', 'kohana\\request.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\request.php'),
+('', 'classes', 'kohana\\request\\client.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\request\\client.php'),
+('', 'classes', 'kohana\\request\\client\\internal.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\request\\client\\internal.php'),
+('', 'classes', 'kohana\\response.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\response.php'),
+('', 'classes', 'kohana\\route.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\route.php'),
+('', 'classes', 'kohana\\security.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\security.php'),
+('', 'classes', 'kohana\\session.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\session.php'),
+('', 'classes', 'kohana\\session\\native.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\session\\native.php'),
+('', 'classes', 'kohana\\url.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\url.php'),
+('', 'classes', 'kohana\\utf8.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\utf8.php'),
+('', 'classes', 'kohana\\view.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\kohana\\view.php'),
+('', 'classes', 'log.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\log.php'),
+('', 'classes', 'profiler.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\profiler.php'),
+('', 'classes', 'request.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\request.php'),
+('', 'classes', 'request\\client.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\request\\client.php'),
+('', 'classes', 'response.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\response.php'),
+('', 'classes', 'route.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\route.php'),
+('', 'classes', 'security.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\security.php'),
+('', 'classes', 'session.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\session.php'),
+('', 'classes', 'session\\native.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\session\\native.php'),
+('', 'classes', 'url.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\url.php'),
+('', 'classes', 'utf8.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\utf8.php'),
+('', 'classes', 'view.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\@global\\view.php'),
+('cms3\\engine', 'classes', 'app.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\app.php'),
+('cms3\\engine', 'classes', 'config\\file\\reader.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\config\\file\\reader.php'),
+('cms3\\engine', 'classes', 'controller.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\controller.php'),
+('cms3\\engine', 'classes', 'controller\\app.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\controller\\app.php'),
+('cms3\\engine', 'classes', 'core.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\core.php'),
+('cms3\\engine', 'classes', 'db.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\db.php'),
+('cms3\\engine', 'classes', 'document.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\document.php'),
+('cms3\\engine', 'classes', 'document\\format\\html.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\document\\format\\html.php'),
+('cms3\\engine', 'classes', 'document\\media.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\document\\media.php'),
+('cms3\\engine', 'classes', 'expression\\calc\\php.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\expression\\calc\\php.php'),
+('cms3\\engine', 'classes', 'expression\\interface.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\expression\\interface.php'),
+('cms3\\engine', 'classes', 'field\\belongsto.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\belongsto.php'),
+('cms3\\engine', 'classes', 'field\\boolean.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\boolean.php'),
+('cms3\\engine', 'classes', 'field\\float.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\float.php'),
+('cms3\\engine', 'classes', 'field\\hasmany.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\hasmany.php'),
+('cms3\\engine', 'classes', 'field\\hasone.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\hasone.php'),
+('cms3\\engine', 'classes', 'field\\integer.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\integer.php'),
+('cms3\\engine', 'classes', 'field\\manytomany.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\manytomany.php'),
+('cms3\\engine', 'classes', 'field\\params.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\params.php'),
+('cms3\\engine', 'classes', 'field\\primary.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\primary.php'),
+('cms3\\engine', 'classes', 'field\\relationship\\interface.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\relationship\\interface.php'),
+('cms3\\engine', 'classes', 'field\\string.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\string.php'),
+('cms3\\engine', 'classes', 'field\\text.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\field\\text.php'),
+('cms3\\engine', 'classes', 'html.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\html.php'),
+('cms3\\engine', 'classes', 'model.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model.php'),
+('cms3\\engine', 'classes', 'model\\block.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\block.php'),
+('cms3\\engine', 'classes', 'model\\builder\\block.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\builder\\block.php'),
+('cms3\\engine', 'classes', 'model\\condition.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\condition.php'),
+('cms3\\engine', 'classes', 'model\\language.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\language.php'),
+('cms3\\engine', 'classes', 'model\\module.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\module.php'),
+('cms3\\engine', 'classes', 'model\\pageheader.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\pageheader.php'),
+('cms3\\engine', 'classes', 'model\\route.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\route.php'),
+('cms3\\engine', 'classes', 'model\\theme.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\model\\theme.php'),
+('cms3\\engine', 'classes', 'ns.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\ns.php'),
+('cms3\\engine', 'classes', 'orm.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\orm.php'),
+('cms3\\engine', 'classes', 'orm\\builder.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\orm\\builder.php'),
+('cms3\\engine', 'classes', 'orm\\field.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\orm\\field.php'),
+('cms3\\engine', 'classes', 'orm\\meta.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\orm\\meta.php'),
+('cms3\\engine', 'classes', 'renderer.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer.php'),
+('cms3\\engine', 'classes', 'renderer\\block.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer\\block.php'),
+('cms3\\engine', 'classes', 'renderer\\document.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer\\document.php'),
+('cms3\\engine', 'classes', 'renderer\\interface.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer\\interface.php'),
+('cms3\\engine', 'classes', 'renderer\\template.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\renderer\\template.php'),
+('cms3\\engine', 'classes', 'request.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\request.php'),
+('cms3\\engine', 'classes', 'request\\client\\internal.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\request\\client\\internal.php'),
+('cms3\\engine', 'classes', 'route.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\route.php'),
+('cms3\\engine', 'classes', 'template.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\template.php'),
+('cms3\\engine', 'classes', 'template\\engine.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\template\\engine.php'),
+('cms3\\engine', 'classes', 'template\\engine\\interface.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\template\\engine\\interface.php'),
+('cms3\\engine', 'classes', 'url.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\url.php'),
+('cms3\\engine', 'classes', 'view.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\engine\\classes\\view.php'),
+('cms3\\files', 'classes', 'file.php', 'G:\\Data\\Sites\\home\\cms3\\www\\kohana\\classes\\file.php'),
+('cms3\\files', 'classes', 'model\\file.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\files\\classes\\model\\file.php'),
+('cms3\\images', 'classes', 'model\\builder\\image.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\images\\classes\\model\\builder\\image.php'),
+('cms3\\images', 'classes', 'model\\image.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\images\\classes\\model\\image.php'),
+('cms3\\images', 'classes', 'thumbnail.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\images\\classes\\thumbnail.php'),
+('cms3\\menu', 'classes', 'controller.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\menu\\classes\\controller.php'),
+('cms3\\menu', 'classes', 'model\\item.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\menu\\classes\\model\\item.php'),
+('cms3\\menu', 'classes', 'model\\menu.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\menu\\classes\\model\\menu.php'),
+('cms3\\nbshop', 'classes', 'model\\property.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\nbshop\\classes\\model\\property.php'),
+('cms3\\nbshop', 'classes', 'model\\vendor.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\nbshop\\classes\\model\\vendor.php'),
+('cms3\\shop', 'classes', 'controller.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\shop\\classes\\controller.php'),
+('cms3\\shop', 'classes', 'model\\product.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\shop\\classes\\model\\product.php'),
+('cms3\\shop', 'classes', 'model\\product\\price.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\shop\\classes\\model\\product\\price.php'),
+('cms3\\shop', 'classes', 'model\\product\\type.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\shop\\classes\\model\\product\\type.php'),
+('cms3\\template', 'classes', 'engine\\native.php', 'G:\\Data\\Sites\\home\\cms3\\www\\modules\\cms3\\template_native\\classes\\@extend\\cms3\\template\\engine\\native.php');
 
 -- --------------------------------------------------------
 
@@ -674,12 +661,12 @@ INSERT INTO `engine__paths` (`namespace`, `group`, `filename`, `path`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `engine__routes` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `format` varchar(1024) CHARACTER SET cp1251 NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+  `format` varchar(1024) character set cp1251 NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 --
 -- Dumping data for table `engine__routes`
@@ -689,9 +676,10 @@ INSERT INTO `engine__routes` (`id`, `language`, `title`, `format`) VALUES
 (1, 'ru_ru', 'Магазин', 'shop(/<shop_path:.*>)'),
 (2, 'ru_ru', 'Галерея', 'gallery(/<gallery_album_id>(/<gallery_photo_id>))'),
 (3, 'ru_ru', 'Профайлер', '<profile:profile>'),
-(4, 'ru_ru', 'Контент', 'content(/?content_item_id=<content_item_id>)'),
+(4, 'ru_ru', 'Контент', 'content(/?content/item/id=<content_item_id>)'),
 (5, 'ru_ru', 'Админка', '<grid:admin>(/<model>)'),
-(6, 'ru_ru', '', '<form:admin>((/<model>)(/<id>))');
+(6, 'ru_ru', '', '<form:admin>((/<model>)(/<id>))'),
+(15, 'ru_ru', 'Категория магазина', 'shop/?shop/product/type/id=<shop_product_type_id>');
 
 -- --------------------------------------------------------
 
@@ -700,21 +688,20 @@ INSERT INTO `engine__routes` (`id`, `language`, `title`, `format`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `engine__themes` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
-  `condition_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
+  `condition_id` int(11) unsigned default NULL,
+  PRIMARY KEY  (`id`),
   KEY `condition_id` (`condition_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `engine__themes`
 --
 
 INSERT INTO `engine__themes` (`id`, `name`, `condition_id`) VALUES
-(2, 'default_blue', 1),
-(3, 'admin', 5),
-(4, 'newbathroom', 10);
+(4, 'newbathroom', 10),
+(5, 'admin', 13);
 
 -- --------------------------------------------------------
 
@@ -723,14 +710,14 @@ INSERT INTO `engine__themes` (`id`, `name`, `condition_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `files__files` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `language` char(5) NOT NULL,
-  `title` varchar(255) DEFAULT NULL,
+  `title` varchar(255) default NULL,
   `filename` varchar(255) NOT NULL,
   `dir` varchar(255) NOT NULL,
   `mime` varchar(255) NOT NULL,
   `_size` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5420 ;
 
 --
@@ -6172,15 +6159,15 @@ INSERT INTO `files__files` (`id`, `language`, `title`, `filename`, `dir`, `mime`
 --
 
 CREATE TABLE IF NOT EXISTS `files__images` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `file_id` int(11) DEFAULT NULL,
+  `file_id` int(11) default NULL,
   `url` text,
   `width` int(11) unsigned NOT NULL,
   `height` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5420 ;
 
 --
@@ -11619,17 +11606,17 @@ INSERT INTO `files__images` (`id`, `language`, `title`, `description`, `file_id`
 --
 
 CREATE TABLE IF NOT EXISTS `menu__items` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `title` varchar(255) NOT NULL,
   `menu_id` int(11) unsigned NOT NULL,
-  `uri` varchar(1024) CHARACTER SET cp1251 NOT NULL,
+  `uri` varchar(1024) character set cp1251 NOT NULL,
   `parent_id` int(11) NOT NULL,
-  `ordering` int(11) DEFAULT NULL,
+  `ordering` int(11) default NULL,
   `active_condition_id` int(11) unsigned NOT NULL,
-  `route_id` int(11) unsigned DEFAULT NULL,
+  `route_id` int(11) unsigned default NULL,
   `params` text,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   KEY `menu_id` (`menu_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=180 ;
 
@@ -11639,44 +11626,37 @@ CREATE TABLE IF NOT EXISTS `menu__items` (
 
 INSERT INTO `menu__items` (`id`, `language`, `title`, `menu_id`, `uri`, `parent_id`, `ordering`, `active_condition_id`, `route_id`, `params`) VALUES
 (1, 'ru_ru', 'Главная', 5, '/', 0, 1, 0, 1, '[]'),
-(2, 'ru_ru', 'Категория', 2, '', 1, 2, 0, 1, '{"shop_category_id":"1"}'),
-(3, 'ru_ru', 'Товар', 2, '', 2, 3, 0, 1, '{"shop_category_id":"1","shop_product_id":"1"}'),
-(4, 'ru_ru', 'Галерея', 2, '', 0, 4, 0, 2, '{"gallery_album_id":"1","gallery_photo_id":"2"}'),
-(5, 'ru_ru', 'Очистить кэш', 2, '/action/cms3/gallery/gallery/clear_cache', 0, 50, 0, 0, '[]'),
-(6, 'ru_ru', 'О магазине', 2, '', 0, 5, 0, 4, '{"content_item_id":"1"}'),
-(7, 'ru_ru', 'Админпанель', 2, '/admin', 0, 0, 0, 0, '[]'),
-(8, 'ru_ru', 'Главная', 1, '', 0, 1, 0, 5, '{"grid":"admin","model":"cms3-content-item"}'),
-(10, 'ru_ru', 'Оплата и доставка', 5, '', 0, 3, 0, 4, '{"content_item_id":33}'),
-(11, 'ru_ru', 'О нас', 5, '', 0, 4, 0, 4, '{"content_item_id":34}'),
-(12, 'ru_ru', 'Контакты', 5, '', 0, 5, 0, 4, '{"content_item_id":35}'),
-(152, '', 'Плитка', 6, '', 0, NULL, 0, 0, NULL),
-(153, '', 'Плитка напольная', 6, '', 152, NULL, 0, 0, '{"shop.product.type.id":1}'),
-(154, '', 'Плитка настенная', 6, '', 152, NULL, 0, 0, '{"shop.product.type.id":2}'),
-(155, '', 'Декор', 6, '', 152, NULL, 0, 0, '{"shop.product.type.id":3}'),
-(156, '', 'Фриз', 6, '', 152, NULL, 0, 0, '{"shop.product.type.id":4}'),
-(157, '', 'Профиль', 6, '', 152, NULL, 0, 0, '{"shop.product.type.id":5}'),
-(158, '', 'Сантехника', 6, '', 0, NULL, 0, 0, NULL),
-(159, '', 'Компакты, унитазы, уриналы', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":6}'),
-(160, '', 'Биде', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":7}'),
-(161, '', 'Сиденье для унитазов и биде', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":8}'),
-(162, '', 'Умывальник', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":9}'),
-(163, '', 'Инсталляции', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":10}'),
-(164, '', 'Ванны', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":11}'),
-(165, '', 'Гидромассажные системы', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":12}'),
-(166, '', 'Гидромассажные боксы', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":13}'),
-(167, '', 'Душевые кабины', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":14}'),
-(168, '', 'Поддоны', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":15}'),
-(169, '', 'Смесители', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":16}'),
-(170, '', 'Сифоны', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":17}'),
-(171, '', 'Мебель для ванной комнаты', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":18}'),
-(172, '', 'Аксессуары для ванной комнаты', 6, '', 158, NULL, 0, 0, '{"shop.product.type.id":19}'),
-(173, '', 'Отопление', 6, '', 0, NULL, 0, 0, NULL),
-(174, '', 'Котлы', 6, '', 173, NULL, 0, 0, '{"shop.product.type.id":20}'),
-(175, '', 'Радиаторы', 6, '', 173, NULL, 0, 0, '{"shop.product.type.id":21}'),
-(176, '', 'Водонагреватели', 6, '', 173, NULL, 0, 0, '{"shop.product.type.id":22}'),
-(177, '', 'Насосы', 6, '', 173, NULL, 0, 0, '{"shop.product.type.id":23}'),
-(178, '', 'Канализация', 6, '', 173, NULL, 0, 0, '{"shop.product.type.id":24}'),
-(179, '', 'Трубы и фитинги (ППР)', 6, '', 173, NULL, 0, 0, '{"shop.product.type.id":25}');
+(10, 'ru_ru', 'Оплата и доставка', 5, '', 0, 3, 0, 4, '{"content/item/id":33}'),
+(11, 'ru_ru', 'О нас', 5, '', 0, 4, 0, 4, '{"content/item/id":34}'),
+(12, 'ru_ru', 'Контакты', 5, '', 0, 5, 0, 4, '{"content/item/id":35}'),
+(152, '', 'Плитка', 6, '', 0, NULL, 0, NULL, NULL),
+(153, '', 'Плитка напольная', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":1}'),
+(154, '', 'Плитка настенная', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":2}'),
+(155, '', 'Декор', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":3}'),
+(156, '', 'Фриз', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":4}'),
+(157, '', 'Профиль', 6, '', 152, NULL, 0, NULL, '{"shop/product/type/id":5}'),
+(158, '', 'Сантехника', 6, '', 0, NULL, 0, NULL, NULL),
+(159, '', 'Компакты, унитазы, уриналы', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":6}'),
+(160, '', 'Биде', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":7}'),
+(161, '', 'Сиденье для унитазов и биде', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":8}'),
+(162, '', 'Умывальник', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":9}'),
+(163, '', 'Инсталляции', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":10}'),
+(164, '', 'Ванны', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":11}'),
+(165, '', 'Гидромассажные системы', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":12}'),
+(166, '', 'Гидромассажные боксы', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":13}'),
+(167, '', 'Душевые кабины', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":14}'),
+(168, '', 'Поддоны', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":15}'),
+(169, '', 'Смесители', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":16}'),
+(170, '', 'Сифоны', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":17}'),
+(171, '', 'Мебель для ванной комнаты', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":18}'),
+(172, '', 'Аксессуары для ванной комнаты', 6, '', 158, NULL, 0, NULL, '{"shop/product/type/id":19}'),
+(173, '', 'Отопление', 6, '', 0, NULL, 0, NULL, NULL),
+(174, '', 'Котлы', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":20}'),
+(175, '', 'Радиаторы', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":21}'),
+(176, '', 'Водонагреватели', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":22}'),
+(177, '', 'Насосы', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":23}'),
+(178, '', 'Канализация', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":24}'),
+(179, '', 'Трубы и фитинги (ППР)', 6, '', 173, NULL, 0, NULL, '{"shop/product/type/id":25}');
 
 -- --------------------------------------------------------
 
@@ -11685,10 +11665,10 @@ INSERT INTO `menu__items` (`id`, `language`, `title`, `menu_id`, `uri`, `parent_
 --
 
 CREATE TABLE IF NOT EXISTS `menu__menus` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL auto_increment,
   `language` char(5) NOT NULL,
   `title` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
@@ -11708,14 +11688,14 @@ INSERT INTO `menu__menus` (`id`, `language`, `title`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `nbshop__properties` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL auto_increment,
   `product_id` int(10) unsigned NOT NULL,
   `vendor_id` int(10) unsigned NOT NULL,
-  `width` int(10) unsigned DEFAULT NULL,
-  `height` int(10) unsigned DEFAULT NULL,
-  `length` int(10) unsigned DEFAULT NULL,
+  `width` int(10) unsigned default NULL,
+  `height` int(10) unsigned default NULL,
+  `length` int(10) unsigned default NULL,
   `code_1c` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `product_id` (`product_id`),
   KEY `vendor_id` (`vendor_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4414 ;
@@ -16149,9 +16129,9 @@ INSERT INTO `nbshop__properties` (`id`, `product_id`, `vendor_id`, `width`, `hei
 --
 
 CREATE TABLE IF NOT EXISTS `nbshop__vendors` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL auto_increment,
   `title` text NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;
 
 --
@@ -16215,9 +16195,9 @@ INSERT INTO `nbshop__vendors` (`id`, `title`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `properties__properties` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
@@ -16240,7 +16220,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_booleans` (
   `property_id` int(11) NOT NULL,
   `default` tinyint(1) NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16255,12 +16235,12 @@ CREATE TABLE IF NOT EXISTS `properties__property_booleans` (
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_booleans_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `label` text NOT NULL,
   `hint` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -16279,7 +16259,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_floats` (
   `property_id` int(11) NOT NULL,
   `default` float NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16294,12 +16274,12 @@ CREATE TABLE IF NOT EXISTS `properties__property_floats` (
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_floats_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `label` text NOT NULL,
   `hint` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -16318,7 +16298,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_integers` (
   `property_id` int(11) NOT NULL,
   `default` int(11) NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16336,12 +16316,12 @@ INSERT INTO `properties__property_integers` (`property_id`, `default`, `checker`
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_integers_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `label` text NOT NULL,
   `hint` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -16360,7 +16340,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists` (
   `property_id` int(11) NOT NULL,
   `default_option_id` int(11) NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16375,12 +16355,12 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists` (
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_lists_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `label` text NOT NULL,
   `hint` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -16396,9 +16376,9 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_i18n` (
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_lists_options` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `ordering` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -16413,12 +16393,12 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_options` (
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_lists_options_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `hint` text NOT NULL,
   `text` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -16436,7 +16416,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_lists_options_i18n` (
 CREATE TABLE IF NOT EXISTS `properties__property_strings` (
   `property_id` int(11) NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16453,13 +16433,13 @@ INSERT INTO `properties__property_strings` (`property_id`, `checker`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_strings_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `default` text NOT NULL,
   `name` text NOT NULL,
   `hint` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -16477,9 +16457,9 @@ INSERT INTO `properties__property_strings_i18n` (`id`, `property_id`, `language`
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_values` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
 
 --
@@ -16500,7 +16480,7 @@ INSERT INTO `properties__property_values` (`id`, `property_id`) VALUES
 CREATE TABLE IF NOT EXISTS `properties__property_value_booleans` (
   `property_value_id` int(11) NOT NULL,
   `value` tinyint(1) NOT NULL,
-  PRIMARY KEY (`property_value_id`)
+  PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16517,7 +16497,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_booleans` (
 CREATE TABLE IF NOT EXISTS `properties__property_value_floats` (
   `property_value_id` int(11) NOT NULL,
   `value` float NOT NULL,
-  PRIMARY KEY (`property_value_id`)
+  PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16534,7 +16514,7 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_floats` (
 CREATE TABLE IF NOT EXISTS `properties__property_value_integers` (
   `property_value_id` int(11) NOT NULL,
   `value` int(11) NOT NULL,
-  PRIMARY KEY (`property_value_id`)
+  PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16554,7 +16534,7 @@ INSERT INTO `properties__property_value_integers` (`property_value_id`, `value`)
 CREATE TABLE IF NOT EXISTS `properties__property_value_lists` (
   `property_value_id` int(11) NOT NULL,
   `value_option_id` int(11) NOT NULL,
-  PRIMARY KEY (`property_value_id`)
+  PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -16569,11 +16549,11 @@ CREATE TABLE IF NOT EXISTS `properties__property_value_lists` (
 --
 
 CREATE TABLE IF NOT EXISTS `properties__property_value_strings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_value_id` int(11) NOT NULL,
-  `language` char(5) DEFAULT NULL,
+  `language` char(5) default NULL,
   `value` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_value_id` (`property_value_id`,`language`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -16591,9 +16571,9 @@ INSERT INTO `properties__property_value_strings` (`id`, `property_value_id`, `la
 --
 
 CREATE TABLE IF NOT EXISTS `shop__distributors` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -16608,14 +16588,14 @@ CREATE TABLE IF NOT EXISTS `shop__distributors` (
 --
 
 CREATE TABLE IF NOT EXISTS `shop__distributor_products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL,
   `distributor_id` int(11) NOT NULL,
   `article` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `in_stock` int(11) NOT NULL,
   `price` float NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -16630,17 +16610,17 @@ CREATE TABLE IF NOT EXISTS `shop__distributor_products` (
 --
 
 CREATE TABLE IF NOT EXISTS `shop__products` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type_id` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL auto_increment,
+  `type_id` int(11) default NULL,
   `article` varchar(50) NOT NULL,
   `discontinued` tinyint(1) NOT NULL,
   `in_stock` tinyint(4) NOT NULL,
-  `ordering` int(11) DEFAULT NULL,
+  `ordering` int(11) default NULL,
   `language` char(5) NOT NULL,
   `title` text NOT NULL,
   `short_description` text NOT NULL,
   `description` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   KEY `article` (`article`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4414 ;
 
@@ -21114,7 +21094,7 @@ CREATE TABLE IF NOT EXISTS `shop__products_images` (
   `base_image` tinyint(1) NOT NULL,
   `ordering` int(11) NOT NULL,
   `default` tinyint(1) NOT NULL,
-  PRIMARY KEY (`product_id`,`image_id`),
+  PRIMARY KEY  (`product_id`,`image_id`),
   KEY `product_id` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -26552,12 +26532,12 @@ INSERT INTO `shop__products_images` (`product_id`, `image_id`, `small_image`, `b
 --
 
 CREATE TABLE IF NOT EXISTS `shop__product_prices` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `product_id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
   `value` float NOT NULL,
   `auto_complete` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4414 ;
 
 --
@@ -30991,7 +30971,7 @@ CREATE TABLE IF NOT EXISTS `shop__product_properties` (
   `product_id` int(11) NOT NULL,
   `property_id` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
-  PRIMARY KEY (`product_id`,`property_id`)
+  PRIMARY KEY  (`product_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31009,9 +30989,9 @@ CREATE TABLE IF NOT EXISTS `shop__product_property_values` (
   `item_id` int(11) NOT NULL,
   `_property_id` int(11) NOT NULL,
   `value_id` int(11) NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`item_id`,`value_id`)
+  `ordering` int(11) NOT NULL default '0',
+  `enabled` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`item_id`,`value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31026,11 +31006,11 @@ CREATE TABLE IF NOT EXISTS `shop__product_property_values` (
 --
 
 CREATE TABLE IF NOT EXISTS `shop__product_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ordering` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL auto_increment,
+  `ordering` int(11) default NULL,
   `language` char(5) NOT NULL,
   `title` text NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
 
 --
@@ -31075,7 +31055,7 @@ CREATE TABLE IF NOT EXISTS `shop__product_types_properties` (
   `property_id` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
-  PRIMARY KEY (`product_type_id`,`property_id`)
+  PRIMARY KEY  (`product_type_id`,`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31093,9 +31073,9 @@ CREATE TABLE IF NOT EXISTS `shop__product_types_property_values` (
   `product_type_id` int(11) NOT NULL,
   `_property_id` int(11) NOT NULL,
   `value_id` int(11) NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`product_type_id`,`value_id`)
+  `ordering` int(11) NOT NULL default '0',
+  `enabled` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`product_type_id`,`value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31112,7 +31092,7 @@ CREATE TABLE IF NOT EXISTS `shop__product_types_property_values` (
 CREATE TABLE IF NOT EXISTS `shop__product_types_relationships` (
   `product_type_id` int(11) NOT NULL,
   `parent_product_type_id` int(11) NOT NULL,
-  PRIMARY KEY (`product_type_id`,`parent_product_type_id`)
+  PRIMARY KEY  (`product_type_id`,`parent_product_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31132,10 +31112,10 @@ INSERT INTO `shop__product_types_relationships` (`product_type_id`, `parent_prod
 --
 
 CREATE TABLE IF NOT EXISTS `_new_properties__properties` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
@@ -31162,13 +31142,13 @@ INSERT INTO `_new_properties__properties` (`id`, `name`, `ordering`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `_new_properties__properties_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `label` text NOT NULL,
   `hint` text NOT NULL,
   `edit_hint` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
@@ -31192,7 +31172,7 @@ INSERT INTO `_new_properties__properties_i18n` (`id`, `property_id`, `language`,
 CREATE TABLE IF NOT EXISTS `_new_properties__property_booleans` (
   `property_id` int(11) NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31212,7 +31192,7 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_floats` (
   `property_id` int(11) NOT NULL,
   `default` float NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31230,7 +31210,7 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_integers` (
   `property_id` int(11) NOT NULL,
   `default` int(11) NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31255,7 +31235,7 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_lists` (
   `property_id` int(11) NOT NULL,
   `default_option_id` int(11) NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31270,10 +31250,10 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_lists` (
 --
 
 CREATE TABLE IF NOT EXISTS `_new_properties__property_lists_options` (
-  `value_id` int(11) NOT NULL AUTO_INCREMENT,
+  `value_id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
-  PRIMARY KEY (`value_id`)
+  PRIMARY KEY  (`value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -31288,12 +31268,12 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_lists_options` (
 --
 
 CREATE TABLE IF NOT EXISTS `_new_properties__property_lists_options_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `value_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `hint` text NOT NULL,
   `text` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`value_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -31311,7 +31291,7 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_lists_options_i18n` (
 CREATE TABLE IF NOT EXISTS `_new_properties__property_strings` (
   `property_id` int(11) NOT NULL,
   `checker` text NOT NULL,
-  PRIMARY KEY (`property_id`)
+  PRIMARY KEY  (`property_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31328,13 +31308,13 @@ INSERT INTO `_new_properties__property_strings` (`property_id`, `checker`) VALUE
 --
 
 CREATE TABLE IF NOT EXISTS `_new_properties__property_strings_i18n` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `language` char(5) NOT NULL,
   `default` text NOT NULL,
   `name` text NOT NULL,
   `hint` text NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY  (`id`),
   UNIQUE KEY `property_id` (`property_id`,`language`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
@@ -31352,11 +31332,11 @@ INSERT INTO `_new_properties__property_strings_i18n` (`id`, `property_id`, `lang
 --
 
 CREATE TABLE IF NOT EXISTS `_new_properties__property_values` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL auto_increment,
   `property_id` int(11) NOT NULL,
   `default` tinyint(1) NOT NULL COMMENT 'Используется это значение, если другое не задано.',
-  `auto_complete` varchar(1024) DEFAULT NULL COMMENT 'Условия, при которых используется это значение, если другое не задано.',
-  PRIMARY KEY (`id`)
+  `auto_complete` varchar(1024) default NULL COMMENT 'Условия, при которых используется это значение, если другое не задано.',
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
 
 --
@@ -31377,7 +31357,7 @@ INSERT INTO `_new_properties__property_values` (`id`, `property_id`, `default`, 
 CREATE TABLE IF NOT EXISTS `_new_properties__property_value_booleans` (
   `property_value_id` int(11) NOT NULL,
   `value` tinyint(1) NOT NULL,
-  PRIMARY KEY (`property_value_id`)
+  PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31394,7 +31374,7 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_value_booleans` (
 CREATE TABLE IF NOT EXISTS `_new_properties__property_value_floats` (
   `property_value_id` int(11) NOT NULL,
   `value` float NOT NULL,
-  PRIMARY KEY (`property_value_id`)
+  PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31411,7 +31391,7 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_value_floats` (
 CREATE TABLE IF NOT EXISTS `_new_properties__property_value_integers` (
   `property_value_id` int(11) NOT NULL,
   `value` int(11) NOT NULL,
-  PRIMARY KEY (`property_value_id`)
+  PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31431,7 +31411,7 @@ INSERT INTO `_new_properties__property_value_integers` (`property_value_id`, `va
 CREATE TABLE IF NOT EXISTS `_new_properties__property_value_lists` (
   `property_value_id` int(11) NOT NULL,
   `value_option_id` int(11) NOT NULL,
-  PRIMARY KEY (`property_value_id`)
+  PRIMARY KEY  (`property_value_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -31447,9 +31427,9 @@ CREATE TABLE IF NOT EXISTS `_new_properties__property_value_lists` (
 
 CREATE TABLE IF NOT EXISTS `_new_properties__property_value_strings` (
   `property_value_id` int(11) NOT NULL,
-  `language` char(5) NOT NULL DEFAULT '',
+  `language` char(5) NOT NULL default '',
   `value` text NOT NULL,
-  PRIMARY KEY (`property_value_id`,`language`)
+  PRIMARY KEY  (`property_value_id`,`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

@@ -13,11 +13,11 @@ class Controller extends Abstract_Controller {
 	{
 		$params = $_REQUEST; // Request::$initial->param(); // TODO: автоматически
 
-		if (isset($params["shop_product_id"]))
+		if (isset($params["shop/product/id"]))
 		{
 			$this->action_display_product($params);
 		}
-		elseif (isset($params["shop_product_type_id"]))
+		elseif (isset($params["shop/product/type/id"]))
 		{
 			$this->action_display_catalog($params);
 		}
@@ -31,7 +31,7 @@ class Controller extends Abstract_Controller {
 	{
 		$model = Model_Product::factory();
 		$model->meta()->default_limit(32);
-		
+
 		$builder = $model->query()
 			->filter()
 			->order_by('type');
@@ -39,12 +39,12 @@ class Controller extends Abstract_Controller {
 		$total = $builder->count();
 		$builder->pagination();
 
-		$paginator = new Paginator($total, $builder->current_limit(), $builder->current_offset(), 'shop.product');
+		$paginator = new Paginator($total, $builder->current_limit(), $builder->current_offset(), 'shop/product');
 		
-		$products = $builder->select_all();
+		$products = $builder->select_all()->as_array();
 		
 		$type = Model_Product_Type::factory()
-			->query($params["shop_product_type_id"])
+			->query($params["shop/product/type/id"])
 			->limit(1)
 			->select();
 
@@ -55,9 +55,19 @@ class Controller extends Abstract_Controller {
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
 
+        foreach ($products as &$product)
+        {
+            // TODO !
+            if (count($product['images']))
+            {
+                $img = $product['images'][0];
+                $product['default_image']['thumbnail']['url'] = '/?controller=cms3/images&action=thumbnail&width=150&height=120&image=' . $img['file']['dir'] . '/' . $img['file']['filename'];
+            }
+        }
+
 		$view_data = array(
 			'title' => @$type->title,
-			'products' => $products->as_array(),
+			'products' => $products,
 			'pagination' => $paginator_data
 		);
 
@@ -71,11 +81,13 @@ class Controller extends Abstract_Controller {
 	
 	public function action_display_main($params = array())
 	{
+        $product_count = isset($params['product_count']) ? $params['product_count'] : 32;
+
 		$products = Model_Product::factory()
 			->query()
 			->filter()
 			->order_by(\DB::expr('rand()'))
-			->limit(32) // TODO: в конфиг
+			->limit($product_count)
 			->select_all();
 
 		if (isset($benchmark))
@@ -87,17 +99,40 @@ class Controller extends Abstract_Controller {
 		{
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__ . '[as_array]');
 		}
+
+
 		
-		$products = $products->as_array();
+		$products_arr = $products->as_array();
 			
-		usort($products, function($a, $b)
+		usort($products_arr, function($a, $b)
 		{
 			return $a['type']['id'] > $b['type']['id'];
 		});
+            /*
+        foreach ($products as &$product)
+        {
+            // TODO !
+            if (count($product['images']))
+            {
+                $img = $product['images'][0];
+                $product['default_image']['thumbnail']['url'] = '/?controller=cms3/images&action=thumbnail&width=150&height=120&image=' . $img['file']['dir'] . '/' . $img['file']['filename'];
+            }
+        }
+              */
+
+        foreach ($products as $i => $product)
+        {
+            // TODO !
+            if (count($product->images))
+            {
+                $img = $product->images[0];
+                $products_arr[$i]['default_image']['thumbnail']['url'] = $img->thumbnail(array('width' => 150, 'height' => 120))->url();
+            }
+        }
 
 		$view_data = array(
 			'title' => 'Новинки',
-			'products' => $products,
+			'products' => $products_arr,
 			'with_sections' => TRUE
 		);
 
@@ -116,7 +151,7 @@ class Controller extends Abstract_Controller {
   
 	public function action_display_product($params = array())
 	{
-		$product_id = empty($params["shop_product_id"]) ? 0 : intval($params["shop_product_id"]);
+		$product_id = empty($params["shop/product/id"]) ? 0 : intval($params["shop/product/id"]);
 
 		$product = Model_Product::factory()
 			->query($product_id)
@@ -130,6 +165,8 @@ class Controller extends Abstract_Controller {
 			));
 		}
 
+
+
 		$product->image_params = array(
 			'width' => 400,
 			'height' => 500
@@ -141,6 +178,8 @@ class Controller extends Abstract_Controller {
 		);
 
 		$product_arr = $product->as_array(NULL, TRUE, TRUE, 2);
+
+        $product_arr['default_image'] = $product->_default_image();
 
 		$product_arr['images'] = array();
 

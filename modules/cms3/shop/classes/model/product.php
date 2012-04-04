@@ -30,18 +30,18 @@ class Model_Product extends Model {
 			'short_description' => ORM::field('text', array(
 				'multilang' => TRUE
 			)),
-			/*'properties' => ORM::field('hasone', array(
+			'properties' => ORM::field('hasone', array(
 				'foreign' => 'cms3\nbshop\property'
-			)),*/
+			)),
 			'description' => ORM::field('text', array(
 				'multilang' => TRUE
 			)),
-			/*'price' => ORM::field('hasone', array(
+			'price' => ORM::field('hasone', array(
 				'foreign' => 'cms3\shop\product_price'
-			)),*/
-			/*'images' => ORM::field('manytomany', array(
+			)),
+			'images' => ORM::field('manytomany', array(
 				'foreign' => 'cms3\images\image'
-			))*/
+			))
 		));
 	}
 
@@ -65,7 +65,7 @@ class Model_Product extends Model {
 	public function virtual_fields()
 	{
 		return array(
-			'default_image' => $this->_default_image(),
+			//'default_image' => $this->_default_image(),
 			'vendor' => $this->properties->vendor->as_array()
 		);
 	}

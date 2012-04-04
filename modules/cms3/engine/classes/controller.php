@@ -4,6 +4,10 @@ namespace CMS3\Engine;
 
 class Controller extends \Controller {
 
+	public static $default_controller = 'CMS3\Engine\App';
+
+	public static $default_action = 'display';
+
 	public function __construct(\Request $request = NULL, \Response $response = NULL)
 	{
 		if ($request === NULL)
@@ -28,6 +32,14 @@ class Controller extends \Controller {
 	public function action($function)
 	{
 		$call = "action_" . $function;
+
+		if (! method_exists($this, $call))
+		{
+			throw new \HTTP_Exception_404('Action :action not found in controller.', array(
+				':action' => $call,
+			));
+		}
+
 		$args = func_get_args();
 		array_shift($args);
 
@@ -41,7 +53,7 @@ class Controller extends \Controller {
 		if (! \Security::check($token))
 		{
 			throw new Exception('Token isn\'t valid'); // TODO: нормальное сообщение
-		} 
+		}
 		$this->action($function, $params);
 	}
 	
@@ -72,9 +84,12 @@ class Controller extends \Controller {
 
 	public static function factory($module = NULL)
 	{
+		$module = str_replace('/', NS::DELIMITER, $module);
+		$module = str_replace('-', NS::DELIMITER, $module);
+
 		if (count(explode(NS::DELIMITER, $module)) >= 3)
 		{
-			$class = $module;
+			$class = NS::add_class_prefix('Controller_', $module);
 		}
 		else
 		{

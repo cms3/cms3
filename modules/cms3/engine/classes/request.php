@@ -21,6 +21,18 @@ class Request extends \Request {
 	{
 		$this->_params = $params;
 	}
+
+	public function execute()
+	{
+		if ( ! $this->_client instanceof \Request_Client)
+		{
+			throw new \Request_Exception('Unable to execute :uri without a Kohana_Request_Client', array(
+				':uri' => $this->_uri,
+			));
+		}
+
+		return $this->_client->execute($this);
+	}
 	
 	public function __construct($uri, \HTTP_Cache $cache = NULL, $injected_routes = array())
 	{
@@ -54,23 +66,27 @@ class Request extends \Request {
 
 			$processed_uri = static::process_uri($uri, $this->_injected_routes);
 
-			// Return here rather than throw exception. This will allow
-			// use of Request object even with unmatched route
-			if ($processed_uri === NULL)
-			{
-				$this->_uri = $uri;
-				return;
-			}
-
 			// Store the URI
 			$this->_uri = $uri;
 
-			// Store the matching route
-			$this->_route = $processed_uri['route'];
-			$params = $processed_uri['params'];
+			// Return here rather than throw exception. This will allow
+			// use of Request object even with unmatched route
+			if ($processed_uri !== NULL)
+			{
 
-			// Is this route external?
-			$this->_external = $this->_route->is_external();
+				// Store the matching route
+				$this->_route = $processed_uri['route'];
+				$params = $processed_uri['params'];
+
+				// Is this route external?
+				$this->_external = $this->_route->is_external();
+			}
+			else
+			{
+				$this->_route = NULL;
+				$params = $_REQUEST; // TODO: переписать более красиво и безопасно
+				$this->_external = FALSE;
+			}
 
 			if (isset($params['directory']))
 			{
@@ -78,8 +94,16 @@ class Request extends \Request {
 				$this->_directory = $params['directory'];
 			}
 
-			// Store the controller
-			$this->_controller = $params['controller'];
+			if (isset($params['controller']))
+			{
+				// Store the controller
+				$this->_controller = $params['controller'];
+			}
+			else
+			{
+				// Use the default controller
+				$this->_controller = NULL;
+			}
 
 			if (isset($params['action']))
 			{
@@ -89,7 +113,7 @@ class Request extends \Request {
 			else
 			{
 				// Use the default action
-				$this->_action = Route::$default_action;
+				$this->_action = Controller::$default_action;
 			}
 
 			// These are accessible as public vars and can be overloaded
@@ -318,5 +342,66 @@ class Request extends \Request {
 		}
 
 		return $request;
+	}
+
+	public static function detect_uri()
+	{
+		if ( ! empty($_SERVER['PATH_INFO']))
+		{
+			// PATH_INFO does not contain the docroot or index
+			$uri = $_SERVER['PATH_INFO'];
+		}
+		else
+		{
+			// REQUEST_URI and PHP_SELF include the docroot and index
+
+			if (isset($_SERVER['REQUEST_URI']))
+			{
+				/**
+				 * We use REQUEST_URI as the fallback value. The reason
+				 * for this is we might have a malformed URL such as:
+				 *
+				 *  http://localhost/http://example.com/judge.php
+				 *
+				 * which parse_url can't handle. So rather than leave empty
+				 * handed, we'll use this.
+				 */
+				$uri = $_SERVER['REQUEST_URI'];
+
+				// Decode the request URI
+				$uri = rawurldecode($uri);
+			}
+			elseif (isset($_SERVER['PHP_SELF']))
+			{
+				$uri = $_SERVER['PHP_SELF'];
+			}
+			elseif (isset($_SERVER['REDIRECT_URL']))
+			{
+				$uri = $_SERVER['REDIRECT_URL'];
+			}
+			else
+			{
+				// If you ever see this error, please report an issue at http://dev.kohanaphp.com/projects/kohana3/issues
+				// along with any relevant information about your web server setup. Thanks!
+				throw new \Kohana_Exception('Unable to detect the URI using PATH_INFO, REQUEST_URI, PHP_SELF or REDIRECT_URL');
+			}
+
+			// Get the path from the base URL, including the index file
+			$base_url = parse_url(\Kohana::$base_url, PHP_URL_PATH);
+
+			if (strpos($uri, $base_url) === 0)
+			{
+				// Remove the base URL from the URI
+				$uri = (string) substr($uri, strlen($base_url));
+			}
+
+			if (\Kohana::$index_file AND strpos($uri, Kohana::$index_file) === 0)
+			{
+				// Remove the index file from the URI
+				$uri = (string) substr($uri, strlen(Kohana::$index_file));
+			}
+		}
+
+		return $uri;
 	}
 }

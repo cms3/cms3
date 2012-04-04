@@ -15,13 +15,13 @@ class Thumbnail
 
 	public $quality = 100;
 
-	public static function factory($orig_file, $thumb_file, array $params = array())
+	public static function factory($orig_file, $thumb_file, array $params = array(), $generate = FALSE)
 	{
 		$thumb = new static();
 
 		$thumb->filename($thumb_file);
 
-		if (! is_file($thumb_file))
+		if (! is_file($thumb_file) && $generate)
 		{
 			$dir = dirname($thumb_file);
 			if (! is_dir($dir))
@@ -84,7 +84,8 @@ class Thumbnail
 		$this->load();
 		if ($this->_image)
 		{
-			return $this->_image->render(NULL, $this->quality);
+			//return $this->_image->render(NULL, $this->quality);
+            return readfile($this->filename());
 		}
 		return NULL;
 	}

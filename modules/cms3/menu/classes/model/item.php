@@ -46,13 +46,13 @@ class Model_Item extends Model {
 		{
 			return $this->uri;
 		}
-		elseif ($this->route->id)
+	/*	elseif ($this->route->id)
 		{
 			return App::instance()->get_uri($this->route->id, (array) $this->params);
-		}
+		}*/
 		else
 		{
-			return URL::query((array) $this->params, FALSE);
+			return URL::site(URL::query((array) $this->params, FALSE));
 		}
 	}
 	

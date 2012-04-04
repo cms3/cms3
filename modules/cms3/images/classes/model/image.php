@@ -65,19 +65,19 @@ class Model_Image extends Model
 		return parent::__construct($key);
 	}
 
-	public function thumbnail(array $params = array())
+	public function thumbnail(array $params = array(), $generate = FALSE)
 	{
-
 		$orig_file = $this->file->filepath();
+
 		$params = (array)$params + $this->_resize_params;
 		$thumb_file = $this->_thumbnail_filename($orig_file, $params);
 
-		$thumb = Thumbnail::factory($orig_file, $thumb_file, $params);
+		$thumb = Thumbnail::factory($orig_file, $thumb_file, $params, $generate);
 
 		return $thumb;
 	}
 
-	protected function _thumbnail_filename($filename, $params)
+    protected function _thumbnail_filename($filename, $params)
 	{
 		$thumbs_dir = $this->_config['thumbs_dir'];
 

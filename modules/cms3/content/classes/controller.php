@@ -14,10 +14,10 @@ class Controller extends Abstract_Controller {
 	
 	public function action_display($params = array())
 	{
-		$item_id = (int) Request::$initial->param('content_item_id');  // TODO: автоматически
+		$item_id = (int) Request::$initial->param('content/item/id');  // TODO: автоматически
 		if ($item_id)
 		{
-			$this->display('item', array('item_id' => $item_id));
+			$this->display('item', array('item/id' => $item_id));
 		}
 		else
 		{
@@ -33,11 +33,11 @@ class Controller extends Abstract_Controller {
 	
 	public function action_display_item($params = array())
 	{
-		if (! isset($params['item_id']))
+		if (! isset($params['item/id']))
 		{
 			throw new Exception('Content ID doesn\'t set'); 
 		}
-		$item = Model_Item::factory()->query($params['item_id'])->select();
+		$item = Model_Item::factory()->query($params['item/id'])->select();
 		if (! $item->loaded())
 		{
 			throw new \HTTP_Exception_404();

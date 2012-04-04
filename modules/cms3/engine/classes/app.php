@@ -7,17 +7,17 @@ class App {
 	public $document = NULL;
 	
 	public $modules = array();
-	
+
 	public $language;
-	
+
 	protected $_params;
-	
+
 	protected $_filters;
-	
+
 	protected $_pagination;
-	
+
 	private $_languages = array();
-	
+
 	private $_config;
 	
 	protected static $_instance;
@@ -30,218 +30,6 @@ class App {
 		}
 		
 		return static::$_instance;
-	}
-
-	public function filter($module = NULL, $model = NULL)
-	{
-		if ($module !== NULL)
-		{
-			if ($model !== NULL)
-			{
-				return @($this->_filters[$module][$model]);
-			}
-			else
-			{
-				return @($this->_filters[$module]);
-			}
-		}
-
-		return $this->_filters;
-	}
-	
-	public function pagination($module = NULL, $model = NULL)
-	{
-		if ($module !== NULL)
-		{
-			if ($model !== NULL)
-			{
-				return @($this->_pagination[$module][$model]);
-			}
-			else
-			{
-				return @($this->_pagination[$module]);
-			}
-		}
-
-		return $this->_pagination;
-	}
-/*
-	protected function _build_filter_tree($params)
-	{
-		$result = array();
-
-		foreach ($params['filter'] as $param => $value)
-		{
-			$parts = explode('.', $param);
-
-			if (count($parts) >= 2)
-			{
-				//$parent =
-			}
-		}
-
-		return $result;
-	}
-	*/
-
-	// TODO: remove it from here
-	public function param($module = NULL, $model = NULL)
-	{
-		// TODO: !!!
-		if ($module !== NULL)
-		{
-			if ($model !== NULL)
-			{
-				return @($this->_params[$module][$model]);
-			}
-			else
-			{
-				return @($this->_params[$module]);
-			}
-		}
-
-		return $this->_params;
-	}
-
-	// TODO: remove it from here
-	protected function _build_params_tree($params)
-	{
-		$result = array();
-		foreach ($params as $param => $value)
-		{
-			if (is_array($value))
-			{
-				continue;
-			}
-			$parts = explode('.', $param);
-		 	if (count($parts) >= 2)
-		 	{
-				$parent = &$result;
-				$name = array_shift($parts);
-				$i = 0;
-				while (count($parts) && $i < 2) // TODO: некрасиво
-				{
-					$parent[$name] = array();
-					$parent =& $parent[$name];
-					$name = array_shift($parts);
-					$i++;
-				}
-				array_unshift($parts, $name);
-				$name = implode('.', $parts);
-				$parent[$name] = $value;
-		 	}
-		 	else
-		 	{
-				$result['@global'][$param] = $value;
-		 	}
-		}
-		
-		return $result;
-	}
-
-	protected function _build_filter_tree($params)
-	{
-		$result = array();
-
-		foreach ($params as $param => $value)
-		{
-			$parts = explode('.', $param);
-		 	if (count($parts) >= 3 && strpos($param, '[') === FALSE ) // TODO
-		 	{
-				$module = array_shift($parts);
-				$model = array_shift($parts);
-				$field = implode('.', $parts);
-				$result[$module][$model][$field]['filter'] = $value;
-		 	}
-		}
-		
-		$ordering = (array)@$_REQUEST['ordering']; // TODO
-		foreach ($ordering as $path => $order)
-		{
-			$parts = explode('.', $path);
-			if (count($parts) >= 2)
-			{
-				$module = $parts[0];
-				$model = $parts[1];
-
-				@list($field, $dir) = explode(',', $order);
-				if (! empty($field))
-				{
-					if (! in_array(strtolower($dir), array('asc', 'desc')))
-					{
-						$dir = 'asc';
-					}
-
-					$result[$module][$model][$field]['ordering'] = $dir;
-				}
-			}
-		}
-		
-		return $result;
-	}
-	
-	protected function _build_pagination()
-	{
-		$result = array();
-		
-		$offset = (array)@$_REQUEST['offset']; // TODO
-		foreach ($offset as $path => $value)
-		{
-			$parts = explode('.', $path);
-			if (count($parts) >= 2)
-			{
-				$module = $parts[0];
-				$model = $parts[1];
-
-				$result[$module][$model]['offset'] = $value;
-			}
-		}
-		
-		$limit = (array)@$_REQUEST['limit']; // TODO
-		foreach ($limit as $path => $value)
-		{
-			$parts = explode('.', $path);
-			if (count($parts) >= 2)
-			{
-				$module = $parts[0];
-				$model = $parts[1];
-
-				$result[$module][$model]['limit'] = $value;
-			}
-		}
-		
-		return $result;
-	}
-
-	// TODO: убрать это отсюда
-	// TODO: переписать этот говнокод
-	public function ordering($model = NULL)
-	{
-		$parse = function ($order)
-		{
-			@list($column, $dir) = explode(',', $order);
-			$result = array(
-				'column' => $column,
-				'dir'    => $dir
-			);
-
-			return $result;
-		};
-		$ordering = (array)@$_REQUEST['ordering'];
-
-		if (! empty($model))
-		{
-			$ordering = $parse(@$ordering[strtolower($model)]);
-		}
-		else
-		{
-			foreach ($ordering as $what => $order)
-			{
-				$ordering[$what] = $parse($order);
-			}
-		}
-		
-		return $ordering;
 	}
 
 	public function initialize()
@@ -283,16 +71,6 @@ class App {
 			$connect_modules[$module->name] = MODPATH . str_replace(NS::DELIMITER, DIRECTORY_SEPARATOR, $module->name);
 		}
 		Core::modules($connect_modules);
-		//Cache::$default = $this->get_cfg('default_caching_driver');
-
-		$this->_set_default_routes();
-		
-		$route_list = Model::factory('route')->query()->select();
-		foreach ($route_list as $route)
-		{
-			$parse = $this->_replace_inline_route($route->format);
-			Route::set($route->id, $parse[0], $parse[1]);
-		}
 
 		if (! \Security::token())
 		{
@@ -304,128 +82,13 @@ class App {
 			\Profiler::stop($benchmark);
 		}
 	}
-
-	private function _set_default_routes()
-	{
-		$action_defaults = array(
-			'controller'		=> 'cms3\engine\app',
-			'action'			=> 'call',
-			'call_path'			=> '',
-		);
-		
-		Route::set('action',
-			$this->get_cfg('route_action'),
-			array('call_path' => '([a-zA-Z0-9_/-])*', 'params' => '.*'))
-			->defaults($action_defaults);
-		
-		$defaults = array(
-			'controller'	=> 'cms3\engine\app',
-			'action'		=> 'display',
-			'path'			=> '',
-			'language'		=> $this->get_cfg('default_language'),
-			'format'		=> $this->get_cfg('default_output_format'),
-			'params'		=> '',
-		);
-		
-		$lang_codes = array_keys($this->_languages->as_array('short_code'));
-		
-		$lang_regexp = '(' . implode('|', $lang_codes) . ')';
-
-		// TODO: разные поддомены для языков
-		Route::set('default',
-			$this->get_cfg('route_default'),
-			array('path' => '([a-zA-Z0-9_/-])*', 'format' => '[a-zA-Z]*', 'language' => $lang_regexp, 'params' => '.*'))
-			->defaults($defaults);
-	}
-
-	public function dispatch_action($controller, $action) // TODO
-	{
-		if (Core::$profiling === TRUE)
-		{
-			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
-		}
-
-		$params = $this->fetch_query_params();
-		if ($action == 'finish_auth')
-		{
-			foreach ($_GET as $key => $value)
-			{
-				$parts = explode('.', $key);
-				if (isset($parts[1]))
-				{
-					$_GET[$parts[0] . '_' . $parts[1]] = $value;
-				}
-			}
-		}
-
-		// TODO: вынести и сделать общиим с обычным dispatch
-		$this->document = Document::factory('html');
-		$this->document->language = $this->language;
-		$this->document->charset = Core::$charset;
-		$this->document->current_theme = $this->_detect_theme();
-
-		$controller = Controller::factory($controller);
-		if ($controller)
-		{
-			$controller->action($action, $params);
-		}
-		else
-		{
-			throw new \HTTP_Exception_404('Controller :controller not found.', array(
-				':controller' => $controller,
-			));
-		}
-
-		if (isset($benchmark))
-		{
-			\Profiler::stop($benchmark);
-		}
-
-		if (@$_REQUEST['profile']) // TODO
-		{
-			echo new \View('profiler/stats');
-		}
-		
-		// TODO!
-		Autoloader::deinit();
-	}
-
-	private function _replace_inline_route($uri)
-	{
-		$regex = array();
-		
-		// Find inline regex and remove it
-		if (preg_match_all('/<(.+?):(.+?)>/', $uri, $matches, PREG_SET_ORDER))
-		{
-			$replace = array();
-
-			foreach ($matches as $match)
-			{
-				list($search, $segment, $exp) = $match;
-
-				// Add the regex for this segment
-				$regex[$segment] = $exp;
-
-				// Add the replacment for this segment
-				$replace[$search] = '<'.$segment.'>';
-			}
-
-			// Remove all inline regex
-			$uri = strtr($uri, $replace);
-		}
-		
-		return array($uri, $regex);
-	}
   
-	public function dispatch($path, $language, $format)
+	public function dispatch($controller = NULL, $action = NULL, $language = NULL, $format = NULL)
 	{
 		if (Core::$profiling === TRUE)
 		{
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
-		//$get_params = Request::current()->param('params');
-		
-		$get_params = $this->fetch_query_params();
 
 		$lang_list = $this->_languages->as_array('short_code');
 
@@ -437,74 +100,38 @@ class App {
 		{
 			$this->set_language($this->get_cfg('default_language'));
 		}
-		Request::current()->set_params(array());
-		$route_list = Model::factory('route')->query()->select();
-		foreach ($route_list as $route)
+		if (empty($format))
 		{
-			$parse = $this->_replace_inline_route($route->format);
-			Route::set($route->id, $parse[0], $parse[1]);
+			$format = $this->get_cfg('default_output_format');
 		}
-		$routes = Route::all();
-		unset($routes['default']);
-		unset($routes['action']);
-/*
-		$items = \CMS3\Menu\Model_Item::factory()
-			->query()
-			->where('menu', '=', 6)
-			->select_all();
 
-		foreach ($items as $i => $item)
-		{
-			$type = \CMS3\Shop\Model_Product_Type::factory();
-
-			$type->ordering = 5;
-			$type->title = $item->title;
-				
-			$type->save();
-
-			$item->params = array(
-				array(
-					'name' => 'shop.product.type.id',
-					'value' => $type->id
-				)
-			);
-			$item->save();
-		}
-*/
 		$this->document = Document::factory($format);
 		$this->document->language = $this->language;
 		$this->document->charset = Core::$charset;
+		$this->document->current_theme = $this->_detect_theme();
 
-		$found = FALSE;
+        $this->_params = $this->_build_params_tree(Request::current()->param());
+        $this->_filters = $this->_build_filter_tree(Request::current()->param());
+        $this->_pagination = $this->_build_pagination();
 
-		foreach ($routes as $name => $route)
+		if (! empty($controller))
 		{
-			if ($params = $route->matches($path))
+			$controller = Controller::factory($controller);
+			if ($controller)
 			{
-				unset($params['action']);
-				$params = $this->explode_request_params($params);
-				
-				Request::current()->set_params($params + $get_params);
-				
-				$found = TRUE;
-				break;
+				$controller->action($action, Request::current()->param());
+			}
+			else
+			{
+				throw new \HTTP_Exception_404('Controller :controller not found.', array(
+					':controller' => $controller,
+				));
 			}
 		}
-		
-		if (! $found && $path != '')
+		else
 		{
-			throw new HTTP_Exception_404();
+			$this->document->render();
 		}
-
-		// TODO: единый интерфейс вызова
-		$this->_params = $this->_build_params_tree(Request::current()->param());
-		//$this->_filters = $this->_build_filter_tree(Request::current()->param());
-		$this->_filters = $this->_build_filter_tree($_GET); // TODO!
-		$this->_pagination = $this->_build_pagination();
-		
-		$this->document->current_theme = $this->_detect_theme();
-		
-		$this->document->render();
 		
 		if (isset($benchmark))
 		{
@@ -523,39 +150,16 @@ class App {
 	
 	protected function _detect_theme()
 	{
-		$themes = Model_Theme::factory()->query()->select();
+		$themes = Model_Theme::factory()->query()->select_all();
 		
 		foreach ($themes as $theme)
 		{
-			if (empty($theme->condition->id))
-			{
-				continue;
-			}
-			if (App::check_page_condition($theme->condition->condition))
+			if (! $theme->condition->loaded() || App::check_page_condition($theme->condition->condition))
 			{
 				return $theme->name;
 			}
 		}
 		return $this->get_cfg('default_theme');
-	}
-	
-	public function fetch_query_params()
-	{
-		$params = array();
-		$request = explode('?', $_SERVER['REQUEST_URI']);
-		if (isset($request[1]))
-		{
-			$query_parts = explode('&', $request[1]);
-			foreach ($query_parts as $part)
-			{
-				$part = explode('=', $part);
-				$params[$part[0]] = @$part[1];
-			}
-			$_SERVER['QUERY_STRING'] = $request[1]; // TODO
-		}
-		$_GET = $params; // TODO!
-		//$_REQUEST = $params + $_POST; // TODO!
-		return $params + $_POST;
 	}
 
 	public function set_language($language)
@@ -575,56 +179,11 @@ class App {
 		}
 
 		$params = Request::current()->param();
+		unset($params['session']); // TODO
+		$params['_count'] = count($params);
 		$expression = new Expression_Calc_PHP();
-		/*
-		$expression = new Expression();
 
-		//TODO: ужасный костыль
-		$parsed_params = array();
-		foreach ($params as $name => $value)
-		{
-			$name = str_replace('.', '_', $name);
-			$parsed_params[$name] = $value;
-		}
-		$params = $parsed_params;
-		*/
 		return $expression->evaluate($condition, $params) != '';
-	}
-
-	public function explode_request_params($params)
-	{
-		return $this->modify_request_params($params, "explode");
-	}
-
-	public function implode_request_params($params)
-	{
-		return $this->modify_request_params($params, "implode");
-	}
-
-	//TODO
-	protected function modify_request_params($params, $function)
-	{
-		/*
-		$used_components = array();
-		
-		// Только те компоненты, переменные которых используются в выражениях
-		foreach ($params as $key => $value)
-		{
-			$parts = explode("_", $key);
-			if (in_array($parts[0], $this->component_list) && ! in_array($parts[0], $used_components))
-			{
-				$used_components[] = $parts[0];
-			}
-		}
-
-		$used_components = $this->component_list;
-		
-		$function = $function . "_params";
-		foreach ($used_components as $component)
-		{
-			$params = Component::instance($component)->$function($params);
-		}*/
-		return $params;
 	}
 
 	public function get_cfg($param)
@@ -642,8 +201,8 @@ class App {
 
 	public function get_uri($route_id, $params, $format = NULL, $language = NULL)
 	{
-		$params = $this->implode_request_params($params);
-		$path = Route::get($route_id)->uri($params);
+		//$path = Route::get($route_id)->uri($params); TODO
+		$path = implode('&', $params);
 
 		return $this->expand_uri($path, $format, $language);
 	}
@@ -665,23 +224,209 @@ class App {
 			}
 		}
 
-		$uri = Route::get("default")->uri(array(
-			"path" => $path,
-			"language" => $language,
-			"format" => $format,
+		/*
+		$uri = Route::get('default')->uri(array(
+			'path' => $path,
+			'language' => $language,
+			'format' => $format,
 		));
+		*/
+		$uri = $path;
 		
 		return URL::site($uri);
 	}
 
-	// TODO
-	public function redirect($url, $message = '', $type = 'info')
+	public function filter($module = NULL, $model = NULL)
 	{
-		// TODO: парсить параметры url
-		if ($message != '')
+		if ($module !== NULL)
 		{
-			$url .= '?message=' . urlencode(__($message));
+			if ($model !== NULL)
+			{
+				return @($this->_filters[$module][$model]);
+			}
+			else
+			{
+				return @($this->_filters[$module]);
+			}
 		}
-		Request::current()->redirect($url);
+
+		return $this->_filters;
+	}
+
+	public function pagination($module = NULL, $model = NULL)
+	{
+		if ($module !== NULL)
+		{
+			if ($model !== NULL)
+			{
+				return @($this->_pagination[$module][$model]);
+			}
+			else
+			{
+				return @($this->_pagination[$module]);
+			}
+		}
+
+		return $this->_pagination;
+	}
+
+	// TODO: remove it from here
+	public function param($module = NULL, $model = NULL)
+	{
+		// TODO: !!!
+		if ($module !== NULL)
+		{
+			if ($model !== NULL)
+			{
+				return @($this->_params[$module][$model]);
+			}
+			else
+			{
+				return @($this->_params[$module]);
+			}
+		}
+
+		return $this->_params;
+	}
+
+	// TODO: remove it from here
+	protected function _build_params_tree($params)
+	{
+		$result = array();
+		foreach ($params as $param => $value)
+		{
+			if (is_array($value))
+			{
+				continue;
+			}
+			$parts = explode(URL::PART_DELIMITER, $param);
+		 	if (count($parts) >= 2)
+		 	{
+				$parent = &$result;
+				$name = array_shift($parts);
+				$i = 0;
+				while (count($parts) && $i < 2) // TODO: некрасиво
+				{
+					$parent[$name] = array();
+					$parent =& $parent[$name];
+					$name = array_shift($parts);
+					$i++;
+				}
+				array_unshift($parts, $name);
+				$name = implode(URL::PART_DELIMITER, $parts);
+				$parent[$name] = $value;
+		 	}
+		 	else
+		 	{
+				$result['@global'][$param] = $value;
+		 	}
+		}
+
+		return $result;
+	}
+
+	protected function _build_filter_tree($params)
+	{
+		$result = array();
+
+		foreach ($params as $param => $value)
+		{
+			$parts = explode(URL::PART_DELIMITER, $param);
+		 	if (count($parts) >= 3 && strpos($param, '[') === FALSE ) // TODO
+		 	{
+				$module = array_shift($parts);
+				$model = array_shift($parts);
+				$field = implode('.', $parts);
+				$result[$module][$model][$field]['filter'] = $value;
+		 	}
+		}
+
+		$ordering = (array)@$_REQUEST['ordering']; // TODO
+		foreach ($ordering as $path => $order)
+		{
+			$parts = explode(URL::PART_DELIMITER, $path);
+			if (count($parts) >= 2)
+			{
+				$module = $parts[0];
+				$model = $parts[1];
+
+				@list($field, $dir) = explode(',', $order);
+				if (! empty($field))
+				{
+					if (! in_array(strtolower($dir), array('asc', 'desc')))
+					{
+						$dir = 'asc';
+					}
+
+					$result[$module][$model][$field]['ordering'] = $dir;
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	protected function _build_pagination()
+	{
+		$result = array();
+
+		$offset = (array)@$_REQUEST['offset']; // TODO
+		foreach ($offset as $path => $value)
+		{
+			$parts = explode(URL::PART_DELIMITER, $path);
+			if (count($parts) >= 2)
+			{
+				$module = $parts[0];
+				$model = $parts[1];
+
+				$result[$module][$model]['offset'] = $value;
+			}
+		}
+
+		$limit = (array)@$_REQUEST['limit']; // TODO
+		foreach ($limit as $path => $value)
+		{
+			$parts = explode(URL::PART_DELIMITER, $path);
+			if (count($parts) >= 2)
+			{
+				$module = $parts[0];
+				$model = $parts[1];
+
+				$result[$module][$model]['limit'] = $value;
+			}
+		}
+
+		return $result;
+	}
+
+	// TODO: убрать это отсюда
+	// TODO: переписать этот говнокод
+	public function ordering($model = NULL)
+	{
+		$parse = function ($order)
+		{
+			@list($column, $dir) = explode(',', $order);
+			$result = array(
+				'column' => $column,
+				'dir'    => $dir
+			);
+
+			return $result;
+		};
+		$ordering = (array)@$_REQUEST['ordering'];
+
+		if (! empty($model))
+		{
+			$ordering = $parse(@$ordering[strtolower($model)]);
+		}
+		else
+		{
+			foreach ($ordering as $what => $order)
+			{
+				$ordering[$what] = $parse($order);
+			}
+		}
+
+		return $ordering;
 	}
 }
