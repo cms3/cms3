@@ -1,7 +1,7 @@
 cms3.window = new Object();
 cms3.extend(cms3.window, cms3.object, {
     id: 'window',
-    windowState: 'maximized',
+    windowState: 'normal',
     label: '',
     container: 'body',
     
@@ -16,12 +16,20 @@ cms3.extend(cms3.window, cms3.object, {
 
         $(this.container).append($("#cms3-template-window").tmpl(this));
 
+        switch (this.windowState) {
+            case 'maximized':
+                this.maximize();
+                break
+            default:
+                this.normalize();
+        }
+
         $('div#' + this.id + ' div.cms3-window-head-buttons span.normal').click(function(e){
             window.normalize();
         });
         
         $('div#' + this.id + ' div.cms3-window-head-buttons span.maximized').click(function(e){
-            window.maximized();
+            window.maximize();
         });
 
         $('div#' + this.id + ' div.cms3-window-head-buttons span.close').click(function(e){
@@ -37,7 +45,7 @@ cms3.extend(cms3.window, cms3.object, {
             var x = e.pageX;
             var y = e.pageY;
 
-            $('body').mousemove(function(e){
+            $(document).mousemove(function(e){
                 var x1 = e.pageX;
                 var y1 = e.pageY;
 
@@ -51,7 +59,7 @@ cms3.extend(cms3.window, cms3.object, {
                 return false;
             });
 
-            $('body').mouseup(function(){
+            $(document).mouseup(function(){
 //                console.dir($(this));
                 $(this).off('mousemove');
                 $(this).off('mouseup');
@@ -81,7 +89,7 @@ cms3.extend(cms3.window, cms3.object, {
         this.drag();
     },
 
-    maximized: function(){
+    maximize: function(){
         var $ = jQuery;
 
         $('div#' + this.id).removeAttr("style")

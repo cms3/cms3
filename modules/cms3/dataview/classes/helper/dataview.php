@@ -48,9 +48,22 @@ class Helper_Dataview
 
 	static public function clear_items($items)
 	{
-		foreach ($items as $i => $item) {
+		foreach ($items as $i => $item)
+		{
+			foreach ($items[$i] as $j => $cell)
+			{
+				if (is_array($cell))
+				{
+					$items[$i][$j] = (object) $cell;
+				}
+			}
+		}
+
+		foreach ($items as $i => $item)
+		{
 			$items[$i] = (object) $item;
 		}
+
 		return $items;
 	}
 
@@ -104,19 +117,37 @@ class Helper_Dataview
 				//}
 			}
 
-			if ($type == 'list') {
+			if ($type == 'list')
+			{
 				$items = $model ->query()
 								->filter()
 								//TODO: баг, загружается с оригинальными названиями полей
 								//->select_column($field_list)
 								->select()
-								->as_array();
-			} else {
+								->as_tree_array(NULL, FALSE, FALSE);
+			}
+			else
+			{
 				$items = $model ->query()
 								->filter()
 								->select()
-								->as_array();
+								->as_tree_array(NULL, FALSE, FALSE);
 			}
+
+
+/*			$items_object = $model ->query()
+									->filter()
+									->select();
+			$items = array();
+			foreach ($items_object as $item_object)
+			{
+					$item = array();
+					foreach ($model->meta()->fields() as $id => $field)
+					{
+						$item[$id] = $item_object->{$id};
+					}
+					$items[] = $item;
+			}*/
 
 			$items = Helper_Dataview::clear_items($items);
 

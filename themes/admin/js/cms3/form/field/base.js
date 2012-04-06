@@ -3,6 +3,8 @@ cms3.form.field.base = new Object();
 cms3.extend(cms3.form.field.base, cms3.field.base, {
     templateCellEditable: 'base',
     templateCellFormContainer: 'base',
+    value: '',
+    html: {},
 
     init: function() {
         this.form = this.parentObject;
@@ -11,90 +13,81 @@ cms3.extend(cms3.form.field.base, cms3.field.base, {
             this.cell = this.cells[0];
         }
 
-        this.buildSelectors();
+        this.value = this.cell;
+
+        //this.buildSelectors();
     },
 
     buildSelectors: function() {
-        this.selectors.parentElement;
+        //this.selectors.parentElement;
     },
 
     createEvents: function() {
+        this.createHtmlElementObjects();
+        this.createSelectAndUndoEvents();
+    },
+
+    createHtmlElementObjects: function() {
+        var $ = jQuery;
+        this.html.input = $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input');
+        this.html.cellsBlock = $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable-options');
+        this.html.undoButton = $(this.selectors.form.parentElement + ' tr.' + this.id + ' td.undo div');
+    },
+
+    createSelectAndUndoEvents: function() {
         var $ = jQuery;
         var field = this;
 
-        $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input').focus(function() {
-            $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable-options').addClass('hover');
-            console.log(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable-options');
-            /*var hint = $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable input').hasClass('hint');
-            if (hint)
-            {
-                $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable input').val('');
-                $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable input').removeClass('hint');
-            }*/
+        var input = this.html.input;
+        var cellsBlock = this.html.cellsBlock;
+        var undoButton = this.html.undoButton;
+
+        input.focus(function() {
+            cellsBlock.addClass('hover');
         });
 
-        $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input').blur(function() {
-            $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable-options').removeClass('hover');
-
-            /*if (field.getValue() == '') {
-                $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable input').val(field.hint);
-                $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable input').addClass('hint');
-            }*/
+        input.blur(function() {
+            cellsBlock.removeClass('hover');
         });
 
-        if (this.cell == undefined) {
-            var change = function () {
-                $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable-options').hide();
-                $(field.selectors.form.parentElement + ' tr.' + field.id + ' td.undo div').show();
-            };
-
-            $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input').on('input', change);
-
-            $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input').keyup(function(event) {
-                if (event.keyCode == 27 || event.keyCode == 46 || event.keyCode == 8) {
-                    change();
-                }
-            });
-        } else {
-            $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input').on('input', function() {
-                if (field.value() != field.cell) {
-                    $(field.selectors.form.parentElement + ' tr.' + field.id + ' td.undo div').show();
-                } else {
-                    $(field.selectors.form.parentElement + ' tr.' + field.id + ' td.undo div').hide();
-                }
-            });
-        }
-
-
-        $(field.selectors.form.parentElement + ' tr.' + field.id + ' td.undo div').click(function() {
-            $(field.selectors.form.parentElement + ' tr.' + field.id + ' td.undo div').hide();
-            if (field.cell == undefined) {
-                $(field.selectors.form.parentElement + ' tr.' + field.id + ' div.cms3-field-editable-options').show();
-                field.value('');
+        var change = function () {
+            if (field.cells.length > 1) {
+                cellsBlock.hide();
+                undoButton.show();
             } else {
-                field.value(field.cell);
+                if (field.getValue() != field.cell) {
+                    undoButton.show();
+                } else {
+                    undoButton.hide();
+                }
+            }
+        };
+
+        input.on('input', change);
+
+        input.keyup(function(event) {
+            if (event.keyCode == 27 || event.keyCode == 46 || event.keyCode == 8) {
+                change();
+            }
+        });
+
+        undoButton.click(function() {
+            undoButton.hide();
+            if (field.cells.length > 1) {
+                cellsBlock.show();
+                field.setValue('');
+            } else {
+                field.setValue(field.cell);
             }
         });
     },
 
-    showHint: function() {
-        this.value = $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input').val();
-
-        if (this.value == '') {
-
-        }
+    getValue: function() {
+        this.value = this.html.input.val();
+        return this.value;
     },
 
-    getValue: this.value,
-
-    value: function(value) {
-        var $ = jQuery;
-        if (value == undefined) {
-            return $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input').val();
-        } else {
-            return $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input').val(value);
-        }
-
+    setValue: function(value) {
+        this.html.input.val(value);
     }
-
 });

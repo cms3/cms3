@@ -1,13 +1,8 @@
 cms3.object = {};
 cms3.extend(cms3.object, cms3.params, {
-    getObject: function(userData) {
-        var object = {};
-        this.extend(object, this, userData);
-        return object;
-    },
-
     create: function(userData) {
-        var object = this.getObject(userData);
+        var object = new Object();
+        cms3.extend(object, cms3.clone(this), userData);
         object.init();
         return object;
     },
