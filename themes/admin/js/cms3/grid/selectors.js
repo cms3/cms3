@@ -68,10 +68,11 @@ cms3.richGrid.selectors = {
 
         this.editItems = {};
         this.editItems.parentElement = this.parentElement + ' div.edit-items';
+
         var gridId = this.gridId;
         this.editItems.editForm      = function(id)
         {
-            return '#cms3-rich-grid-' + gridId + '-edit-from-'+id;
+            return '#' + gridId + '-window-'+id;
         }
 
         //this.grid.itemCheckedSelectors = this.grid.itemSelectors+':checked';

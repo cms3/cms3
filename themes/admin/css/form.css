@@ -13,19 +13,13 @@ div.cms3-field-editable td {
     border: none;
 }
 
-div.cms3-field-editable input {
-    margin: 0;
-    border: none;
-    padding-top: 0.3em;
-    padding-bottom: 0.3em;
-}
-
 div.input-container {
     overflow: hidden;
     position: relative;
 }
 
 div.cms3-field-editable div.wrapper input,
+div.cms3-field-editable textarea,
 div.cms3-field-editable.select td,
 div.cms3-field-editable div.input-container div.cms3-field-editable-options
 {
@@ -64,14 +58,26 @@ div.cms3-field-editable {
     position: relative;
 }
 
-div.cms3-field-editable input {
+div.cms3-field-editable input,
+div.cms3-field-editable textarea {
     width: 100%;
     font-size: 0.9em;
     outline: none;
+
+    margin: 0;
+    border: none;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
 }
 
 div.cms3-field-editable input.hint {
     color: #999;
+}
+
+/* Text area */
+div.cms3-field-editable textarea {
+    height: 100px;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
 }
 
 /* undo image*/
@@ -97,11 +103,12 @@ table.cms3-form td.undo div:hover {
 /* Input wrapper */
 
 div.cms3-field-editable div.wrapper {
-    padding-left: 12px;
+    padding-left: 10px;
 }
 
-div.cms3-field-editable div.wrapper input{
-    margin-left: -12px;
+div.cms3-field-editable div.wrapper input,
+div.cms3-field-editable div.wrapper textarea{
+    margin-left: -10px;
 }
 
 /* Select button */

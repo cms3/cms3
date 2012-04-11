@@ -306,8 +306,9 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
         var data = new Object();
         data.ids = ids;
         data.model = this.model;
+        data.token = this.token;
 
-        $.getJSON("/action/cms3/dataview/delete",
+        $.getJSON("/?controller=cms3/dataview&action=delete",
             data,
             function(items){
                 
@@ -329,10 +330,10 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
     editItems: function(id) {
         var $ = jQuery;
         var grid = this;
-        var ids = this.getActiveItemIds(id);
 
         // <different>
         var currentItem = new Object();
+        var ids = this.getActiveItemIds(id);
 
         // редактирование
         if (id != 0) {
@@ -373,27 +374,81 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
         }
 
         if (currentItem.id != undefined) {
-            var formIds = currentItem.id.join('_');
-            ids = currentItem.id;
+            var formIds = ids.join('_');
             //var formAbsoluteId = cms3.helper.removeIdPrefix(this.selectors.editItems.editForm(formId),'#');
             var windowAbsoluteId = grid.id + '-window-' + formIds;
             var formAbsoluteId = grid.id + '-form-' + formIds;
+            var buttonsAbsoluteId = grid.id + '-button-' + formIds + '-';
 
             if ($(grid.selectors.editItems.editForm(formIds)).length == 0) {
-                cms3.window.create({
+
+                // Highlight edited items
+                var addHighlight = function() {
+                    $(grid.selectors.grid.items(ids)).addClass('highlight');
+                };
+
+                var removeHighlight = function(e) {
+                    $(grid.selectors.grid.items(ids)).removeClass('highlight');
+                    e.stopPropagation();
+                };
+
+                // Create edit window and form
+                var win = cms3.window.create({
                     label: 'Название',
-                    container: 'div#workspace',
-                    id: windowAbsoluteId
+                    container: this.container,
+                    id: windowAbsoluteId,
+
+                    events: {
+                        mouseover: addHighlight,
+                        close: removeHighlight,
+                        mouseleave: removeHighlight
+                    },
+
+                    children: {
+                        editForm: {
+                            childObject: cms3.form,
+                            position: 'content',
+                            params: {
+                                id: formAbsoluteId,
+                                item: currentItem,
+                                models: grid.models,
+                                model: grid.model,
+                                itemIds: ids
+                            }
+                        },
+
+                        buttonSave: {
+                            childObject: cms3.button,
+                            position: 'buttons',
+                            params: {
+                                id: buttonsAbsoluteId + 'save',
+                                text: 'Сохранить',
+                                events: {
+                                    click: function () {
+                                        grid.saveForm(ids, win.children.editForm.fields);
+                                        win.close();
+                                    }
+                                }
+                            }
+                        },
+
+                        buttonCancel: {
+                            childObject: cms3.button,
+                            position: 'buttons',
+                            params: {
+                                id: buttonsAbsoluteId + 'cancel',
+                                text: 'Отмена',
+                                events: {
+                                    click: function () {
+                                        win.close();
+                                    }
+                                }
+                            }
+                        }
+                    }
                 });
 
-                cms3.form.create({
-                    label: 'Название',
-                    container: '#' + windowAbsoluteId + ' div.cms3-window-content',
-                    id: formAbsoluteId,
-                    item: currentItem,
-                    models: grid.models,
-                    model: grid.model
-                });
+
 
                 /*$("#editItemTemplate").tmpl({fields: this.fields, item: currentItem, elementId: formAbsoluteId , gridId: grid.id}).appendTo(this.selectors.editItems.parentElement);
 
@@ -425,45 +480,29 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
                     });
 
                 });*/
-
-                // Highlight edited items
-                $(this.selectors.editItems.editForm(formIds)).mouseover(function(){
-                    $(grid.selectors.grid.items(ids)).addClass('highlight');
-                });
-
-                $(this.selectors.editItems.editForm(formIds)).mouseleave(function(){
-                    $(grid.selectors.grid.items(ids)).removeClass('highlight');
-                });
             }
         }
     },
 
-    saveForm: function(ids){
+    saveForm: function(ids, fields){
         var $ = jQuery;
         var grid = this;
         
-        var formId = ids.join('_');
-
         var formData = new Object();
         formData.ids = ids;
 
-        cms3.each(this.fields, function(fieldId, field)
-        {
-            if (field.isChange(formId, fieldId))
-            {
-                formData[fieldId] = field.getFormValue(formId, fieldId);
-                //alert(fieldId + ': ' + formData[field.id]);
+        cms3.each(fields, function(fieldId, field) {
+            if (field.isChange) {
+                formData[fieldId] = field.getValue();
             }
         });
 
-        /*alert(formData['title']);*/
-
         var data = new Object();
-        // changes
         data.items = new Object();
         data.items[0] = formData;
         data.model = this.model;
 
+        // changes
         cms3.each(data.items, function(i, items) {
             var itemChanges = cms3.helper.clone(items);
             delete itemChanges.ids;
@@ -494,7 +533,7 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
             }
         });*/
 
-        $.getJSON("/action/cms3/dataview/save",
+        $.getJSON("/?controller=cms3/dataview&action=save",
             data,
             function(items){
                 cms3.each(items, function(i, savedItem) {
@@ -551,21 +590,26 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
         return ids;
     },
 
-    getActiveItemIds: function(id)
-    {
-        if ((typeof id) === 'undefined')
-        {
+    getActiveItemIds: function(id) {
+        if (id == undefined) {
+            console.log('else');
             return this.getSelectedItemIds();
-        }
-        else
-        {
-            return new Array(id)
+        } else {
+            if (id === 0) {
+                var arr = new Array();
+                arr[0] = 0;
+                return arr;
+            } else {
+                return new Array(id)
+            }
         }
     },
 
     sortable: function() {
         this.itemsView.sort(field.sIncrease); // В
-    }
+    },
+
+    token: ''
 });
 
 function extend(Child, Parent) {

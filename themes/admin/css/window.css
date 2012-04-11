@@ -64,3 +64,7 @@ div.cms3-window-buttons {
     text-align: right;
     padding: 0.3em;
 }
+
+div.cms3-window-buttons button{
+    margin-left: 1em;
+}

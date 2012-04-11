@@ -281,12 +281,8 @@ $grid_data = JSON::encode($grid_data, array(
 				</div>
 			</div>
 		</div>
-		<div class="cms3-window-content">
-
-		</div>
-		<div class="cms3-window-buttons">
-			<button><span>Сохранить</span></button> <button><span>Закрыть</span></button>
-		</div>
+		<div class="cms3-window-content"></div>
+		<div class="cms3-window-buttons"></div>
 	</div>
 </script>
 
@@ -395,6 +391,24 @@ $grid_data = JSON::encode($grid_data, array(
     </div>
 </script>
 
+<script id="cms3-template-field-editable-textarea" type="text/x-jquery-tmpl">
+    <div class="cms3-field-editable textarea">
+        <div class="input-container">
+            <div class="wrapper">
+                <textarea rows="" cols="" placeholder="${field.hint}">{{if cells.length == 1}}${cells}{{/if}}</textarea>
+            </div>
+
+            {{if cells.length > 1}}
+                <div class="cms3-field-editable-options">
+
+                    <div>Разные...</div>
+
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</script>
+
 <script id="cms3-template-field-editable-select" type="text/x-jquery-tmpl">
     <div class="cms3-field-editable select">
         <table>
@@ -443,6 +457,10 @@ $grid_data = JSON::encode($grid_data, array(
             </ul>
         </div>
     </div>
+</script>
+
+<script id="cms3-template-button" type="text/x-jquery-tmpl">
+    <button id="${id}"><span>${text}</span></button>
 </script>
 
 <script type="text/javascript">
