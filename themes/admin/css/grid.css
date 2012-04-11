@@ -124,9 +124,9 @@ div.cms3-rich-grid div.edit-field-list
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 	
-	border-right:#999 solid 0.1em;
-	border-bottom:#999 solid 0.1em;
-	border-top:#999 solid 0.1em;
+	border-right:#999 solid 1px;
+	border-bottom:#999 solid 1px;
+	border-top:#999 solid 1px;
 	
 	cursor:pointer;
 	

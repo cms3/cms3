@@ -5,10 +5,35 @@ cms3.extend(cms3.form.field.base, cms3.field.base, {
     templateCellFormContainer: 'base',
     value: '',
     html: {},
+    isChange: false,
 
     init: function() {
         this.form = this.parentObject;
-        this.cells = this.form.item[this.id];
+        var field = this;
+        var activeItems = this.form.activeItems;
+
+        var cells = new Array();
+        var n = 0;
+        if (activeItems.length > 0) {
+            cms3.each(activeItems, function(i, item) {
+                var different = true;
+                cms3.each(cells, function(i, cell) {
+                    if (cell === item[field.id]) {
+                        different = false;
+                    }
+                });
+
+                if (different) {
+                    cells[n] = item[field.id];
+                    n++;
+                }
+            });
+        } else {
+            cells[0] = field.default;
+        }
+
+        this.cells = cells;
+
         if (this.cells != undefined && this.cells.length == 1) {
             this.cell = this.cells[0];
         }
@@ -29,9 +54,14 @@ cms3.extend(cms3.form.field.base, cms3.field.base, {
 
     createHtmlElementObjects: function() {
         var $ = jQuery;
-        this.html.input = $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input');
+        this.setInputObject();
         this.html.cellsBlock = $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable-options');
         this.html.undoButton = $(this.selectors.form.parentElement + ' tr.' + this.id + ' td.undo div');
+    },
+
+    setInputObject: function() {
+        var $ = jQuery;
+        this.html.input = $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable input');
     },
 
     createSelectAndUndoEvents: function() {
@@ -54,11 +84,14 @@ cms3.extend(cms3.form.field.base, cms3.field.base, {
             if (field.cells.length > 1) {
                 cellsBlock.hide();
                 undoButton.show();
+                field.isChange = true;
             } else {
                 if (field.getValue() != field.cell) {
                     undoButton.show();
+                    field.isChange = true;
                 } else {
                     undoButton.hide();
+                    field.isChange = false;
                 }
             }
         };
@@ -73,6 +106,7 @@ cms3.extend(cms3.form.field.base, cms3.field.base, {
 
         undoButton.click(function() {
             undoButton.hide();
+            field.isChange = false;
             if (field.cells.length > 1) {
                 cellsBlock.show();
                 field.setValue('');

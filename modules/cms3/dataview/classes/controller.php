@@ -58,7 +58,12 @@ class Controller extends Abstract_Controller
 		foreach ($items as $item) {
 			// Одна форма может менять сразу несколько записей
 			// TODO: primary может быть не только id, и даже составной ключ, а вообще лучше переписать под дублирование произвольных полей
-			foreach ($item['ids'] as $id) {
+			if ( !isset($item['ids']) )
+            {
+                $item['ids'] = array(0);
+            }
+
+            foreach ($item['ids'] as $id) {
 				// Строим форму
 				$form = $item;
 				// TODO: primary может быть не только id, и даже составной ключ
@@ -84,7 +89,8 @@ class Controller extends Abstract_Controller
 				try {
 					$model->save();
 				}
-				catch (Exception $e) {
+				catch (Exception $e)
+                {
 					// TODO: обработка ошибок, функция продолжит выполнение?
 					$error = $e->getMessage();
 				}

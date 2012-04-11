@@ -1,20 +1,27 @@
 cms3.window = new Object();
-cms3.extend(cms3.window, cms3.object, {
+cms3.extend(cms3.window, cms3.htmlObject, {
     id: 'window',
     windowState: 'normal',
     label: '',
     container: 'body',
+    childContainers: {
+        content: 'div.cms3-window-content',
+        buttons: 'div.cms3-window-buttons'
+    },
+    template: 'cms3-template-window',
     
     width: '500',
     height: 'auto',
     left: '10',
     top: '10',
 
-    init: function(){
-        var $ = jQuery;
-        var window = this;
+    parentBuildHtml: cms3.htmlObject.buildHtml,
 
-        $(this.container).append($("#cms3-template-window").tmpl(this));
+    buildHtml: function() {
+        this.parentBuildHtml();
+
+        var $ = jQuery;
+        var win = this;
 
         switch (this.windowState) {
             case 'maximized':
@@ -25,21 +32,21 @@ cms3.extend(cms3.window, cms3.object, {
         }
 
         $('div#' + this.id + ' div.cms3-window-head-buttons span.normal').click(function(e){
-            window.normalize();
+            win.normalize();
         });
-        
+
         $('div#' + this.id + ' div.cms3-window-head-buttons span.maximized').click(function(e){
-            window.maximize();
+            win.maximize();
         });
 
         $('div#' + this.id + ' div.cms3-window-head-buttons span.close').click(function(e){
-            window.close();
+            win.close();
         });
     },
 
     drag: function(){
         var $ = jQuery;
-        var window = this;
+        var win = this;
         
         $('div#' + this.id + ' div.cms3-window-head').on('mousedown', function(e){
             var x = e.pageX;
@@ -49,18 +56,17 @@ cms3.extend(cms3.window, cms3.object, {
                 var x1 = e.pageX;
                 var y1 = e.pageY;
 
-                window.left = window.left*1 + x1 - x;
-                window.top = window.top*1 + y1 - y;
+                win.left = win.left*1 + x1 - x;
+                win.top = win.top*1 + y1 - y;
                 x = x1;
                 y = y1;
 
-                window.position();
+                win.position();
 
                 return false;
             });
 
             $(document).mouseup(function(){
-//                console.dir($(this));
                 $(this).off('mousemove');
                 $(this).off('mouseup');
                 return false;
@@ -77,24 +83,23 @@ cms3.extend(cms3.window, cms3.object, {
     normalize: function(){
         var $ = jQuery;
 
-        $('div#' + this.id).removeClass('maximized');
-        $('div#' + this.id).addClass('normal');
+        this.htmlObject.removeClass('maximized');
+        this.htmlObject.addClass('normal');
 
-        $('div#' + this.id).width(this.width);
+        this.htmlObject.width(this.width);
 
-        if (this.height != 'auto')
-            $('div#' + this.id).height(this.height);
+        if (this.height != 'auto') {
+            this.htmlObject.height(this.height);
+        }
 
         this.position();
         this.drag();
     },
 
     maximize: function(){
-        var $ = jQuery;
-
-        $('div#' + this.id).removeAttr("style")
-        $('div#' + this.id).addClass('maximized');
-        $('div#' + this.id).removeClass('normal');
+        this.htmlObject.removeAttr("style")
+        this.htmlObject.addClass('maximized');
+        this.htmlObject.removeClass('normal');
         this.unDrag();
     },
 
@@ -108,14 +113,8 @@ cms3.extend(cms3.window, cms3.object, {
         $('div#' + this.id).css('top',this.top+'px');
     },
 
-    children: [
-        {
-            
-        }
-    ],
-
     close: function(){
-        var $ = jQuery;
-        $('div#' + this.id).remove();
+        this.triggerEvent('close');
+        this.htmlObject.remove();
     }
 });
