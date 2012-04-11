@@ -41,10 +41,11 @@ class Controller extends Abstract_Controller {
 
 		$paginator = new Paginator($total, $builder->current_limit(), $builder->current_offset(), 'shop/product');
 		
-		$products = $builder->select_all()->as_array();
+		$products = $builder->select_all();
+        $products_arr = $products->as_array();
 		
 		$type = Model_Product_Type::factory()
-			->query($params["shop/product/type/id"])
+			->query($params['shop/product/type/id'])
 			->limit(1)
 			->select();
 
@@ -55,19 +56,19 @@ class Controller extends Abstract_Controller {
 			$benchmark = \Profiler::start(get_class($this), __FUNCTION__);
 		}
 
-        foreach ($products as &$product)
+        foreach ($products as $i => $product)
         {
             // TODO !
-            if (count($product['images']))
+            if (count($product->images))
             {
-                $img = $product['images'][0];
-                $product['default_image']['thumbnail']['url'] = '/?controller=cms3/images&action=thumbnail&width=150&height=120&image=' . $img['file']['dir'] . '/' . $img['file']['filename'];
+                $img = $product->images[0];
+                $products_arr[$i]['default_image']['thumbnail']['url'] = $img->thumbnail(array('width' => 150, 'height' => 120), FALSE)->url();
             }
         }
 
 		$view_data = array(
 			'title' => @$type->title,
-			'products' => $products,
+			'products' => $products_arr,
 			'pagination' => $paginator_data
 		);
 
@@ -101,24 +102,12 @@ class Controller extends Abstract_Controller {
 		}
 
 
-		
 		$products_arr = $products->as_array();
 			
 		usort($products_arr, function($a, $b)
 		{
 			return $a['type']['id'] > $b['type']['id'];
 		});
-            /*
-        foreach ($products as &$product)
-        {
-            // TODO !
-            if (count($product['images']))
-            {
-                $img = $product['images'][0];
-                $product['default_image']['thumbnail']['url'] = '/?controller=cms3/images&action=thumbnail&width=150&height=120&image=' . $img['file']['dir'] . '/' . $img['file']['filename'];
-            }
-        }
-              */
 
         foreach ($products as $i => $product)
         {
@@ -164,8 +153,6 @@ class Controller extends Abstract_Controller {
 				':product_id' => $product_id,
 			));
 		}
-
-
 
 		$product->image_params = array(
 			'width' => 400,

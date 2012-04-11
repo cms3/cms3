@@ -1,6 +1,3 @@
-# Set UTF-8 encoding
-AddDefaultCharset UTF-8
-
 # Turn on URL rewriting
 RewriteEngine On
 
@@ -14,11 +11,14 @@ RewriteBase /
 </Files>
 
 # Protect application and system files from being viewed
-#RewriteRule ^(?:site|modules|system)\b.* index.php/$0 [L]
+RewriteRule ^(?:modules|system)\b.* index.php/$0 [L]
 
 # Allow any files or directories that exist to be displayed directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule .* - [L]
+
+RewriteRule ^site/cache/thumbs/(.*)$ index.php/?controller=cms3/images&action=thumbnail&thumbnail=$1 [PT,L]
 
 # Rewrite all other URLs to index.php/URL
 RewriteRule .* index.php/$0 [PT]

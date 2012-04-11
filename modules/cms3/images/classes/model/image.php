@@ -67,6 +67,11 @@ class Model_Image extends Model
 
 	public function thumbnail(array $params = array(), $generate = TRUE)
 	{
+        if (is_string($params))
+        {
+            $params = $this->decode_params($params);
+        }
+
 		$orig_file = $this->file->filepath();
 
 		$params = (array)$params + $this->_resize_params;
@@ -83,7 +88,7 @@ class Model_Image extends Model
 
 		$pathinfo = pathinfo($filename);
 
-		$suffix = '_' . $this->_params_key($params);
+		$suffix = '_' . $this->encode_params($params);
 		$ext = ($pathinfo['extension'] ? '.' : '') . $pathinfo['extension'];
 		
 		$thumb = $thumbs_dir . DIRECTORY_SEPARATOR . $pathinfo['filename'] . $suffix . $ext;
@@ -91,10 +96,17 @@ class Model_Image extends Model
 		return $thumb;
 	}
 
-	protected function _params_key($params)
+    public function encode_params($params)
 	{
-		$checksum = crc32(serialize($params));
+		$string = base64_encode(serialize($params));
 
-		return sprintf('%u', $checksum);
+		return rtrim($string, '=');
 	}
+
+    public function decode_params($string)
+    {
+        $params = unserialize(base64_decode($string));
+
+        return $params;
+    }
 }
