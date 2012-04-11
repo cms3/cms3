@@ -9,46 +9,31 @@ cms3.extend(cms3.form.field.base, cms3.field.base, {
 
     init: function() {
         this.form = this.parentObject;
+        var field = this;
+        var activeItems = this.form.activeItems;
 
-
-      /*  // редактирование
-        if (id != 0) {
-            cms3.each(ids, function(i, id) {
-                cms3.each(grid.items, function(i, item) {
-                    if (item.id == id) {
-                        cms3.each(item, function(fieldId, cell) {
-                            var different = true;
-                            var n = 0;
-
-                            if (currentItem[fieldId] == undefined) {
-                                currentItem[fieldId] = new Array();
-                            } else {
-                                cms3.each(currentItem[fieldId], function(k, knownCell) {
-                                    if (cell == knownCell) {
-                                        different = false;
-                                    }
-
-                                    // get array number to add new cell variant
-                                    n = k+1;
-                                });
-                            }
-
-                            if (different) {
-                                currentItem[fieldId][n] = cell;
-                                // alert(n + '. ' + fieldId +': ' + cell);
-                            }
-                        });
+        var cells = new Array();
+        var n = 0;
+        if (activeItems.length > 0) {
+            cms3.each(activeItems, function(i, item) {
+                var different = true;
+                cms3.each(cells, function(i, cell) {
+                    if (cell === item[field.id]) {
+                        different = false;
                     }
                 });
+
+                if (different) {
+                    cells[n] = item[field.id];
+                    n++;
+                }
             });
-            //новый
         } else {
-            cms3.each(this.fields, function(fieldId, field) {
-                currentItem[fieldId] = new Array();
-                currentItem[fieldId][0] = field.defaultValue;
-            });
-        }*/
-        this.cells = this.form.item[this.id];
+            cells[0] = field.default;
+        }
+
+        this.cells = cells;
+
         if (this.cells != undefined && this.cells.length == 1) {
             this.cell = this.cells[0];
         }

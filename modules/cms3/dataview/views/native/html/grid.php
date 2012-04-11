@@ -347,7 +347,7 @@ $grid_data = JSON::encode($grid_data, array(
 <script id="cms3-template-form" type="text/x-jquery-tmpl">
 	<table class="cms3-form" id="${id}">
 		{{each(fieldId, field) fields}}
-            {{tmpl({cells: item[fieldId], field: field, fieldId: fieldId}) '#cms3-template-form-field-'+field.templateCellFormContainer}}
+            {{tmpl({cells: field.cells, field: field, fieldId: fieldId}) '#cms3-template-form-field-'+field.templateCellFormContainer}}
         {{/each}}
 	</table>
 </script>

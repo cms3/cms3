@@ -332,50 +332,11 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
         var grid = this;
 
         // <different>
-        var currentItem = new Object();
         var ids = this.getActiveItemIds(id);
+        var activeItems = this.getActiveItems(id);
 
-        // редактирование
-        if (id != 0) {
-            cms3.each(ids, function(i, id) {
-                cms3.each(grid.items, function(i, item) {
-                    if (item.id == id) {
-                        cms3.each(item, function(fieldId, cell) {
-                            var different = true;
-                            var n = 0;
-
-                            if (currentItem[fieldId] == undefined) {
-                                currentItem[fieldId] = new Array();
-                            } else {
-                                cms3.each(currentItem[fieldId], function(k, knownCell) {
-                                    if (cell == knownCell) {
-                                        different = false;
-                                    }
-
-                                    // get array number to add new cell variant
-                                    n = k+1;
-                                });
-                            }
-
-                            if (different) {
-                                currentItem[fieldId][n] = cell;
-                                // alert(n + '. ' + fieldId +': ' + cell);
-                            }
-                        });
-                    }
-                });
-            });
-        //новый
-        } else {
-            cms3.each(this.fields, function(fieldId, field) {
-                currentItem[fieldId] = new Array();
-                currentItem[fieldId][0] = field.defaultValue;
-            });
-        }
-
-        if (currentItem.id != undefined) {
+        if (ids.length) {
             var formIds = ids.join('_');
-            //var formAbsoluteId = cms3.helper.removeIdPrefix(this.selectors.editItems.editForm(formId),'#');
             var windowAbsoluteId = grid.id + '-window-' + formIds;
             var formAbsoluteId = grid.id + '-form-' + formIds;
             var buttonsAbsoluteId = grid.id + '-button-' + formIds + '-';
@@ -389,7 +350,6 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
 
                 var removeHighlight = function(e) {
                     $(grid.selectors.grid.items(ids)).removeClass('highlight');
-                    e.stopPropagation();
                 };
 
                 // Create edit window and form
@@ -410,7 +370,8 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
                             position: 'content',
                             params: {
                                 id: formAbsoluteId,
-                                item: currentItem,
+                                //item: currentItem,
+                                activeItems: activeItems,
                                 models: grid.models,
                                 model: grid.model,
                                 itemIds: ids
@@ -447,39 +408,6 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
                         }
                     }
                 });
-
-
-
-                /*$("#editItemTemplate").tmpl({fields: this.fields, item: currentItem, elementId: formAbsoluteId , gridId: grid.id}).appendTo(this.selectors.editItems.parentElement);
-
-                $(function() {
-                    $(grid.selectors.editItems.editForm(formId)).dialog({
-                        buttons: [
-                            {
-                                text: "Save",
-                                //disabled: true,
-                                click: function()
-                                {
-                                    grid.saveForm(ids);
-                                    $(this).dialog("close");
-                                }
-                            },
-                            {
-                                text: "Save a draft",
-                                click: function() { $(this).dialog("close"); }
-                            },
-                            {
-                                text: "Cancel",
-                                click: function() { $(this).dialog("close"); }
-                            }
-                        ],
-                        close: function() {
-                            $(this).dialog("destroy");
-                            $(grid.selectors.editItems.editForm(formId)).remove();
-                        }
-                    });
-
-                });*/
             }
         }
     },
@@ -592,7 +520,6 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
 
     getActiveItemIds: function(id) {
         if (id == undefined) {
-            console.log('else');
             return this.getSelectedItemIds();
         } else {
             if (id === 0) {
@@ -603,6 +530,21 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
                 return new Array(id)
             }
         }
+    },
+
+    getActiveItems: function(id) {
+        var grid = this;
+        var ids = this.getActiveItemIds(id);
+        var activeItems = new Array();
+        cms3.each(ids, function(i, itemId) {
+            cms3.each(grid.items, function(j, item) {
+                if (item.id == itemId) {
+                    activeItems[i] = grid.items[j];
+                }
+            });
+        });
+
+        return activeItems;
     },
 
     sortable: function() {
