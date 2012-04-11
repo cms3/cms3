@@ -19,13 +19,14 @@
 <script type="text/javascript" src="/themes/admin/js/jquery.tmpl.min.js"></script>
 
 <script type="text/javascript" src="/themes/admin/js/popupwnd.js"></script>
-<script type="text/javascript" src="/themes/admin/js/wysiwyghtmleditor.js"></script>
+<!--<script type="text/javascript" src="/themes/admin/js/wysiwyghtmleditor.js"></script>-->
 <script type="text/javascript" src="/themes/admin/js/menu.js"></script>
 
 	<script type="text/javascript" src="/themes/admin/js/cms3.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/helper.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/object.js"></script>
 
+	<script type="text/javascript" src="/themes/admin/js/cms3/fields.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/field.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/field/base.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/field/primary.js"></script>

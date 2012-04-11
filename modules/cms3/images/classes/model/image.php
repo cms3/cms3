@@ -65,7 +65,7 @@ class Model_Image extends Model
 		return parent::__construct($key);
 	}
 
-	public function thumbnail(array $params = array(), $generate = FALSE)
+	public function thumbnail(array $params = array(), $generate = TRUE)
 	{
 		$orig_file = $this->file->filepath();
 

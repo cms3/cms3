@@ -2,6 +2,58 @@
 table.cms3-form {
     /*margin: 1em;*/
     width: 100%;
+    border-spacing: 0 0.6em;
+}
+
+/* Input decoration */
+
+div.cms3-field-editable td {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+div.cms3-field-editable input {
+    margin: 0;
+    border: none;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+}
+
+div.input-container {
+    overflow: hidden;
+    position: relative;
+}
+
+div.cms3-field-editable div.wrapper input,
+div.cms3-field-editable.select td,
+div.cms3-field-editable div.input-container div.cms3-field-editable-options
+{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+div.cms3-field-editable {
+    border: #999 solid 1px;
+    background-color: white;
+}
+
+/* Field label */
+table.cms3-form td.label {
+    padding: 0.3em;
+    padding-right: 0.5em;
+    text-align: right;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: top;
+    font-size: 0.9em;
+}
+
+/* Field input */
+div.cms3-field-editable table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
 }
 
 div.cms3-field-editable td {
@@ -99,7 +151,12 @@ div.cms3-field-editable div.input-container div.cms3-field-editable-options {
 }
 
 div.cms3-field-editable div.input-container div.cms3-field-editable-options.hover div {
-    background-color: #FFC;
+    background-color: Highlight;
+    color: HighlightText;
+}
+
+div.cms3-field-editable.select div.input-container div.cms3-field-editable-options {
+    padding: 0;
 }
 
 /* Autocomplete block */
@@ -128,12 +185,21 @@ div.cms3-field-editable div.autocomplete li {
     padding-bottom: 0.14em;
     border-bottom: white solid 1px;
     border-top: white solid 1px;
+    cursor: pointer;
 }
 
 div.cms3-field-editable div.autocomplete li.hover {
     background-color: #CCC;
     border-bottom: #999 solid 1px;
     border-top: #999 solid 1px;
+}
+
+div.cms3-field-editable div.autocomplete li:last-child {
+    border-bottom: none;
+}
+
+div.cms3-field-editable div.autocomplete li:first-child {
+    border-top: none;
 }
 
 div.cms3-field-editable.show-autocomplete div.autocomplete {

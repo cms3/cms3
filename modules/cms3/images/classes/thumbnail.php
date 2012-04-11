@@ -15,7 +15,7 @@ class Thumbnail
 
 	public $quality = 100;
 
-	public static function factory($orig_file, $thumb_file, array $params = array(), $generate = FALSE)
+	public static function factory($orig_file, $thumb_file, array $params = array(), $generate = TRUE)
 	{
 		$thumb = new static();
 

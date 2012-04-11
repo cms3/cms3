@@ -3,7 +3,7 @@ use \CMS3\Engine\NS;
 use \CMS3\Engine\HTML;
 use \CMS3\Dataview\Helper_JSON as JSON;
 
-print_r($this->models);
+//print_r($this->models);
 
 $grid_data = new \stdClass();
 
@@ -263,7 +263,7 @@ $grid_data = JSON::encode($grid_data, array(
 </script>
 
 <script id="cms3-template-window" type="text/x-jquery-tmpl">
-	<div id="${id}" class="cms3-window ${windowState}">
+	<div id="${id}" class="cms3-window">
 		<div class="cms3-window-head">
 			<div>
 				<span>${label}</span>
@@ -350,10 +350,9 @@ $grid_data = JSON::encode($grid_data, array(
 
 <script id="cms3-template-form" type="text/x-jquery-tmpl">
 	<table class="cms3-form" id="${id}">
-        {{each(fieldId, field) fields}}
+		{{each(fieldId, field) fields}}
             {{tmpl({cells: item[fieldId], field: field, fieldId: fieldId}) '#cms3-template-form-field-'+field.templateCellFormContainer}}
         {{/each}}
-        {{tmpl({}) '#demo'}}
 	</table>
 </script>
 
@@ -390,57 +389,57 @@ $grid_data = JSON::encode($grid_data, array(
         </div>
         <div class="autocomplete">
             <ul>
-                <li>Все</li>
-                <li class="hover">Всыыы</li>
-                <li>Всы</li>
-                <li>Вса</li>
-            </ul>
-        </div>
-    </div>
-</script>
 
-<script id="cms3-template-field-editable-demo" type="text/x-jquery-tmpl">
-    <div class="cms3-field-editable select">
-        <table>
-            <tr>
-                {{each(fieldId, item) field.model.items}}
-                    {{if item.id == cell}}
-                        <td><input placeholder="${field.hint}" type="text" value="{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.listItemGenerator}}" /></td>
-                        <td class="select-button"><span>▼</span></td>
-                    {{/if}}
-                {{/each}}
-            </tr>
-        </table>
-        <div class="autocomplete">
-            <ul>
-                {{each(fieldId, item) field.model.items}}
-                    <li>{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</li>
-                {{/each}}
-                <li class="hover">Всыыы</li>
             </ul>
         </div>
     </div>
 </script>
 
 <script id="cms3-template-field-editable-select" type="text/x-jquery-tmpl">
-    <div class="cms3-field-editable select show-autocomplete">
+    <div class="cms3-field-editable select">
         <table>
             <tr>
-                {{each(j, item) field.model.items}}
-                    {{if item.id == cells[0]}}
-                        <td><input placeholder="${field.hint}" type="text" value="{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}" /></td>
-                        <td class="select-button"><span>▼</span></td>
-                    {{/if}}
-                {{/each}}
+	            <td>
+		            {{if cells.length > 1}}
+						<div class="input-container">
+							<input readonly="readonly" type="text" value="" />
+							<div class="cms3-field-editable-options">
+							    {{each(fieldId, item) field.model.items}}
+							        {{each(i, cell) cells}}
+							            {{if item.id == cell}}
+							                <div>{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</div>
+							            {{/if}}
+							        {{/each}}
+							    {{/each}}
+							</div>
+						</div>
+		            {{else}}
+			            {{if cells[0] == null}}
+	                        <input readonly="readonly" placeholder="${field.hint}" type="text" value="" />
+	                    {{else}}
+	                        {{each(fieldId, item) field.model.items}}
+	                            {{if item.id == cells[0]}}
+	                                <input readonly="readonly" placeholder="${field.hint}" type="text" value="{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}" />
+	                            {{/if}}
+	                        {{/each}}
+	                    {{/if}}
+	                {{/if}}
+	            </td>
+	            <td class="select-button"><span>▼</span></td>
             </tr>
         </table>
         <div class="autocomplete">
             <ul>
                 {{each(i, item) field.model.items}}
-                    <li>{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</li>
-                {{/each}}
+	                <li
+	                {{each(i, cell) cells}}
+	                    {{if item.id == cell}}
+	            	        style="display:none"
+	                    {{/if}}
+	                {{/each}}
 
-                <li class="hover">Всыыы</li>
+	                class="select${item.id}">{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</li>
+                {{/each}}
             </ul>
         </div>
     </div>

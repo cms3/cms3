@@ -5,7 +5,7 @@ cms3.extend(cms3.richGrid.field.belongsto, cms3.field.belongsto, cms3.richGrid.f
     //filterTemplate: 'Belongsto'
     //$('select.foo option:selected').val();
 
-    parentInit: cms3.richGrid.field.base.init,
+  //  parentInit: cms3.richGrid.field.base.init,
 
     getFormValue: function(formId){
         var $ = jQuery;
