@@ -50,7 +50,7 @@ class Model_Image extends Model
 	public function __construct($key = NULL)
 	{
 		$this->_config = \CMS3::$config->load('cms3\images');
-		$this->_config = array
+		$this->_config = array                                  // TODO: должно браться из конфига
 			(
 				'thumbs_dir' => APPPATH.'cache'.DIRECTORY_SEPARATOR.'thumbs',
 				'resize_params' => array(
@@ -88,24 +88,49 @@ class Model_Image extends Model
 
 		$pathinfo = pathinfo($filename);
 
-		$suffix = '_' . $this->encode_params($params);
+		$format_dir = $this->encode_params($params);
 		$ext = ($pathinfo['extension'] ? '.' : '') . $pathinfo['extension'];
 		
-		$thumb = $thumbs_dir . DIRECTORY_SEPARATOR . $pathinfo['filename'] . $suffix . $ext;
+		$thumb = $thumbs_dir . DIRECTORY_SEPARATOR . $format_dir . DIRECTORY_SEPARATOR . $pathinfo['filename'] . $ext;
 		
 		return $thumb;
 	}
 
     public function encode_params($params)
 	{
-		$string = base64_encode(serialize($params));
+        $result = '';
 
-		return rtrim($string, '=');
+        foreach (array_reverse($this->_resize_params) as $name => $value)
+        {
+            if (isset($params[$name]) && $params[$name] == $this->_resize_params[$name] && $result == '')
+            {
+                continue;
+            }
+            if ($result != '')
+            {
+                $result = '_' . $result;
+            }
+            $result = (isset($params[$name]) ? $params[$name] : '') . $result;
+        }
+        if ($result == '')
+        {
+            $result = 'def';
+        }
+
+		return $result;
 	}
 
     public function decode_params($string)
     {
-        $params = unserialize(base64_decode($string));
+        $params = array();
+
+        $parts = explode('_', $string);
+
+        foreach ($this->_resize_params as $name => $value)
+        {
+            $part = array_shift($parts);
+            $params[$name] = $part ?: $value;
+        }
 
         return $params;
     }
