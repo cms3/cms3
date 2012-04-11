@@ -25,8 +25,10 @@
 	<script type="text/javascript" src="/themes/admin/js/cms3.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/helper.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/object.js"></script>
+    <script type="text/javascript" src="/themes/admin/js/cms3/html-object.js"></script>
 
-	<script type="text/javascript" src="/themes/admin/js/cms3/fields.js"></script>
+    <script type="text/javascript" src="/themes/admin/js/cms3/button.js"></script>
+    <script type="text/javascript" src="/themes/admin/js/cms3/fields.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/field.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/field/base.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/field/primary.js"></script>
@@ -101,6 +103,6 @@
 		
         <div style="clear:both"></div>
     </div>
-    <div id="footer"><p><a href="http://cms3.org/">CMS 3.0</a> — free open sorce software.</p></div>
+    <div id="footer"><p><a href="http://cms3.org/">CMS 3.0</a> — free open source software.</p></div>
 </body>
 </html>
