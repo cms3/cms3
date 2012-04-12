@@ -1,9 +1,7 @@
 cms3.window = new Object();
 cms3.extend(cms3.window, cms3.htmlObject, {
-    id: 'window',
     windowState: 'normal',
     label: '',
-    container: 'body',
     childContainers: {
         content: 'div.cms3-window-content',
         buttons: 'div.cms3-window-buttons'
@@ -31,15 +29,15 @@ cms3.extend(cms3.window, cms3.htmlObject, {
                 this.normalize();
         }
 
-        $('div#' + this.id + ' div.cms3-window-head-buttons span.normal').click(function(e){
+        this.htmlObject.find('.cms3-window-head-buttons span.normal').click(function(e){
             win.normalize();
         });
 
-        $('div#' + this.id + ' div.cms3-window-head-buttons span.maximized').click(function(e){
+        this.htmlObject.find('.cms3-window-head-buttons span.maximized').click(function(e){
             win.maximize();
         });
 
-        $('div#' + this.id + ' div.cms3-window-head-buttons span.close').click(function(e){
+        this.htmlObject.find('.cms3-window-head-buttons span.close').click(function(e){
             win.close();
         });
     },
@@ -47,8 +45,8 @@ cms3.extend(cms3.window, cms3.htmlObject, {
     drag: function(){
         var $ = jQuery;
         var win = this;
-        
-        $('div#' + this.id + ' div.cms3-window-head').on('mousedown', function(e){
+
+        this.htmlObject.find('.cms3-window-head').on('mousedown', function(e){
             var x = e.pageX;
             var y = e.pageY;
 
@@ -77,7 +75,7 @@ cms3.extend(cms3.window, cms3.htmlObject, {
     },
 
     unDrag: function(){
-        $('div#' + this.id + ' div.cms3-window-head').off('mousedown');
+        this.htmlObject.find('.cms3-window-head').off('mousedown');
     },
 
     normalize: function(){
@@ -109,8 +107,8 @@ cms3.extend(cms3.window, cms3.htmlObject, {
         if (top != undefined)
             this.top = top;
 
-        $('div#' + this.id).css('left',this.left+'px');
-        $('div#' + this.id).css('top',this.top+'px');
+        this.htmlObject.css('left',this.left+'px');
+        this.htmlObject.css('top',this.top+'px');
     },
 
     close: function(){

@@ -2,6 +2,8 @@ cms3.htmlObject = {};
 cms3.extend(cms3.htmlObject, cms3.object, {
     parentCreate: cms3.object.create,
 
+    id: '',
+
     create: function(userData) {
         var obj = this.parentCreate(userData);
         obj.buildHtml();
@@ -13,25 +15,29 @@ cms3.extend(cms3.htmlObject, cms3.object, {
 
     buildHtml: function() {
         var $ = jQuery;
-        $(this.container).append($('#' + this.template).tmpl(this));
-        this.setHtmlObject();
+        if (this.container != undefined){
+            this.container.append($('#' + this.template).tmpl(this));
+
+            this.htmlObject = this.container.children(':last-child');
+        }
+
+        //this.setHtmlObject();
         this.setAbsoluteChildContainers();
     },
 
     htmlObject: {},
-
     setHtmlObject: function() {
         var $ = jQuery;
         this.htmlObject = $('#' + this.id);
     },
 
     childContainers: {},
-    absoliteChildContainers: {},
+    absoluteChildContainers: {},
 
     setAbsoluteChildContainers: function() {
         var obj = this;
         cms3.each(this.childContainers, function(containerName, containerSelector){
-            obj.absoliteChildContainers[containerName] = '#' + obj.id + ' ' + containerSelector;
+            obj.absoluteChildContainers[containerName] = obj.htmlObject.find(containerSelector);
         });
     },
 
@@ -56,8 +62,10 @@ cms3.extend(cms3.htmlObject, cms3.object, {
     children: {},
 
     addChild: function(name, containerName, childObject, userData) {
-        userData.container = this.absoliteChildContainers[containerName];
+        userData.container = this.absoluteChildContainers[containerName];
+        userData.parentObject = this;
         this.children[name] = childObject.create(userData);
+        return this.children[name];
     },
 
     addChildren: function() {

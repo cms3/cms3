@@ -50,8 +50,7 @@ class Model_Image extends Model
 	public function __construct($key = NULL)
 	{
 		$this->_config = \CMS3::$config->load('cms3\images');
-		$this->_config = array
-			(
+		$this->_config = array (
 				'thumbs_dir' => APPPATH.'cache'.DIRECTORY_SEPARATOR.'thumbs',
 				'resize_params' => array(
 					'width'  => 0,

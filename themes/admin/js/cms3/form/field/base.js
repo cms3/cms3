@@ -6,6 +6,9 @@ cms3.extend(cms3.form.field.base, cms3.field.base, {
     value: '',
     html: {},
     isChange: false,
+    childContainers: {
+        options: 'cms3-field-editable-options'
+    },
 
     init: function() {
         this.form = this.parentObject;
@@ -57,6 +60,7 @@ cms3.extend(cms3.form.field.base, cms3.field.base, {
         this.setInputObject();
         this.html.cellsBlock = $(this.selectors.form.parentElement + ' tr.' + this.id + ' div.cms3-field-editable-options');
         this.html.undoButton = $(this.selectors.form.parentElement + ' tr.' + this.id + ' td.undo div');
+        //this.addChild('');
     },
 
     setInputObject: function() {

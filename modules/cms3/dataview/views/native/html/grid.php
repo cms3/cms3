@@ -345,18 +345,30 @@ $grid_data = JSON::encode($grid_data, array(
 
 
 <script id="cms3-template-form" type="text/x-jquery-tmpl">
-	<table class="cms3-form" id="${id}">
-		{{each(fieldId, field) fields}}
-            {{tmpl({cells: field.cells, field: field, fieldId: fieldId}) '#cms3-template-form-field-'+field.templateCellFormContainer}}
-        {{/each}}
-	</table>
+	<div><table class="cms3-form"></table></div>
 </script>
 
 <script id="cms3-template-form-field-base" type="text/x-jquery-tmpl">
-    <tr class="field ${fieldId}">
-        <td class="label"><span>${field.label}</span></td>
+    <tr class="field {id}">
+        <td class="label"><span>${label}</span></td>
         <td class="input">
-            {{tmpl({cells: cells, field: field, fieldId: fieldId}) '#cms3-template-field-editable-'+field.templateCellEditable}}
+            <div class="cms3-field-editable text {{if label==''}}show-autocomplete{{/if}}">
+                <div class="input-container">
+                    <div class="wrapper">
+                        {{if cells.length == 1}}
+                        <input placeholder="${hint}" type="text" value="${cells}" />
+                        {{else}}
+                        <input type="text" value="" />
+                        {{/if}}
+                    </div>
+                    <div class="cms3-field-editable-options"></div>
+                </div>
+                <div class="autocomplete">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
         </td>
         <td class="undo">
             <div style="display:none" title="<?php echo __('Restore the original value.') ?>"></div>
@@ -365,23 +377,16 @@ $grid_data = JSON::encode($grid_data, array(
 </script>
 
 <script id="cms3-template-field-editable-base" type="text/x-jquery-tmpl">
-    <div class="cms3-field-editable text {{if field.label==''}}show-autocomplete{{/if}}">
+    <div class="cms3-field-editable text {{if label==''}}show-autocomplete{{/if}}">
         <div class="input-container">
             <div class="wrapper">
                 {{if cells.length == 1}}
-                    <input placeholder="${field.hint}" type="text" value="${cells}" />
+                    <input placeholder="${hint}" type="text" value="${cells}" />
                 {{else}}
                     <input type="text" value="" />
                 {{/if}}
             </div>
-
-            {{if cells.length > 1}}
-                <div class="cms3-field-editable-options">
-                    {{each(i, cell) cells}}
-                        <div>${cell}</div>
-                    {{/each}}
-                </div>
-            {{/if}}
+            <div class="cms3-field-editable-options"></div>
         </div>
         <div class="autocomplete">
             <ul>
@@ -389,6 +394,12 @@ $grid_data = JSON::encode($grid_data, array(
             </ul>
         </div>
     </div>
+</script>
+
+<script id="cms3-template-field-editable-options" type="text/x-jquery-tmpl">
+    {{each(i, cell) cells}}
+        <div>${cell}</div>
+    {{/each}}
 </script>
 
 <script id="cms3-template-field-editable-textarea" type="text/x-jquery-tmpl">

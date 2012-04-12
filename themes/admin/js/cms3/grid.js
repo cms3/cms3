@@ -331,84 +331,69 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
         var $ = jQuery;
         var grid = this;
 
-        // <different>
         var ids = this.getActiveItemIds(id);
         var activeItems = this.getActiveItems(id);
 
-        if (ids.length) {
-            var formIds = ids.join('_');
-            var windowAbsoluteId = grid.id + '-window-' + formIds;
-            var formAbsoluteId = grid.id + '-form-' + formIds;
-            var buttonsAbsoluteId = grid.id + '-button-' + formIds + '-';
+        if (activeItems.length > 0 || id == 0) {
+            // Highlight edited items
+            var addHighlight = function() {
+                $(grid.selectors.grid.items(ids)).addClass('highlight');
+            };
 
-            if ($(grid.selectors.editItems.editForm(formIds)).length == 0) {
+            var removeHighlight = function(e) {
+                $(grid.selectors.grid.items(ids)).removeClass('highlight');
+            };
 
-                // Highlight edited items
-                var addHighlight = function() {
-                    $(grid.selectors.grid.items(ids)).addClass('highlight');
-                };
+            // Create edit window and form
+            var win = cms3.window.create({
+                label: 'Название',
+                container: $(this.container),
 
-                var removeHighlight = function(e) {
-                    $(grid.selectors.grid.items(ids)).removeClass('highlight');
-                };
+                events: {
+                    mouseover: addHighlight,
+                    close: removeHighlight,
+                    mouseleave: removeHighlight
+                },
 
-                // Create edit window and form
-                var win = cms3.window.create({
-                    label: 'Название',
-                    container: this.container,
-                    id: windowAbsoluteId,
-
-                    events: {
-                        mouseover: addHighlight,
-                        close: removeHighlight,
-                        mouseleave: removeHighlight
+                children: {
+                    editForm: {
+                        childObject: cms3.form,
+                        position: 'content',
+                        params: {
+                            activeItems: activeItems,
+                            models: grid.models,
+                            model: grid.model
+                        }
                     },
 
-                    children: {
-                        editForm: {
-                            childObject: cms3.form,
-                            position: 'content',
-                            params: {
-                                id: formAbsoluteId,
-                                //item: currentItem,
-                                activeItems: activeItems,
-                                models: grid.models,
-                                model: grid.model,
-                                itemIds: ids
-                            }
-                        },
-
-                        buttonSave: {
-                            childObject: cms3.button,
-                            position: 'buttons',
-                            params: {
-                                id: buttonsAbsoluteId + 'save',
-                                text: 'Сохранить',
-                                events: {
-                                    click: function () {
-                                        grid.saveForm(ids, win.children.editForm.fields);
-                                        win.close();
-                                    }
+                    buttonSave: {
+                        childObject: cms3.button,
+                        position: 'buttons',
+                        params: {
+                            text: 'Сохранить',
+                            events: {
+                                click: function () {
+                                    grid.saveForm(ids, win.children.editForm.fields);
+                                    win.close();
                                 }
                             }
-                        },
+                        }
+                    },
 
-                        buttonCancel: {
-                            childObject: cms3.button,
-                            position: 'buttons',
-                            params: {
-                                id: buttonsAbsoluteId + 'cancel',
-                                text: 'Отмена',
-                                events: {
-                                    click: function () {
-                                        win.close();
-                                    }
+                    buttonCancel: {
+                        childObject: cms3.button,
+                        position: 'buttons',
+                        params: {
+                            text: 'Отмена',
+                            events: {
+                                click: function () {
+                                    win.close();
                                 }
                             }
                         }
                     }
-                });
-            }
+                }
+            });
         }
     },
 
@@ -553,34 +538,3 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
 
     token: ''
 });
-
-function extend(Child, Parent) {
-	var F = function() { }
-	F.prototype = Parent.prototype
-	Child.prototype = new F()
-	Child.prototype.constructor = Child
-	Child.superclass = Parent.prototype
-}
-
-
-// копирует все свойства из src в dst,
-// включая те, что в цепочке прототипов src до Object
-function mixin(dst, src){
-	// tobj - вспомогательный объект для фильтрации свойств,
-	// которые есть у объекта Object и его прототипа
-	var tobj = {}
-	for(var x in src){
-		// копируем в dst свойства src, кроме тех, которые унаследованы от Object
-		if((typeof tobj[x] == "undefined") || (tobj[x] != src[x])){
-			dst[x] = src[x];
-		}
-	}
-	// В IE пользовательский метод toString отсутствует в for..in
-	if(document.all && !document.isOpera){
-		var p = src.toString;
-		if(typeof p == "function" && p != dst.toString && p != tobj.toString &&
-		 p != "\nfunction toString() {\n    [native code]\n}\n"){
-			dst.toString = src.toString;
-		}
-	}
-}
