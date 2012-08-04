@@ -432,7 +432,6 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
         });
 
         this.editColumnsList();
-        //this.holdItems(ids);
         this.setOrdering();
 
         // http://cms3/action/cms3/dataview/save?model=cms3-content-item&form[id]=1&form[title]=change
@@ -471,19 +470,6 @@ cms3.extend(cms3.richGrid, cms3.object, cms3.fields, {
         });
 
 
-    },
-
-    holdItems: function(ids)
-    {
-       /* var $ = jQuery;
-        $(this.selectors.grid.items(ids)).addClass('load');
-        $(this.selectors.grid.items(ids)).removeAttr('checked');*/
-    },
-
-    unHoldItems: function(ids)
-    {
-        /*var $ = jQuery;
-        $(this.selectors.grid.items(ids)).removeClass('load');*/
     },
 
     getSelectedItemIds: function()

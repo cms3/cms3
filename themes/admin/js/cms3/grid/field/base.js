@@ -1,6 +1,8 @@
 cms3.richGrid.field = new Object();
 cms3.richGrid.field.base = new Object();
-cms3.extend(cms3.richGrid.field.base, cms3.field.base, {
+cms3.extend(cms3.richGrid.field.base, cms3.object, /* cms3.field.base,*/ {
+    templateListItemGenerator: 'base',
+    templateCellEditable: 'base',
     display: true,
     cellTemplate: 'Default',
     cellContainerTemplate: 'Default',

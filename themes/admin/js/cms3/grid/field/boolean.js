@@ -1,5 +1,5 @@
 cms3.richGrid.field.boolean = new Object();
-cms3.extend(cms3.richGrid.field.boolean, cms3.field.boolean, cms3.richGrid.field.base, {
+cms3.extend(cms3.richGrid.field.boolean, /*cms3.field.boolean,*/ cms3.richGrid.field.base, {
     cellTemplate: 'Boolean',
     getFormValue: function(formId){
         var $ = jQuery;

@@ -1,5 +1,5 @@
 cms3.richGrid.field.belongsto = new Object();
-cms3.extend(cms3.richGrid.field.belongsto, cms3.field.belongsto, cms3.richGrid.field.base, {
+cms3.extend(cms3.richGrid.field.belongsto, /*cms3.field.belongsto,*/ cms3.richGrid.field.base, {
     cellTemplate: 'Belongsto',
     //headTemplate: 'Belongsto',
     //filterTemplate: 'Belongsto'

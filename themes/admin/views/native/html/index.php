@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="/themes/admin/js/cms3/object.js"></script>
     <script type="text/javascript" src="/themes/admin/js/cms3/html-object.js"></script>
 
+    <script type="text/javascript" src="/themes/admin/js/cms3/autocomplete.js"></script>
     <script type="text/javascript" src="/themes/admin/js/cms3/button.js"></script>
     <script type="text/javascript" src="/themes/admin/js/cms3/fields.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/field.js"></script>
@@ -42,7 +43,7 @@
 	<script type="text/javascript" src="/themes/admin/js/cms3/field/boolean.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/field/params.js"></script>
 
-	<script type="text/javascript" src="/themes/admin/js/cms3/window.js"></script>
+    <script type="text/javascript" src="/themes/admin/js/cms3/window.js"></script>
 
 	<script type="text/javascript" src="/themes/admin/js/cms3/form.js"></script>
 	<script type="text/javascript" src="/themes/admin/js/cms3/form/selectors.js"></script>

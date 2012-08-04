@@ -345,29 +345,25 @@ $grid_data = JSON::encode($grid_data, array(
 
 
 <script id="cms3-template-form" type="text/x-jquery-tmpl">
-	<div><table class="cms3-form"></table></div>
+	<div><table class="cms3-form"><tbody></tbody></table></div>
 </script>
 
-<script id="cms3-template-form-field-base" type="text/x-jquery-tmpl">
+<script id="cms3-template-field-base-editable" type="text/x-jquery-tmpl">
     <tr class="field {id}">
         <td class="label"><span>${label}</span></td>
         <td class="input">
-            <div class="cms3-field-editable text {{if label==''}}show-autocomplete{{/if}}">
+            <div class="cms3-field-editable text">
                 <div class="input-container">
                     <div class="wrapper">
-                        {{if cells.length == 1}}
-                        <input placeholder="${hint}" type="text" value="${cells}" />
+                        {{if uniqueValues.length == 1}}
+                            <input placeholder="${hint}" type="text" value="${uniqueValues}" />
                         {{else}}
-                        <input type="text" value="" />
+                            {{tmpl({options: uniqueValues}) '#cms3-template-field-editable-options'}}
                         {{/if}}
                     </div>
                     <div class="cms3-field-editable-options"></div>
                 </div>
-                <div class="autocomplete">
-                    <ul>
-
-                    </ul>
-                </div>
+                <div class="cms3-autocomplete"></div>
             </div>
         </td>
         <td class="undo">
@@ -377,7 +373,7 @@ $grid_data = JSON::encode($grid_data, array(
 </script>
 
 <script id="cms3-template-field-editable-base" type="text/x-jquery-tmpl">
-    <div class="cms3-field-editable text {{if label==''}}show-autocomplete{{/if}}">
+    <div class="cms3-field-editable text">
         <div class="input-container">
             <div class="wrapper">
                 {{if cells.length == 1}}
@@ -388,18 +384,25 @@ $grid_data = JSON::encode($grid_data, array(
             </div>
             <div class="cms3-field-editable-options"></div>
         </div>
-        <div class="autocomplete">
-            <ul>
-
-            </ul>
-        </div>
+        <div class="cms3-autocomplete"></div>
     </div>
 </script>
 
 <script id="cms3-template-field-editable-options" type="text/x-jquery-tmpl">
-    {{each(i, cell) cells}}
-        <div>${cell}</div>
+    <input type="text" value="" />
+    <div class="cms3-field-editable-options">
+    {{each(i, option) options}}
+        <div>${option}</div>
     {{/each}}
+    </div>
+</script>
+
+<script id="cms3-template-autocomplete" type="text/x-jquery-tmpl">
+        <ul>
+            {{each(i, value) items}}
+                <li class="select${i}">${value}</li>
+            {{/each}}
+        </ul>
 </script>
 
 <script id="cms3-template-field-editable-textarea" type="text/x-jquery-tmpl">
@@ -420,35 +423,35 @@ $grid_data = JSON::encode($grid_data, array(
     </div>
 </script>
 
-<script id="cms3-template-field-editable-select" type="text/x-jquery-tmpl">
+<script id="cms3-template-field-select-editable" type="text/x-jquery-tmpl">
     <div class="cms3-field-editable select">
         <table>
             <tr>
 	            <td>
-		            {{if cells.length > 1}}
-						<div class="input-container">
-							<input readonly="readonly" type="text" value="" />
-							<div class="cms3-field-editable-options">
-							    {{each(fieldId, item) field.model.items}}
-							        {{each(i, cell) cells}}
-							            {{if item.id == cell}}
-							                <div>{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</div>
-							            {{/if}}
-							        {{/each}}
-							    {{/each}}
-							</div>
-						</div>
-		            {{else}}
-			            {{if cells[0] == null}}
-	                        <input readonly="readonly" placeholder="${field.hint}" type="text" value="" />
-	                    {{else}}
-	                        {{each(fieldId, item) field.model.items}}
-	                            {{if item.id == cells[0]}}
-	                                <input readonly="readonly" placeholder="${field.hint}" type="text" value="{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}" />
-	                            {{/if}}
-	                        {{/each}}
-	                    {{/if}}
-	                {{/if}}
+                {{if cells.length > 1}}
+                    <div class="input-container">
+                        <input readonly="readonly" type="text" value="" />
+                        <div class="cms3-field-editable-options">
+                            {{each(fieldId, item) field.model.items}}
+                                {{each(i, cell) cells}}
+                                    {{if item.id == cell}}
+                                        <div>{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}</div>
+                                    {{/if}}
+                                {{/each}}
+                            {{/each}}
+                        </div>
+                    </div>
+                {{else}}
+                    {{if cells[0] == null}}
+                        <input readonly="readonly" placeholder="${field.hint}" type="text" value="" />
+                    {{else}}
+                        {{each(fieldId, item) field.model.items}}
+                            {{if item.id == cells[0]}}
+                                <input readonly="readonly" placeholder="${field.hint}" type="text" value="{{tmpl({item: item, fields: field.model.fields}) '#cms3-template-field-list-item-generator-'+field.templateListItemGenerator}}" />
+                            {{/if}}
+                        {{/each}}
+                    {{/if}}
+                {{/if}}
 	            </td>
 	            <td class="select-button"><span>▼</span></td>
             </tr>

@@ -45,7 +45,9 @@ cms3.helper = {
             i--;
         }
         return array[i];
-    }
+    },
+
+    inArray: jQuery.inArray
 };
 
 cms3.previousItem = cms3.helper.previousItem;
@@ -53,3 +55,4 @@ cms3.each = cms3.helper.each;
 cms3.clone = cms3.helper.clone;
 cms3.removeIdPrefix = cms3.helper.removeIdPrefix;
 cms3.getIdFromClass = cms3.helper.getIdFromClass;
+cms3.inArray = cms3.helper.inArray;

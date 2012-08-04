@@ -27,7 +27,7 @@ div.cms3-field-editable div.input-container div.cms3-field-editable-options
     padding-right: 5px;
 }
 
-div.cms3-field-editable {
+.cms3-field-editable .input-container {
     border: #999 solid 1px;
     background-color: white;
 }
@@ -123,6 +123,7 @@ table.cms3-form td.select-button:hover {
 /* Options */
 div.cms3-field-editable-options {
     margin-top: 0.3em;
+    margin-left: -10px;
 }
 
 div.cms3-field-editable-options div {
@@ -168,25 +169,24 @@ div.cms3-field-editable.select div.input-container div.cms3-field-editable-optio
 
 /* Autocomplete block */
 
-div.cms3-field-editable div.autocomplete {
+.cms3-autocomplete {
     position: absolute;
     width: 100%;
-    background-color: white;
-    border: #999 solid 1px;
-    margin-left: -1px;
     text-align: left;
-    display: none;
     z-index: 1;
 }
 
-div.cms3-field-editable div.autocomplete ul {
+.cms3-autocomplete ul {
+    background-color: white;
+    border-right: #999 solid 1px;
+    border-left: #999 solid 1px;
     font-size: 0.9em;
     margin: 0;
     padding: 0;
     list-style-type: none;
 }
 
-div.cms3-field-editable div.autocomplete li {
+.cms3-autocomplete li {
     padding-left: 5px;
     padding-top: 0.14em;
     padding-bottom: 0.14em;
@@ -195,26 +195,18 @@ div.cms3-field-editable div.autocomplete li {
     cursor: pointer;
 }
 
-div.cms3-field-editable div.autocomplete li.hover {
+.cms3-autocomplete li:last-child {
+    border-bottom: #999 solid 1px;
+}
+
+.cms3-autocomplete li.hover {
     background-color: #CCC;
     border-bottom: #999 solid 1px;
     border-top: #999 solid 1px;
 }
 
-div.cms3-field-editable div.autocomplete li:last-child {
-    border-bottom: none;
-}
-
-div.cms3-field-editable div.autocomplete li:first-child {
-    border-top: none;
-}
-
-div.cms3-field-editable.show-autocomplete div.autocomplete {
-    display: block;
-}
-
-div.cms3-field-editable.show-autocomplete input {
-    border-bottom: none;
+.cms3-autocomplete li.hover:first-child {
+    border-top: #CCC solid 1px;
 }
 
 /* Checkbox */
